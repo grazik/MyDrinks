@@ -12,3 +12,40 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Drink {
+  id          String            @id @default(uuid())
+  name        String            @unique
+  recipe      String
+  source_url  String?
+  photo       Bytes?
+  ingredients DrinkIngredient[]
+  createdAt   DateTime          @default(now())
+}
+
+model Ingredient {
+  id               String            @id @default(uuid())
+  name             String            @unique
+  type             IngredientType
+  drinkIngredients DrinkIngredient[]
+}
+
+model DrinkIngredient {
+  id           String     @id @default(uuid())
+  drink        Drink      @relation(fields: [drinkId], references: [id], onDelete: Cascade)
+  drinkId      String
+  ingredient   Ingredient @relation(fields: [ingredientId], references: [id], onDelete: Cascade)
+  ingredientId String
+  amount       Float
+  unit         String
+}
+
+enum IngredientType {
+  spirit
+  syrup
+  mixer
+  fruit
+  bitter
+  sweetener
+  herb
+}
