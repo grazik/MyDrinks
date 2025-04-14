@@ -1,0 +1,33 @@
+$breakpoints: (
+        tablet: 480px,
+        tablet-landscape: 768px,
+        desktop: 1024px,
+);
+
+@mixin respond-to($breakpoint) {
+  @if map-has-key($breakpoints, $breakpoint) {
+    @media (min-width: map-get($breakpoints, $breakpoint)) {
+      @content;
+    }
+  } @else {
+    @warn "Breakpoint #{$breakpoint} not found in $breakpoints map.";
+  }
+}
+
+@mixin from-tablet {
+  @include respond-to($breakpoints.tablet) {
+    @content;
+  }
+}
+
+@mixin from-tablet-landscape {
+  @include respond-to($breakpoints.tablet-landscape) {
+    @content;
+  }
+}
+
+@mixin from-desktop {
+  @include respond-to($breakpoints.desktop) {
+    @content;
+  }
+}
