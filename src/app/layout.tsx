@@ -1,19 +1,20 @@
 import type { Metadata } from "next";
-import { Montserrat, Lato } from 'next/font/google';
-import '../styles/index.scss'
+import { Montserrat, Lato } from "next/font/google";
+import "../styles/index.scss";
+import { HeroBanner } from "@/componets/molecules/HeroBanner";
 
 const montserrat = Montserrat({
-  subsets: ['latin'],
-  weight: ['400', '700'],
-  display: 'swap',
-  variable: '--font-montserrat', // Define CSS variable name
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  display: "swap",
+  variable: "--font-heading", // Define CSS variable name
 });
 
 const lato = Lato({
-  subsets: ['latin'],
-  weight: ['400', '700'],
-  display: 'swap',
-  variable: '--font-lato', // Define CSS variable name
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  display: "swap",
+  variable: "--font-body", // Define CSS variable name
 });
 
 export const metadata: Metadata = {
@@ -29,7 +30,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${lato.variable} ${montserrat.variable}`}>
-      {/*<body>*/}
+        <HeroBanner />
+        {/*<body>*/}
         {children}
       </body>
     </html>
