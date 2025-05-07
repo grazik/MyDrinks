@@ -15,19 +15,19 @@ $breakpoints: (
 }
 
 @mixin from-tablet {
-  @include respond-to($breakpoints.tablet) {
+  @include respond-to(tablet) {
     @content;
   }
 }
 
 @mixin from-tablet-landscape {
-  @include respond-to($breakpoints.tablet-landscape) {
+  @include respond-to(tablet-landscape) {
     @content;
   }
 }
 
 @mixin from-desktop {
-  @include respond-to($breakpoints.desktop) {
+  @include respond-to(desktop) {
     @content;
   }
 }
