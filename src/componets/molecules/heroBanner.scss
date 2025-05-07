@@ -1,0 +1,49 @@
+@use '/src/styles/breakpoints';
+
+.hero-banner {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, #010B13 0%, #0A1620 15%, #0A1620 85%, #010B13 100%);
+  border-bottom: 4px solid var(--color-amber-gold);
+  box-shadow: 0 12px 32px -8px color-mix(in srgb, var(--color-amber-gold) 20%, transparent);
+
+
+  .hero-banner__content {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    color: var(--color-text-light);
+    flex-shrink: 0;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 40px;
+    gap: 40px;
+
+    @include breakpoints.from-tablet-landscape {
+      flex-direction: row;
+      padding: 120px 40px;
+      gap: 24px;
+    }
+
+  }
+
+  .hero-banner__section {
+    width: 100%;
+    text-align: center;
+  }
+
+  .hero-banner__image {
+    width: 100%;
+    object-fit: contain;
+    max-height: 250px;
+    filter: drop-shadow(0 4px 24px color-mix(in srgb, var(--color-lime-green) 12%, transparent))
+    drop-shadow(0 2px 8px rgba(0,0,0,0.35));
+
+    @include breakpoints.from-tablet-landscape {
+      max-height: unset;
+    }
+  }
+
+}

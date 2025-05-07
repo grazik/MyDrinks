@@ -1,0 +1,88 @@
+/* Main Heading */
+.main-heading {
+  font-family: var(--font-heading);
+  font-weight: bold;
+  font-size: 2.5rem;
+  color: var(--color-amber-gold);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 1.5rem;
+}
+
+/* Section Heading */
+.section-heading {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 1.25rem;
+  color: var(--color-lime-green);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 1rem;
+}
+
+/* Card Title */
+.card-title {
+  font-family: var(--font-heading);
+  font-weight: bold;
+  font-size: 1.25rem;
+  color: var(--color-text-light);
+  text-transform: capitalize;
+  margin-bottom: 0.5rem;
+}
+
+/* Ingredient Tag */
+.ingredient-tag {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 0.875rem;
+  color: var(--color-lime-green); // or use var(--color-amber-gold)
+  background: rgba(185, 255, 102, 0.08); // subtle lime green background
+  border-radius: 1em;
+  padding: 0.25em 0.75em;
+  display: inline-block;
+  margin: 0.25em 0.25em 0 0;
+}
+
+/* Body Text */
+.body-text {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 1.25rem;
+  color: var(--color-text-light);
+  line-height: 1.6;
+}
+
+/* Button */
+.button {
+  font-family: var(--font-heading);
+  font-weight: bold;
+  font-size: 1rem;
+  color: var(--color-background);
+  background: var(--color-lime-green); // or var(--color-amber-gold)
+  text-transform: uppercase;
+  border: none;
+  border-radius: 0.5em;
+  padding: 0.75em 1.5em;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  &:hover {
+    background: var(--color-amber-gold);
+    color: var(--color-background);
+  }
+}
+
+/* Source Link */
+.source-link {
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: 0.9rem;
+  color: var(--color-cherry-red);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s;
+
+  &:hover {
+    border-bottom: 1px solid var(--color-cherry-red);
+  }
+}

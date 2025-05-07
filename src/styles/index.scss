@@ -1,0 +1,14 @@
+@import "variables";
+@import "typography";
+@import "reset";
+
+body {
+  background-color: var(--color-background) ;
+}
+
+.wrapper {
+  max-width: 1170px;
+  margin: 0 auto;
+  padding: 0 16px;
+  position: relative;
+}
