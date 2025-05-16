@@ -18,9 +18,10 @@ model Drink {
   name        String            @unique
   recipe      String
   source_url  String?
-  photo       Bytes?
   ingredients DrinkIngredient[]
   createdAt   DateTime          @default(now())
+  image       String
+  slug        String
 }
 
 model Ingredient {

@@ -1,0 +1,22 @@
+@use '../../../styles/breakpoints';
+
+.drinks-grid {
+  --numbers-of-elements: 2;
+
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(var(--numbers-of-elements), 1fr);
+  margin-top: 32px;
+
+  @include breakpoints.from-tablet {
+    --numbers-of-elements: 3;
+  }
+
+  @include breakpoints.from-tablet-landscape {
+    --numbers-of-elements: 4;
+  }
+
+  @include breakpoints.from-desktop {
+    --numbers-of-elements: 5;
+  }
+}

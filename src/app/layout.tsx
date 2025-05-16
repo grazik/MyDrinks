@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Montserrat, Lato } from "next/font/google";
 import "../styles/index.scss";
-import { HeroBanner } from "@/componets/molecules/HeroBanner";
+import { HeroBanner } from "@/componets/molecules/HeroBanner/HeroBanner";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -30,8 +30,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${lato.variable} ${montserrat.variable}`}>
-        <HeroBanner />
-        {/*<body>*/}
         {children}
       </body>
     </html>
