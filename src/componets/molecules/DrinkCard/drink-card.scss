@@ -1,0 +1,19 @@
+.drink-card {
+  width: 100%;
+
+  .drink-card__image {
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 12px;
+    aspect-ratio: 3/4;
+  }
+
+  .drink-card__link {
+    text-decoration: none;
+  }
+
+  .drink-card__title {
+    margin-top: 8px;
+  }
+}
