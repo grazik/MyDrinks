@@ -6,18 +6,15 @@ import "./chip.scss";
 type ChipProps = {
   children: ReactNode;
   onChange?: (isChecked: boolean) => void;
+  isActive?: boolean;
 };
 
-export const Chip = ({ children, onChange }: ChipProps) => {
-  const [isChecked, setChecked] = useState(false);
-
+export const Chip = ({ children, onChange, isActive = false }: ChipProps) => {
   return (
     <button
-      className={`button chip ${isChecked ? "chip--active" : ""}`}
+      className={`button chip ${isActive ? "chip--active" : ""}`}
       onClick={() => {
-        console.log("Asdasd");
-        setChecked(!isChecked);
-        onChange?.(!isChecked);
+        onChange?.(!isActive);
       }}
     >
       {children}
