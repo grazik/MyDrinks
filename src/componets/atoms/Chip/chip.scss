@@ -1,4 +1,4 @@
-.pill {
+.chip {
   color: var(--color-text-light);
   background-color: var(--color-surface-base);
   transition: background-color .3s ease-in-out;
@@ -6,13 +6,14 @@
   border-radius: 12px;
   border: none;
   cursor: pointer;
+  text-transform: capitalize;
 
   &:hover,
   &:focus-visible {
     background-color: var(--color-accent-hover);
   }
 
-  &.pill--active {
+  &.chip--active {
     background-color: var(--color-accent-primary);
   }
 }
