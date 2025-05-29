@@ -1,4 +1,4 @@
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 
 export enum FilterCategory {
   SPIRITS = "spirits",
@@ -8,7 +8,6 @@ export enum FilterCategory {
 export const useDrinkFilters = () => {
   const params = useSearchParams();
   const pathname = usePathname();
-  const { push } = useRouter();
 
   const activeFilers = {
     [FilterCategory.SPIRITS]: params.get(FilterCategory.SPIRITS)?.split(","),
@@ -38,7 +37,11 @@ export const useDrinkFilters = () => {
         }
       }
 
-      push(`${pathname}?${searchParams.toString()}`, { scroll: false });
+      window.history.pushState(
+        {},
+        "",
+        `${pathname}?${searchParams.toString()}`,
+      );
     };
 
   return [activeFilers, updateQueryParam] as const;
