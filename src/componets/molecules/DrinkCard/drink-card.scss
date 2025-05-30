@@ -1,12 +1,22 @@
 .drink-card {
   width: 100%;
 
+  .drink-card__image-wrapper {
+    width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
   .drink-card__image {
     width: 100%;
     object-fit: cover;
     object-position: center;
-    border-radius: 12px;
     aspect-ratio: 3/4;
+    transition: transform .3s ease-in-out;
+
+    &:hover {
+      transform: scale(1.1);
+    }
   }
 
   .drink-card__link {

@@ -4,4 +4,8 @@
   --color-lime-green: #B9FF66;
   --color-cherry-red: #D20A2E;
   --color-text-light: #FFFFFF;
+
+  --color-surface-base: #21384A;
+  --color-accent-primary: var(--color-amber-gold);
+  --color-accent-hover: color-mix(in srgb, var(--color-accent-primary) 70%, transparent);
 }
