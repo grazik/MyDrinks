@@ -1,7 +1,9 @@
 "use client";
 
-import { FilterCategory, useDrinkFilters } from "@/hooks/useDrinkFilters";
-import { FilterChipBar } from "@/componets/molecules/FilterChipBar/FilterChipBar";
+import { useDrinkFilters } from "@/hooks/useDrinkFilters";
+
+import { FilterChipBar } from "@/components/molecules/FilterChipBar/FilterChipBar";
+import { IngredientCategory } from "@/constants/IngredientCategory";
 
 type DrinksFilterClientProps = {
   spiritNames: string[];
@@ -19,14 +21,14 @@ export const DrinksFilterClient = ({
       <FilterChipBar
         heading="Filter by Main Spirit"
         chips={spiritNames}
-        activeIngredients={activeFilters[FilterCategory.SPIRITS]}
-        updateFilers={updateQueryParams(FilterCategory.SPIRITS)}
+        activeIngredients={activeFilters[IngredientCategory.SPIRITS]}
+        updateFilers={updateQueryParams(IngredientCategory.SPIRITS)}
       />
       <FilterChipBar
         chips={ingredientsNames}
         heading="Filter by other ingredients"
-        activeIngredients={activeFilters[FilterCategory.INGREDIENTS]}
-        updateFilers={updateQueryParams(FilterCategory.INGREDIENTS)}
+        activeIngredients={activeFilters[IngredientCategory.INGREDIENTS]}
+        updateFilers={updateQueryParams(IngredientCategory.INGREDIENTS)}
       />
     </>
   );

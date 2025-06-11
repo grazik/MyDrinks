@@ -1,0 +1,39 @@
+import { Metadata } from "next";
+import { getDrinkBySlug } from "../../../db/getDrink";
+import { ImagesSection } from "@/components/organisms/ImagesSection/ImagesSection";
+import { notFound } from "next/navigation";
+import { IngredientsSection } from "@/components/organisms/IngredientsSection/IngredientsSection";
+
+interface DrinkPageProps {
+  params: Promise<{ slug: string[] }>;
+}
+
+export async function generateMetadata({
+  params,
+}: Pick<DrinkPageProps, "params">): Promise<Metadata> {
+  const { slug } = await params;
+
+  const drink = await getDrinkBySlug(slug);
+
+  return {
+    title: drink?.name,
+  };
+}
+
+export default async function PDP({ params }: DrinkPageProps) {
+  const { slug } = await params;
+
+  const drink = await getDrinkBySlug(slug);
+
+  if (!drink) {
+    notFound();
+  }
+
+  return (
+    <>
+      <h1 className={"section-heading"}>{drink.name}</h1>
+      <ImagesSection drink={drink} />
+      <IngredientsSection drinkId={drink.id} />
+    </>
+  );
+}

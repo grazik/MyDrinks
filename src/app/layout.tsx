@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Montserrat, Lato } from "next/font/google";
 import "../styles/index.scss";
-import { HeroBanner } from "@/componets/molecules/HeroBanner/HeroBanner";
+import { HeroBanner } from "@/components/molecules/HeroBanner/HeroBanner";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -18,7 +18,10 @@ const lato = Lato({
 });
 
 export const metadata: Metadata = {
-  title: "MyDrinks",
+  title: {
+    template: "%s | MyDrinks",
+    absolute: "MyDrinks",
+  },
   description: "MyDrinks by Graziu. Webpage containing cocktails recipes",
 };
 

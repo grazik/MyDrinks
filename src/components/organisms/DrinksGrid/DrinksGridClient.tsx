@@ -1,9 +1,9 @@
 "use client";
 
 import { useDrinkFilters } from "@/hooks/useDrinkFilters";
-import { DrinkWithIngredients } from "@/componets/organisms/DrinksGrid/DrinkGrid";
-import { filterDrinksByIngredients } from "@/componets/organisms/DrinksGrid/DrinkGrid.utils";
-import { DrinkCard } from "@/componets/molecules/DrinkCard/DrinkCard";
+import { DrinkWithIngredients } from "@/components/organisms/DrinksGrid/DrinkGrid";
+import { filterDrinksByIngredients } from "@/components/organisms/DrinksGrid/DrinkGrid.utils";
+import { DrinkCard } from "@/components/molecules/DrinkCard/DrinkCard";
 
 type DrinksGridClientProps = {
   drinksWithIngredients: DrinkWithIngredients[];
