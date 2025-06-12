@@ -1,0 +1,21 @@
+.ingredients-section {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  &__list {
+
+  }
+
+  &__list-item {
+    display: flex;
+    justify-content: space-between;
+    line-height: 1.8;
+    border-bottom: 1px dashed var(--color-light-border);
+
+    :first-letter {
+      text-transform: uppercase;
+    }
+  }
+}
