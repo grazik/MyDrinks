@@ -31,7 +31,7 @@ export default async function PDP({ params }: DrinkPageProps) {
 
   return (
     <>
-      <h1 className={"section-heading"}>{drink.name}</h1>
+      <h1 className={"main-heading main-heading--light-color"}>{drink.name}</h1>
       <ImagesSection drink={drink} />
       <IngredientsSection drinkId={drink.id} />
     </>

@@ -7,6 +7,6 @@ export const groupIngredientsByCategory = <T extends { type: IngredientType }>(
   return Object.groupBy(ingredients, ({ type }) =>
     type === IngredientType.spirit
       ? IngredientCategory.SPIRITS
-      : IngredientCategory.INGREDIENTS,
+      : IngredientCategory.ADDITIONAL,
   );
 };

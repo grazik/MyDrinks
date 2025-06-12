@@ -9,8 +9,8 @@ export const useDrinkFilters = () => {
     [IngredientCategory.SPIRITS]: params
       .get(IngredientCategory.SPIRITS)
       ?.split(","),
-    [IngredientCategory.INGREDIENTS]: params
-      .get(IngredientCategory.INGREDIENTS)
+    [IngredientCategory.ADDITIONAL]: params
+      .get(IngredientCategory.ADDITIONAL)
       ?.split(","),
   };
 

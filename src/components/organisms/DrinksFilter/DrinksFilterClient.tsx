@@ -27,8 +27,8 @@ export const DrinksFilterClient = ({
       <FilterChipBar
         chips={ingredientsNames}
         heading="Filter by other ingredients"
-        activeIngredients={activeFilters[IngredientCategory.INGREDIENTS]}
-        updateFilers={updateQueryParams(IngredientCategory.INGREDIENTS)}
+        activeIngredients={activeFilters[IngredientCategory.ADDITIONAL]}
+        updateFilers={updateQueryParams(IngredientCategory.ADDITIONAL)}
       />
     </>
   );

@@ -17,11 +17,12 @@ export const IngredientsSection = async ({
   console.log(ingredients);
   const categories = [
     IngredientCategory.SPIRITS,
-    IngredientCategory.INGREDIENTS,
+    IngredientCategory.ADDITIONAL,
   ];
 
   return (
     <section className="ingredients-section">
+      <h2 className={"section-heading"}>Ingredients</h2>
       {categories.map((category) => (
         <IngredientCategoryGroup
           ingredients={drinkIngredientsGroupedByCategory[category] || []}
