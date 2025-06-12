@@ -3,6 +3,7 @@ import { getDrinkBySlug } from "../../../db/getDrink";
 import { ImagesSection } from "@/components/organisms/ImagesSection/ImagesSection";
 import { notFound } from "next/navigation";
 import { IngredientsSection } from "@/components/organisms/IngredientsSection/IngredientsSection";
+import { RecipeSection } from "@/components/organisms/RecipeSection/RecipeSection";
 
 interface DrinkPageProps {
   params: Promise<{ slug: string[] }>;
@@ -34,6 +35,7 @@ export default async function PDP({ params }: DrinkPageProps) {
       <h1 className={"main-heading main-heading--light-color"}>{drink.name}</h1>
       <ImagesSection drink={drink} />
       <IngredientsSection drinkId={drink.id} />
+      <RecipeSection recipe={drink.recipe} />
     </>
   );
 }

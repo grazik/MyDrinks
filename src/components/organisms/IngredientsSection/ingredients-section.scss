@@ -13,13 +13,14 @@
   &__list {
     display: flex;
     flex-direction: column;
-    gap: .5rem
+    gap: 1rem
   }
 
   &__list-item {
     display: flex;
     justify-content: space-between;
     line-height: 1.8;
+    padding-bottom: .5rem;
     border-bottom: 1px dashed var(--color-light-border);
 
     :first-letter {
