@@ -7,8 +7,9 @@ async function main() {
   const whiskyOldFashioned = await prisma.drink.create({
     data: {
       name: "Whisky Old Fashioned",
-      recipe:
-        "Stir the simple syrup, water, and bitters in a glass. Add the ice cubes and bourbon. Garnish.",
+      recipe: `1. Stir the **simple syrup**, **water**, and **bitters** in a glass.  
+2. Add the **ice cubes** and **bourbon**.  
+3. Garnish as desired.`,
       createdAt: new Date("2025-04-07T15:54:00Z"), // Current date
       ingredients: {
         create: [
@@ -55,8 +56,11 @@ async function main() {
   const mohito = await prisma.drink.create({
     data: {
       name: "Mohito",
-      recipe:
-        "Muddle mint leaves, lime wedges, and sugar in a glass to release the flavors. Fill the glass with ice cubes. Pour in the white rum. Top up with soda water and stir well. Garnish with a mint sprig and enjoy! 🍹",
+      recipe: `1. Muddle the **mint leaves**, **lime wedges**, and **sugar** in a glass to release the flavors.  
+2. Fill the glass with **ice cubes**.  
+3. Pour in the **white rum**.  
+4. Top up with **soda water** and stir well.  
+5. Garnish with a **mint sprig** and enjoy! 🍹`,
       createdAt: new Date("2025-04-07T15:54:00Z"), // Current date
       ingredients: {
         create: [
@@ -123,8 +127,11 @@ async function main() {
   const mintJulep = await prisma.drink.create({
     data: {
       name: "Mint Julep",
-      recipe:
-        "Muddle mint leaves and sugar (or simple syrup) in a glass or julep cup. Fill the glass with crushed ice. Pour in the bourbon and stir until well chilled. Top with more crushed ice and garnish with a mint sprig. Enjoy! 🥃🌿",
+      recipe: `1. Muddle **mint leaves** and **sugar** (or **simple syrup**) in a glass or julep cup.  
+2. Fill the glass with **crushed ice**.  
+3. Pour in the **bourbon** and stir until well chilled.  
+4. Top with more **crushed ice** and garnish with a **mint sprig**.  
+5. Enjoy! 🥃🌿`,
       createdAt: new Date("2025-04-07T15:54:00Z"), // Current date
       ingredients: {
         create: [

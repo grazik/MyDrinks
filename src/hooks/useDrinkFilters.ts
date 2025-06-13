@@ -1,23 +1,21 @@
 import { usePathname, useSearchParams } from "next/navigation";
-
-export enum FilterCategory {
-  SPIRITS = "spirits",
-  INGREDIENTS = "ingredients",
-}
+import { IngredientCategory } from "@/constants/IngredientCategory";
 
 export const useDrinkFilters = () => {
   const params = useSearchParams();
   const pathname = usePathname();
 
   const activeFilers = {
-    [FilterCategory.SPIRITS]: params.get(FilterCategory.SPIRITS)?.split(","),
-    [FilterCategory.INGREDIENTS]: params
-      .get(FilterCategory.INGREDIENTS)
+    [IngredientCategory.SPIRITS]: params
+      .get(IngredientCategory.SPIRITS)
+      ?.split(","),
+    [IngredientCategory.ADDITIONAL]: params
+      .get(IngredientCategory.ADDITIONAL)
       ?.split(","),
   };
 
   const updateQueryParam =
-    (type: FilterCategory) => (ingredientName: string) => {
+    (type: IngredientCategory) => (ingredientName: string) => {
       const searchParams = new URLSearchParams(params);
       const currentFilterState = activeFilers[type];
 

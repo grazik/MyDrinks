@@ -1,6 +1,6 @@
-import { prisma } from "../../../../lib/db";
+import { prisma } from "../../../../db/db";
 import "./drinks-grid.scss";
-import { DrinksGridClient } from "@/componets/organisms/DrinksGrid/DrinksGridClient";
+import { DrinksGridClient } from "@/components/organisms/DrinksGrid/DrinksGridClient";
 
 export const DrinksGrid = async () => {
   const drinksWithIngredients = await prisma.drink.findMany({

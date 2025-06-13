@@ -1,0 +1,12 @@
+.recipe-section {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  color: var(--color-text-light);
+
+  ol {
+    list-style: decimal;
+    padding-left: 1em;
+  }
+}

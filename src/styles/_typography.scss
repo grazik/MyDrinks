@@ -7,28 +7,30 @@
   text-transform: uppercase;
   letter-spacing: 0.08em;
   margin-bottom: 1.5rem;
+
+  &--light-color {
+    color: var(--color-text-light)
+  }
 }
 
 /* Section Heading */
 .section-heading {
   font-family: var(--font-heading);
   font-weight: 600;
-  font-size: 1.25rem;
+  font-size: 2rem;
   color: var(--color-text-light);
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  margin-bottom: 1rem;
 }
 
-/* Section Heading */
 .subsection-heading {
   font-family: var(--font-heading);
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 1.5rem;
+  line-height: 1.5;
   color: var(--color-text-light);
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  margin-bottom: 1rem;
 }
 
 /* Card Title */
