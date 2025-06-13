@@ -14,7 +14,6 @@ export const IngredientsSection = async ({
   const ingredients = await getIngredientsByDrinkId(drinkId);
   const drinkIngredientsGroupedByCategory =
     groupIngredientsByCategory(ingredients);
-  console.log(ingredients);
   const categories = [
     IngredientCategory.SPIRITS,
     IngredientCategory.ADDITIONAL,
