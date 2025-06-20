@@ -7,6 +7,10 @@ type Props = {
 };
 
 export const ImagesSection = ({ drink }: Props) => {
+  if (!drink.image) {
+    return null;
+  }
+
   return (
     <section className={"images-section"}>
       <Image

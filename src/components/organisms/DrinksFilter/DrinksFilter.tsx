@@ -1,6 +1,6 @@
 import { prisma } from "../../../../db/db";
-import { DrinksFilterClient } from "@/components/organisms/DrinksFilter/DrinksFilterClient";
-import { groupIngredientsByCategory } from "@/utils/ingredients/ingredients";
+import { DrinksFilterClient } from "@/src/components/organisms/DrinksFilter/DrinksFilterClient";
+import { groupIngredientsByCategory } from "@/src/utils/ingredients/ingredients";
 
 export const DrinksFilter = async () => {
   const allIngredients = await prisma.ingredient.findMany();

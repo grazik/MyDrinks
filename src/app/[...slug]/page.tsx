@@ -1,9 +1,9 @@
 import { Metadata } from "next";
-import { getDrinkBySlug } from "../../../db/getDrink";
-import { ImagesSection } from "@/components/organisms/ImagesSection/ImagesSection";
+import { getDrinkBySlug } from "@/db/getDrink";
+import { ImagesSection } from "@/src/components/organisms/ImagesSection/ImagesSection";
 import { notFound } from "next/navigation";
-import { IngredientsSection } from "@/components/organisms/IngredientsSection/IngredientsSection";
-import { RecipeSection } from "@/components/organisms/RecipeSection/RecipeSection";
+import { IngredientsSection } from "@/src/components/organisms/IngredientsSection/IngredientsSection";
+import { RecipeSection } from "@/src/components/organisms/RecipeSection/RecipeSection";
 
 interface DrinkPageProps {
   params: Promise<{ slug: string[] }>;
@@ -33,7 +33,7 @@ export default async function PDP({ params }: DrinkPageProps) {
   return (
     <>
       <h1 className={"main-heading main-heading--light-color"}>{drink.name}</h1>
-      <ImagesSection drink={drink} />
+      {drink.image && <ImagesSection drink={drink} />}
       <IngredientsSection drinkId={drink.id} />
       <RecipeSection recipe={drink.recipe} />
     </>

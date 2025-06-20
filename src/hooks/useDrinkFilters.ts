@@ -1,5 +1,5 @@
 import { usePathname, useSearchParams } from "next/navigation";
-import { IngredientCategory } from "@/constants/IngredientCategory";
+import { IngredientCategory } from "@/src/constants/IngredientCategory";
 
 export const useDrinkFilters = () => {
   const params = useSearchParams();

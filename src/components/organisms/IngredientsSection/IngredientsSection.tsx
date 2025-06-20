@@ -1,7 +1,7 @@
 import { getIngredientsByDrinkId } from "../../../../db/getDrinkIngredients";
-import { IngredientCategoryGroup } from "@/components/organisms/IngredientsSection/components/IngredientCategoryGroup";
-import { IngredientCategory } from "@/constants/IngredientCategory";
-import { groupIngredientsByCategory } from "@/utils/ingredients/ingredients";
+import { IngredientCategoryGroup } from "@/src/components/organisms/IngredientsSection/components/IngredientCategoryGroup";
+import { IngredientCategory } from "@/src/constants/IngredientCategory";
+import { groupIngredientsByCategory } from "@/src/utils/ingredients/ingredients";
 import "./ingredients-section.scss";
 
 type IngredientsSectionProps = {

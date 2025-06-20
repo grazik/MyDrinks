@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Montserrat, Lato } from "next/font/google";
 import "../styles/index.scss";
-import { HeroBanner } from "@/components/molecules/HeroBanner/HeroBanner";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
