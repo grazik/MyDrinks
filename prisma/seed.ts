@@ -77,8 +77,8 @@ async function main() {
           {
             ingredient: {
               connectOrCreate: {
-                where: { name: "limonka" },
-                create: { name: "limonka", type: "fruit" },
+                where: { name: "lime" },
+                create: { name: "lime", type: "fruit" },
               },
             },
             amount: 1,
