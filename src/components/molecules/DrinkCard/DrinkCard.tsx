@@ -10,7 +10,9 @@ export const DrinkCard = ({ drink }: DrinkCardProps) => {
     <div className={"drink-card"}>
       <a href={drink.slug} className="drink-card__link">
         <div className="drink-card__image-wrapper">
-          <img className={"drink-card__image"} src={drink.image} />
+          {drink.image && (
+            <img className={"drink-card__image"} src={drink.image} />
+          )}
         </div>
         <p className="drink-card__title card-title">{drink.name}</p>
       </a>
