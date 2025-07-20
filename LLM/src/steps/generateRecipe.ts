@@ -15,8 +15,8 @@ const callLlm = async (prompt: string) => {
   return CreateDrinkSchema.parse(object);
 };
 
-export const generateRecipe = async () => {
-  const prompt = await generateDrinkPrompt();
+export const generateRecipe = async (drinkName: string) => {
+  const prompt = await generateDrinkPrompt(drinkName);
 
   return await withRetry(() => callLlm(prompt));
 };

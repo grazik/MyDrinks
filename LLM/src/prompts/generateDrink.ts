@@ -40,7 +40,7 @@ const mojitoExample = `{
 }
 `;
 
-export const generateDrinkPrompt = async () => {
+export const generateDrinkPrompt = async (drinkName: string) => {
   const ingredientTypes = Object.values(IngredientType);
 
   const ingredients = await getIngredients();
@@ -85,7 +85,7 @@ REQUIRED JSON SCHEMA:
 EXAMPLE OUTPUT (Mojito):
 ${mojitoExample}
 
-Generate a classic Manhattan cocktail recipe following the exact JSON format above. 
+Generate a classic ${drinkName} cocktail recipe following the exact JSON format above. 
 Include proper step-by-step instructions in the recipe field.
 Use traditional proportions and authentic ingredients.
 
