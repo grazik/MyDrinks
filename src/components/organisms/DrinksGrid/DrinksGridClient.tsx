@@ -12,7 +12,7 @@ type DrinksGridClientProps = {
 export const DrinksGridClient = ({
   drinksWithIngredients,
 }: DrinksGridClientProps) => {
-  const [{ spirits = [], ingredients = [] }] = useDrinkFilters();
+  const [{ spirits = [], additional = [] }] = useDrinkFilters();
 
   const drinksBySpirit = filterDrinksByIngredients(
     drinksWithIngredients,
@@ -20,7 +20,7 @@ export const DrinksGridClient = ({
   );
   const drinkByIngredients = filterDrinksByIngredients(
     drinksBySpirit,
-    ingredients,
+    additional,
   );
 
   return (
