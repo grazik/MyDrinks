@@ -2,16 +2,26 @@ import { generateRecipe } from "@/LLM/src/steps/generateRecipe";
 import { generateImage } from "@/LLM/src/steps/generateImage";
 import "dotenv/config";
 import { saveRecipe } from "@/LLM/src/steps/saveRecipe";
+import { getDrinkIdByName } from "@/db/getDrink";
 
 interface ProcessingResult {
   name: string;
-  success: boolean;
+  status: "success" | "failed" | "skipped";
   duration?: number;
   error?: string;
 }
 
 const pipeline = async (drinkName: string) => {
   try {
+    const doesExist = await getDrinkIdByName(drinkName);
+
+    console.log("STEP 0 | Checking if exists", drinkName);
+
+    if (doesExist) {
+      console.log(`⏭️  ${drinkName}: Already exists, skipping generation`);
+      return null;
+    }
+
     console.log("STEP 1 | Generating recipe for:", drinkName);
     const recipe = await generateRecipe(drinkName);
 
@@ -43,12 +53,12 @@ const processCocktailBatch = async (
     console.log(`[${i + 1}/${cocktailNames.length}] Processing: ${name}`);
 
     try {
-      await pipeline(name);
+      const result = await pipeline(name);
       const duration = Date.now() - startTime;
 
       results.push({
         name,
-        success: true,
+        status: !!result ? "success" : "skipped",
         duration,
       });
 
@@ -61,7 +71,7 @@ const processCocktailBatch = async (
 
       results.push({
         name,
-        success: false,
+        status: "failed",
         error: message,
         duration,
       });
@@ -86,18 +96,20 @@ const main = async () => {
 
   // Execute batch processing
   processCocktailBatch(cocktailNames).then((results) => {
-    const successful = results.filter((r) => r.success).length;
-    const failed = results.length - successful;
+    const successful = results.filter((r) => r.status === "success").length;
+    const failed = results.filter((r) => r.status === "failed").length;
+    const skipped = results.filter((r) => r.status === "skipped").length;
 
     console.log(`\n📊 Batch Complete:`);
     console.log(`   ✅ Successful: ${successful}`);
+    console.log(`   ⏭️ Skipped (existing): ${skipped}`);
     console.log(`   ❌ Failed: ${failed}`);
     console.log(`   📄 Total: ${results.length}`);
 
     if (failed > 0) {
       console.log("\n❌ Failed cocktails:");
       results
-        .filter((r) => !r.success)
+        .filter((r) => r.status === "failed")
         .forEach((r) => console.log(`   - ${r.name}: ${r.error}`));
     }
   });
