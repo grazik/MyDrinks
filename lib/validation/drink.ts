@@ -19,7 +19,12 @@ export const CreateDrinkSchema = z
       .regex(/[a-zA-Z]/, "Drink name must contain at least one letter")
       .regex(/^[a-zA-Z0-9\s\-'&.]+$/, "Drink name contains invalid characters"),
     recipe: z.string().min(1, "Recipe is required"),
-    source_url: z.string().url().optional().or(z.literal("")),
+    source_url: z
+      .string()
+      .url()
+      .optional()
+      .or(z.literal(""))
+      .or(z.literal("AI generated")),
     photo: z.string().optional(),
     ingredients: z
       .array(DrinkIngredientInputSchema)

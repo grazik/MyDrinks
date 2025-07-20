@@ -26,8 +26,8 @@ async function main() {
           {
             ingredient: {
               connectOrCreate: {
-                where: { name: "Angostura" },
-                create: { name: "Angostura", type: "bitter" },
+                where: { name: "angostura" },
+                create: { name: "angostura", type: "bitter" },
               },
             },
             amount: 5,
@@ -36,8 +36,8 @@ async function main() {
           {
             ingredient: {
               connectOrCreate: {
-                where: { name: "Simple Syrup" },
-                create: { name: "Simple Syrup", type: "syrup" },
+                where: { name: "simple syrup" },
+                create: { name: "simple syrup", type: "syrup" },
               },
             },
             amount: 10,
