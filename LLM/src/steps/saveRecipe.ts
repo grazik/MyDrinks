@@ -46,7 +46,7 @@ export const saveRecipe = async (recipe: CreateDrinkInput, image: string) => {
     // Create the drink with related ingredients
     const drink = await tx.drink.create({
       data: {
-        name: sanitizedDrinkName,
+        name: recipe.name,
         recipe: recipe.recipe,
         source_url: recipe.source_url || null,
         image: photoPath,

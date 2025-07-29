@@ -12,29 +12,27 @@ interface ProcessingResult {
 }
 
 const pipeline = async (drinkName: string) => {
-  try {
-    const doesExist = await getDrinkIdByName(drinkName);
+  const doesExist = await getDrinkIdByName(drinkName);
 
-    console.log("STEP 0 | Checking if exists", drinkName);
+  console.log("STEP 0 | Checking if exists", drinkName);
 
-    if (doesExist) {
-      console.log(`⏭️  ${drinkName}: Already exists, skipping generation`);
-      return null;
-    }
-
-    console.log("STEP 1 | Generating recipe for:", drinkName);
-    const recipe = await generateRecipe(drinkName);
-
-    console.log("STEP 2 | Generating image:");
-    const image = await generateImage(recipe);
-
-    console.log("STEP 3 | saving recipe");
-    await saveRecipe(recipe, image);
-
-    console.log("generated drink:", drinkName);
-  } catch (error) {
-    console.error(error);
+  if (doesExist) {
+    console.log(`⏭️  ${drinkName}: Already exists, skipping generation`);
+    return null;
   }
+
+  console.log("STEP 1 | Generating recipe for:", drinkName);
+  const recipe = await generateRecipe(drinkName);
+
+  console.log("STEP 2 | Generating image:");
+  const image = await generateImage(recipe);
+
+  console.log("STEP 3 | saving recipe");
+  await saveRecipe(recipe, image);
+
+  console.log("generated drink:", drinkName);
+
+  return true;
 };
 
 const processCocktailBatch = async (
