@@ -18,6 +18,7 @@ export const ImagesSection = ({ drink }: Props) => {
         alt={drink.name}
         fill={true}
         objectFit={"contain"}
+        objectPosition={"top"}
       />
     </section>
   );
