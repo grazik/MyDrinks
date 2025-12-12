@@ -1,5 +1,5 @@
 import { IngredientType } from "@prisma/client";
-import { IngredientCategory } from "@/constants/IngredientCategory";
+import { IngredientCategory } from "@/src/constants/IngredientCategory";
 
 export const groupIngredientsByCategory = <T extends { type: IngredientType }>(
   ingredients: T[],

@@ -1,4 +1,4 @@
-import { DrinkWithIngredients } from "@/components/organisms/DrinksGrid/DrinkGrid";
+import { DrinkWithIngredients } from "@/src/components/organisms/DrinksGrid/DrinkGrid";
 
 export const filterDrinksByIngredients = (
   drinks: DrinkWithIngredients[],

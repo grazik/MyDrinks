@@ -1,9 +1,9 @@
 "use client";
 
-import { useDrinkFilters } from "@/hooks/useDrinkFilters";
+import { useDrinkFilters } from "@/src/hooks/useDrinkFilters";
 
-import { FilterChipBar } from "@/components/molecules/FilterChipBar/FilterChipBar";
-import { IngredientCategory } from "@/constants/IngredientCategory";
+import { FilterChipBar } from "@/src/components/molecules/FilterChipBar/FilterChipBar";
+import { IngredientCategory } from "@/src/constants/IngredientCategory";
 
 type DrinksFilterClientProps = {
   spiritNames: string[];

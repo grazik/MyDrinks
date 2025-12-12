@@ -1,5 +1,5 @@
 import { getIngredientsByDrinkId } from "../../../../../db/getDrinkIngredients";
-import { IngredientCategory } from "@/constants/IngredientCategory";
+import { IngredientCategory } from "@/src/constants/IngredientCategory";
 
 type IngredientCategoryGroupProps = {
   ingredients: Awaited<ReturnType<typeof getIngredientsByDrinkId>>;

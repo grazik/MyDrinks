@@ -1,7 +1,7 @@
 import styles from "./page.module.css";
-import { HeroBanner } from "@/components/molecules/HeroBanner/HeroBanner";
-import { DrinksGrid } from "@/components/organisms/DrinksGrid/DrinksGrid";
-import { DrinksFilter } from "@/components/organisms/DrinksFilter/DrinksFilter";
+import { HeroBanner } from "@/src/components/molecules/HeroBanner/HeroBanner";
+import { DrinksGrid } from "@/src/components/organisms/DrinksGrid/DrinksGrid";
+import { DrinksFilter } from "@/src/components/organisms/DrinksFilter/DrinksFilter";
 
 export default function Home() {
   return (

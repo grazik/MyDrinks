@@ -20,7 +20,7 @@ model Drink {
   source_url  String?
   ingredients DrinkIngredient[]
   createdAt   DateTime          @default(now())
-  image       String
+  image       String?
   slug        String
 }
 

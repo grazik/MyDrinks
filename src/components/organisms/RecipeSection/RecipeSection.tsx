@@ -1,6 +1,6 @@
 import { Drink } from "@prisma/client";
 import "./recipe-section.scss";
-import { markdownToHtml } from "@/utils/markdown";
+import { markdownToHtml } from "@/src/utils/markdown";
 
 type RecipeSectionProps = {
   recipe: Drink["recipe"];

@@ -1,4 +1,4 @@
-import { Chip } from "@/components/atoms/Chip/Chip";
+import { Chip } from "@/src/components/atoms/Chip/Chip";
 import "./filter-chip-bar.scss";
 
 type FilterChipBarProps = {

@@ -1,9 +1,9 @@
 "use client";
 
-import { useDrinkFilters } from "@/hooks/useDrinkFilters";
-import { DrinkWithIngredients } from "@/components/organisms/DrinksGrid/DrinkGrid";
-import { filterDrinksByIngredients } from "@/components/organisms/DrinksGrid/DrinkGrid.utils";
-import { DrinkCard } from "@/components/molecules/DrinkCard/DrinkCard";
+import { useDrinkFilters } from "@/src/hooks/useDrinkFilters";
+import { DrinkWithIngredients } from "@/src/components/organisms/DrinksGrid/DrinkGrid";
+import { filterDrinksByIngredients } from "@/src/components/organisms/DrinksGrid/DrinkGrid.utils";
+import { DrinkCard } from "@/src/components/molecules/DrinkCard/DrinkCard";
 
 type DrinksGridClientProps = {
   drinksWithIngredients: DrinkWithIngredients[];
@@ -12,7 +12,7 @@ type DrinksGridClientProps = {
 export const DrinksGridClient = ({
   drinksWithIngredients,
 }: DrinksGridClientProps) => {
-  const [{ spirits = [], ingredients = [] }] = useDrinkFilters();
+  const [{ spirits = [], additional = [] }] = useDrinkFilters();
 
   const drinksBySpirit = filterDrinksByIngredients(
     drinksWithIngredients,
@@ -20,7 +20,7 @@ export const DrinksGridClient = ({
   );
   const drinkByIngredients = filterDrinksByIngredients(
     drinksBySpirit,
-    ingredients,
+    additional,
   );
 
   return (
