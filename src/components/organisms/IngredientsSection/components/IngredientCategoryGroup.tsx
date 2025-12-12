@@ -13,16 +13,6 @@ export const IngredientCategoryGroup = ({
   return (
     <div className="ingredients-section__group">
       <h3 className={"subsection-heading"}>{category}</h3>
-      <ul className="ingredients-section__list">
-        {ingredients.map(({ name, id, amount, unit }) => (
-          <li key={id} className="ingredients-section__list-item body-text">
-            <p>{name}</p>
-            <p>
-              {amount} {unit}
-            </p>
-          </li>
-        ))}
-      </ul>
     </div>
   );
 };

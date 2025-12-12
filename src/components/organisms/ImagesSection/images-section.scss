@@ -1,5 +1,7 @@
 .images-section {
   width: 100%;
   height: 600px;
-  position: relative;
+  object-position: top;
+  position: sticky;
+  top: 0;
 }

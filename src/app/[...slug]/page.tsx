@@ -5,6 +5,8 @@ import { notFound } from "next/navigation";
 import { IngredientsSection } from "@/src/components/organisms/IngredientsSection/IngredientsSection";
 import { RecipeSection } from "@/src/components/organisms/RecipeSection/RecipeSection";
 
+import "./pdp.scss";
+
 interface DrinkPageProps {
   params: Promise<{ slug: string[] }>;
 }
@@ -32,10 +34,16 @@ export default async function PDP({ params }: DrinkPageProps) {
 
   return (
     <>
-      <h1 className={"main-heading main-heading--light-color"}>{drink.name}</h1>
-      {drink.image && <ImagesSection drink={drink} />}
-      <IngredientsSection drinkId={drink.id} />
-      <RecipeSection recipe={drink.recipe} />
+      <h1 className={"main-heading"}>{drink.name}</h1>
+      <div className="pdp-content">
+        <div className="pdp-content__column">
+          {drink.image && <ImagesSection drink={drink} />}
+        </div>
+        <div className="pdp-content__column">
+          <IngredientsSection drinkId={drink.id} />
+          <RecipeSection recipe={drink.recipe} />
+        </div>
+      </div>
     </>
   );
 }
