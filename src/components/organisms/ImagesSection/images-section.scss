@@ -1,6 +1,13 @@
+@use '/src/styles/breakpoints';
+
 .images-section {
   width: 100%;
-  height: 600px;
   position: sticky;
   top: 0;
+  aspect-ratio: 2/3;
+
+  @include breakpoints.from-tablet-landscape {
+    aspect-ratio: 2/3;
+    max-height: initial;
+  }
 }

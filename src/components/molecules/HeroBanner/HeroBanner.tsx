@@ -1,7 +1,6 @@
 import "./heroBanner.scss";
-interface Props {}
 
-export const HeroBanner = ({}: Props) => {
+export const HeroBanner = () => {
   return (
     <div className="hero-banner">
       <div className="hero-banner__content wrapper">
