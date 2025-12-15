@@ -1,6 +1,7 @@
 import { prisma } from "../../../../db/db";
 import "./drinks-grid.scss";
 import { DrinksGridClient } from "@/src/components/organisms/DrinksGrid/DrinksGridClient";
+import { Suspense } from "react";
 
 export const DrinksGrid = async () => {
   const drinksWithIngredients = await prisma.drink.findMany({
@@ -15,7 +16,9 @@ export const DrinksGrid = async () => {
 
   return (
     <section className="drinks-grid">
-      <DrinksGridClient drinksWithIngredients={drinksWithIngredients} />
+      <Suspense>
+        <DrinksGridClient drinksWithIngredients={drinksWithIngredients} />
+      </Suspense>
     </section>
   );
 };
