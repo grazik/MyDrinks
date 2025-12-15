@@ -1,0 +1,17 @@
+.back-button {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 16px 8px;
+  background: none;
+  transition: .3s ease-in-out;
+
+  &:hover {
+    color: var(--color-amber-gold)
+  }
+
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+}

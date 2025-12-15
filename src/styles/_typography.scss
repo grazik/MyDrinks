@@ -63,6 +63,10 @@
   font-size: 1.25rem;
   color: var(--color-text-light);
   line-height: 1.6;
+
+  &--dark {
+    color: var(--color-amber-gold);
+  }
 }
 
 /* Button */

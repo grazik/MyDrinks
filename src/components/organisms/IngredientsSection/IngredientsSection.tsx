@@ -1,7 +1,4 @@
 import { getIngredientsByDrinkId } from "../../../../db/getDrinkIngredients";
-import { IngredientCategoryGroup } from "@/src/components/organisms/IngredientsSection/components/IngredientCategoryGroup";
-import { IngredientCategory } from "@/src/constants/IngredientCategory";
-import { groupIngredientsByCategory } from "@/src/utils/ingredients/ingredients";
 import "./ingredients-section.scss";
 
 type IngredientsSectionProps = {
@@ -12,23 +9,20 @@ export const IngredientsSection = async ({
   drinkId,
 }: IngredientsSectionProps) => {
   const ingredients = await getIngredientsByDrinkId(drinkId);
-  const drinkIngredientsGroupedByCategory =
-    groupIngredientsByCategory(ingredients);
-  const categories = [
-    IngredientCategory.SPIRITS,
-    IngredientCategory.ADDITIONAL,
-  ];
 
   return (
     <section className="ingredients-section">
       <h2 className={"section-heading"}>Ingredients</h2>
-      {categories.map((category) => (
-        <IngredientCategoryGroup
-          ingredients={drinkIngredientsGroupedByCategory[category] || []}
-          category={category}
-          key={category}
-        />
-      ))}
+      <ul className="ingredients-section__list">
+        {ingredients.map(({ name, id, amount, unit }) => (
+          <li key={id} className="ingredients-section__list-item body-text">
+            <p>{name}</p>
+            <p className="body-text--dark">
+              {amount} {unit}
+            </p>
+          </li>
+        ))}
+      </ul>
     </section>
   );
 };

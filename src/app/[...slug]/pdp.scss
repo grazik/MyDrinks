@@ -1,0 +1,19 @@
+@use '/src/styles/breakpoints';
+
+.pdp {
+  margin-block: 40px;
+}
+
+.pdp-content {
+  flex-direction: column;
+  display: flex;
+  gap: 40px;
+
+  @include breakpoints.from-tablet-landscape {
+    flex-direction: row;
+  }
+}
+
+.pdp-content__column {
+  flex-basis: 100%;
+}

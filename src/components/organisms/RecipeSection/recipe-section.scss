@@ -6,7 +6,28 @@
   color: var(--color-text-light);
 
   ol {
-    list-style: decimal;
-    padding-left: 1em;
+    list-style: none;
+    counter-reset: badge;
+
+    li {
+      counter-increment: badge;
+      padding-block: 8px;
+      position: relative;
+      padding-left: 48px;
+
+      &::before {
+        content: counter(badge);
+        display: flex;
+        justify-content: center;
+        margin-right: 1rem;
+        background-color: var(--color-amber-gold);
+        border-radius: 100%;
+        width: 32px;
+        height: 32px;
+        position: absolute;
+        left: 0;
+        color: var(--color-background);
+      }
+    }
   }
 }
