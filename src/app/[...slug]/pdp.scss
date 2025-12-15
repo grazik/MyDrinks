@@ -1,5 +1,9 @@
 @use '/src/styles/breakpoints';
 
+.pdp {
+  margin-block: 40px;
+}
+
 .pdp-content {
   flex-direction: column;
   display: flex;

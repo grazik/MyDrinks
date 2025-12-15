@@ -1,5 +1,6 @@
 import { Drink } from "@prisma/client";
 import "./drink-card.scss";
+import Link from "next/link";
 
 type DrinkCardProps = {
   drink: Drink;
@@ -8,14 +9,14 @@ type DrinkCardProps = {
 export const DrinkCard = ({ drink }: DrinkCardProps) => {
   return (
     <div className={"drink-card"}>
-      <a href={drink.slug} className="drink-card__link">
+      <Link href={drink.slug} className="drink-card__link">
         <div className="drink-card__image-wrapper">
           {drink.image && (
             <img className={"drink-card__image"} src={drink.image} />
           )}
         </div>
         <p className="drink-card__title card-title">{drink.name}</p>
-      </a>
+      </Link>
     </div>
   );
 };
