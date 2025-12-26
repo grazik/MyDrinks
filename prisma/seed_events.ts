@@ -13,7 +13,7 @@ async function main() {
       description:
         "Spooky cocktails for your Halloween party. Dark, mysterious, and delicious drinks to set the perfect eerie atmosphere.",
       eventDate: new Date("2025-10-31T20:00:00Z"),
-      image: "/images/events/Halloween_2025/halloween.jpg",
+      image: "/images/events/halloween_2025.jpeg",
       eventDrink: {
         create: [
           { drinkId: "76b99174-bfe0-456f-85e8-ec86e45e9779" }, // White Russian
@@ -35,7 +35,7 @@ async function main() {
       description:
         "Festive cocktails to warm your heart and spread holiday cheer. Perfect drinks for cozy gatherings by the fireplace with family and friends.",
       eventDate: new Date("2025-12-25T18:00:00Z"),
-      image: "/images/events/Christmas_2025/christmas.jpg",
+      image: "/images/events/christmas_2025.jpeg",
       eventDrink: {
         create: [
           { drinkId: "98db8b71-5bbb-4b86-a554-a747a1abb99e" }, // Irish Coffee
@@ -58,7 +58,7 @@ async function main() {
       description:
         "Elegant and celebratory cocktails to ring in the new year with style. Sparkling, sophisticated drinks perfect for toasting to new beginnings.",
       eventDate: new Date("2025-12-31T22:00:00Z"),
-      image: "/images/events/New_Years_Eve_2025/new_years.jpg",
+      image: "/images/events/new_years_2025.jpeg",
       eventDrink: {
         create: [
           { drinkId: "9e29e566-ed82-4fd8-b06a-999f546f0f16" }, // French 75

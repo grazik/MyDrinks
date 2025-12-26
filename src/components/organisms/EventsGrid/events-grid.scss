@@ -1,0 +1,18 @@
+@use '../../../styles/breakpoints';
+
+.events-grid {
+  --numbers-of-elements: 1;
+
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(var(--numbers-of-elements), 1fr);
+  margin-top: 32px;
+
+  @include breakpoints.from-tablet-landscape {
+    --numbers-of-elements: 2;
+  }
+
+  @include breakpoints.from-desktop {
+    --numbers-of-elements: 3;
+  }
+}

@@ -59,6 +59,7 @@ model Event {
   eventDate   DateTime
   eventDrink  EventDrink[]
   image       String
+  slug        String       @unique
 }
 
 model EventDrink {
