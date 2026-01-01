@@ -21,11 +21,10 @@
 
   .event-card__image {
     transition: transform .3s ease-in-out;
+    object-fit: cover;
   }
 
   &:hover {
-    //cursor: pointer;
-
     .event-card__image {
       transform: scale(1.1);
     }

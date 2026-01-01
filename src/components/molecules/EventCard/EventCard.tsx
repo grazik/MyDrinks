@@ -14,13 +14,7 @@ export const EventCard = ({ event }: EventCardProps) => {
     <Link href={`/events/${slug}`} className="event-card">
       <div className="event-card__image-wrapper">
         {image && (
-          <Image
-            className="event-card__image"
-            src={image}
-            alt=""
-            fill={true}
-            objectFit={"cover"}
-          />
+          <Image className="event-card__image" src={image} alt="" fill={true} />
         )}
         <div className="event-card__text-box">
           <p className="card-title">{title}</p>
