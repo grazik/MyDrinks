@@ -3,6 +3,10 @@ import { HeroBanner } from "@/src/components/molecules/HeroBanner/HeroBanner";
 import { PageNav } from "@/src/components/organisms/PageNav/PageNav";
 import styles from "@/src/app/page.module.css";
 
+export const metadata = {
+  title: "Events",
+};
+
 export default function Events() {
   return (
     <div className={styles.page}>
