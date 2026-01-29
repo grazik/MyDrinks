@@ -9,6 +9,7 @@ async function main() {
   // Halloween 2025 Event
   const halloween = await prisma.event.create({
     data: {
+      slug: "halloween-2025",
       title: "Halloween 2025",
       description:
         "Spooky cocktails for your Halloween party. Dark, mysterious, and delicious drinks to set the perfect eerie atmosphere.",
@@ -31,6 +32,7 @@ async function main() {
   // Christmas 2025 Event
   const christmas = await prisma.event.create({
     data: {
+      slug: "christmas-2025",
       title: "Christmas 2025",
       description:
         "Festive cocktails to warm your heart and spread holiday cheer. Perfect drinks for cozy gatherings by the fireplace with family and friends.",
@@ -54,6 +56,7 @@ async function main() {
   // New Year's Eve 2025 Event
   const newYears = await prisma.event.create({
     data: {
+      slug: "new-years-eve-2025",
       title: "New Year's Eve 2025",
       description:
         "Elegant and celebratory cocktails to ring in the new year with style. Sparkling, sophisticated drinks perfect for toasting to new beginnings.",
