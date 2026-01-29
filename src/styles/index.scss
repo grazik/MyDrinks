@@ -1,6 +1,6 @@
-@import "variables";
-@import "typography";
-@import "reset";
+@use "variables";
+@use "typography";
+@use "reset";
 
 body {
   background-color: var(--color-background) ;
