@@ -1,7 +1,12 @@
 import { Metadata } from "next";
-import { getEventBySlug } from "@/db/getEvent";
-import { getDrinkBySlug } from "@/db/getDrink";
+import { getEventBySlug, getEventWithDrinksBySlug } from "@/db/getEvent";
 import { notFound } from "next/navigation";
+import { ContentBand } from "@/src/components/atoms/ContentBand/ContentBand";
+import { BackButton } from "@/src/components/atoms/BackButton/BackButton";
+
+import "./event-page.scss";
+import { EventPageHeader } from "@/src/components/organisms/EventPageHeader/EventPageHeader";
+import { EventDrinksSection } from "@/src/components/organisms/EventDrinksSection/EventDrinksSection";
 
 interface DrinkPageProps {
   params: Promise<{ event: string }>;
@@ -14,7 +19,6 @@ export async function generateMetadata({
 
   const event = await getEventBySlug(eventSlug);
 
-  console.log(event, eventSlug);
   return {
     title: event?.title,
   };
@@ -23,11 +27,29 @@ export async function generateMetadata({
 export default async function EventPage({ params }: DrinkPageProps) {
   const { event: eventSlug } = await params;
 
-  const event = await getEventBySlug(eventSlug);
+  const event = await getEventWithDrinksBySlug(eventSlug);
 
   if (!event) {
     notFound();
   }
 
-  return <div>dasdas</div>;
+  const drinks = event.eventDrink.map(({ drink }) => drink);
+
+  return (
+    <>
+      <ContentBand>
+        <BackButton label={"Back"} />
+      </ContentBand>
+      <div className="event-page">
+        <EventPageHeader
+          title={event.title}
+          image={event.image}
+          description={event.description}
+        />
+        <div className="event-page__content">
+          <EventDrinksSection drinks={drinks} />
+        </div>
+      </div>
+    </>
+  );
 }

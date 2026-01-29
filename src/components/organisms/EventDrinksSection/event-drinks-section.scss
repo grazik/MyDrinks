@@ -1,0 +1,13 @@
+@use '/src/styles/breakpoints';
+
+.event-drinks-section {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  .event-drinks {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+}
