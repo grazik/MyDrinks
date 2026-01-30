@@ -3,6 +3,7 @@ import Image from "next/image";
 import "./event-drink.scss";
 import { IngredientsSection } from "@/src/components/organisms/IngredientsSection/IngredientsSection";
 import Link from "next/link";
+import { H3SectionHeading } from "@/src/components/atoms/SectionHeading/SectionHeading";
 
 interface EventDrinkProps {
   drink: Drink;
@@ -29,7 +30,7 @@ export const EventDrink = ({ drink }: EventDrinkProps) => {
       </div>
 
       <div className="event-drink__section">
-        <IngredientsSection drinkId={drink.id} />
+        <IngredientsSection Heading={H3SectionHeading} drinkId={drink.id} />
       </div>
     </div>
   );
