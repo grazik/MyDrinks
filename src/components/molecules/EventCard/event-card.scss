@@ -1,0 +1,46 @@
+.event-card {
+  width: 100%;
+  text-decoration: none;
+
+  .event-card__image-wrapper {
+    width: 100%;
+    position: relative;
+    aspect-ratio: 16/9;
+    overflow: hidden;
+    border-radius: 12px;
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+      pointer-events: none; // Allows clicks to pass through to image
+    }
+  }
+
+  .event-card__image {
+    transition: transform .3s ease-in-out;
+    object-fit: cover;
+  }
+
+  &:hover {
+    .event-card__image {
+      transform: scale(1.1);
+    }
+  }
+
+  .event-card__text-box {
+    position: absolute;
+    bottom: 0;
+    z-index: 1;
+    padding: 0 1.5rem 1rem;
+  }
+
+  .event-card__description {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    padding-block: .5rem;
+  }
+}

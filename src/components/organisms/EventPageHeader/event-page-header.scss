@@ -1,0 +1,19 @@
+.event-page-header {
+  width: 100vw;
+  transform: translateX(-50%);
+  margin-left: 50%;
+  padding-block: 64px;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7), var(--color-background));
+    pointer-events: none; // Allows clicks to pass through to image
+  }
+
+  .event-page-header__image {
+    object-fit: cover;
+    z-index: -1;
+  }
+}

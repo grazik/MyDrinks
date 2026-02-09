@@ -1,0 +1,17 @@
+.nav-element {
+  padding-block: 16px;
+  text-decoration: none;
+  display: inline-block;
+  opacity: 0.6;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  &.nav-element--active {
+    opacity: 1;
+
+    border-bottom: 2px solid var(--color-accent-primary);
+
+  }
+}

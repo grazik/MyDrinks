@@ -11,6 +11,7 @@ interface BackButtonProps {
 
 export const BackButton = ({ label }: BackButtonProps) => {
   const router = useRouter();
+
   return (
     <button onClick={router.back} className={"back-button body-text"}>
       <ArrowLeft /> {label}

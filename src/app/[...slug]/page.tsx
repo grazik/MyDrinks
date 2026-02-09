@@ -4,10 +4,10 @@ import { ImagesSection } from "@/src/components/organisms/ImagesSection/ImagesSe
 import { notFound } from "next/navigation";
 import { IngredientsSection } from "@/src/components/organisms/IngredientsSection/IngredientsSection";
 import { RecipeSection } from "@/src/components/organisms/RecipeSection/RecipeSection";
-
-import "./pdp.scss";
 import { ContentBand } from "@/src/components/atoms/ContentBand/ContentBand";
 import { BackButton } from "@/src/components/atoms/BackButton/BackButton";
+
+import "./pdp.scss";
 
 interface DrinkPageProps {
   params: Promise<{ slug: string[] }>;

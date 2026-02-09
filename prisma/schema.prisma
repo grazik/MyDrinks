@@ -22,6 +22,7 @@ model Drink {
   createdAt   DateTime          @default(now())
   image       String?
   slug        String
+  EventDrink  EventDrink[]
 }
 
 model Ingredient {
@@ -49,4 +50,22 @@ enum IngredientType {
   bitter
   sweetener
   herb
+}
+
+model Event {
+  id          String       @id @default(uuid())
+  title       String
+  description String
+  eventDate   DateTime
+  eventDrink  EventDrink[]
+  image       String
+  slug        String       @unique
+}
+
+model EventDrink {
+  id      String @id @default(uuid())
+  event   Event  @relation(fields: [eventId], references: [id])
+  eventId String
+  drink   Drink  @relation(fields: [drinkId], references: [id])
+  drinkId String
 }
