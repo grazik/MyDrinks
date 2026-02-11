@@ -1,21 +1,19 @@
-import { ReactNode, MouseEvent } from "react";
+import { ReactNode, MouseEvent, HTMLAttributes } from "react";
 import Link from "next/link";
 
 import "./cta.scss";
 
 type CtaProps = ButtonProps | LinkProps;
 
-interface CtaCommonProps {
+interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
+  onClick: (e: MouseEvent) => void;
   children: ReactNode;
 }
 
-interface ButtonProps extends CtaCommonProps {
-  onClick: (e: MouseEvent) => void;
-}
-
-interface LinkProps extends CtaCommonProps {
+interface LinkProps extends HTMLAttributes<HTMLAnchorElement> {
   href: string;
   onClick?: (e: MouseEvent) => void;
+  children: ReactNode;
 }
 
 const isLink = (props: CtaProps): props is LinkProps => "href" in props;

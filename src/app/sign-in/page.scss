@@ -1,0 +1,18 @@
+.sign-in-page {
+  max-width: 600px;
+  padding: 60px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+
+  .sign-in-page__link {
+    text-decoration: none;
+    color: var(--color-accent-primary);
+
+    &:hover,
+    &:focus-visible {
+      color: var(--color-accent-hover);
+    }
+  }
+}

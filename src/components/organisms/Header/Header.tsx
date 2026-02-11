@@ -10,7 +10,7 @@ export const Header = () => {
       <header className="header">
         <Logo />
         <div className="header__spacer" />
-        <Cta href="/sing-in">Sign in</Cta>
+        <Cta href="/sign-in">Sign in</Cta>
       </header>
     </ContentBand>
   );

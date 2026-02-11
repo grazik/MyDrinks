@@ -36,7 +36,7 @@ export default async function EventPage({ params }: DrinkPageProps) {
   const drinks = event.eventDrink.map(({ drink }) => drink);
 
   return (
-    <>
+    <main className="wrapper">
       <ContentBand>
         <BackButton label={"Back"} />
       </ContentBand>
@@ -50,6 +50,6 @@ export default async function EventPage({ params }: DrinkPageProps) {
           <EventDrinksSection drinks={drinks} />
         </div>
       </div>
-    </>
+    </main>
   );
 }
