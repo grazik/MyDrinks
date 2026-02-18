@@ -1,15 +1,12 @@
 "use server";
 
 import { prisma } from "@/db/db";
-import {
-  AUTH_TOKEN_EXPIRES_IN_SECONDS,
-  createAuthToken,
-} from "@/lib/auth/jwt";
+import { AUTH_TOKEN_EXPIRES_IN_SECONDS, createAuthToken } from "@/lib/auth/jwt";
 import { SignUpSchema } from "@/lib/validation/auth";
-import { AUTH_COOKIE_NAME, AUTH_ERRORS } from "@/src/constants/auth";
-import bcrypt from "bcrypt";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import bcrypt from "bcrypt";
+import { AUTH_COOKIE_NAME, AUTH_ERRORS } from "@/src/constants/auth";
 
 const BCRYPT_SALT_ROUNDS = 12;
 
@@ -18,7 +15,9 @@ export interface CreateUserResult {
   message: string;
 }
 
-export const createUser = async (rawData: unknown): Promise<CreateUserResult> => {
+export const createUser = async (
+  rawData: unknown,
+): Promise<CreateUserResult> => {
   const parsedData = SignUpSchema.safeParse(rawData);
 
   if (!parsedData.success) {
