@@ -1,10 +1,10 @@
-import { jwtVerify, SignJWT, type JWTPayload } from "jose";
+import { jwtVerify, SignJWT } from "jose";
 import { AUTH_ERRORS } from "@/src/constants/auth";
 
 const JWT_ALGORITHM = "HS256";
 const AUTH_TOKEN_EXPIRES_IN_SECONDS = 60 * 60 * 24 * 7;
 
-export type AuthTokenPayload = JWTPayload & {
+export type AuthTokenPayload = {
   sub: string;
   email: string;
   role: string;
@@ -24,9 +24,7 @@ export const createAuthToken = async (
   payload: AuthTokenPayload,
   expiresInSeconds = AUTH_TOKEN_EXPIRES_IN_SECONDS,
 ) => {
-  const jwtPayload: JWTPayload = payload;
-
-  return new SignJWT(jwtPayload)
+  return new SignJWT(payload)
     .setProtectedHeader({ alg: JWT_ALGORITHM, typ: "JWT" })
     .setIssuedAt()
     .setExpirationTime(`${expiresInSeconds}s`)
