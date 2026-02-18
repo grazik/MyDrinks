@@ -68,6 +68,14 @@
   }
 }
 
+.error-text {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 1rem;
+  color: var(--color-cherry-red);
+  line-height: 1.4;
+}
+
 /* Button */
 .button {
   font-family: var(--font-heading);
