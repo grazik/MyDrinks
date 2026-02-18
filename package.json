@@ -21,7 +21,9 @@
     "remark": "^15.0.1",
     "remark-html": "^16.0.1",
     "sass": "^1.86.3",
-    "zod": "^4.3.6"
+    "zod": "^4.3.6",
+    "bcrypt": "^5.1.1",
+    "jose": "^5.10.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
