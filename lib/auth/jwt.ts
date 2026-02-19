@@ -1,14 +1,9 @@
 import { jwtVerify, SignJWT } from "jose";
 import { AUTH_ERRORS } from "@/src/constants/auth";
+import { UserDto } from "@/lib/dto/user";
 
 const JWT_ALGORITHM = "HS256";
 const AUTH_TOKEN_EXPIRES_IN_SECONDS = 60 * 60 * 24 * 7;
-
-export type AuthTokenPayload = {
-  sub: string;
-  email: string;
-  role: string;
-};
 
 const getJwtSecret = () => {
   const secret = process.env.AUTH_SECRET;
@@ -21,7 +16,7 @@ const getJwtSecret = () => {
 };
 
 export const createAuthToken = async (
-  payload: AuthTokenPayload,
+  payload: UserDto,
   expiresInSeconds = AUTH_TOKEN_EXPIRES_IN_SECONDS,
 ) => {
   return new SignJWT(payload)
