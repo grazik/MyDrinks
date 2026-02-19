@@ -16,7 +16,6 @@ export const Header = async () => {
         <Logo />
         <div className="header__spacer" />
         {isAuthenticated ? (
-          // onClick could invoke a server action too, but form action keeps native submit semantics and works without client JS.
           <form action={signOut}>
             <Cta type="submit" fill="outline" tone="danger">
               Sign out
