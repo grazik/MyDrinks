@@ -1,15 +1,69 @@
 .cta {
+  --cta-bg: var(--color-amber-gold);
+  --cta-color: var(--color-background);
+  --cta-border: transparent;
+  --cta-bg-hover: var(--color-accent-hover);
+  --cta-color-hover: var(--cta-color);
+  --cta-border-hover: var(--cta-border);
+
   text-decoration: none;
-  background-color: var(--color-amber-gold);
-  padding: 12px 16px;
+  padding: 8px 16px;
   border-radius: 3.35544e+07px;
-  color: var(--color-background);
-  transition: background-color .3s ease-in-out;
+  transition: background-color .3s ease-in-out, color .3s ease-in-out, outline-color .3s ease-in-out, border-color .3s ease-in-out;
   text-align: center;
+  border: 1px solid var(--cta-border);
+  background-color: var(--cta-bg);
+  color: var(--cta-color);
 
   &:hover,
   &:focus {
-    background-color: var(--color-accent-hover);
+    background-color: var(--cta-bg-hover);
+    color: var(--cta-color-hover);
+    border-color: var(--cta-border-hover);
+  }
+
+  &:focus-visible {
     outline: 1px solid var(--color-accent-primary);
+    outline-offset: 2px;
+  }
+}
+
+.cta--fill-solid {
+  &.cta--tone-primary {
+    --cta-bg: var(--color-amber-gold);
+    --cta-color: var(--color-background);
+    --cta-border: transparent;
+    --cta-bg-hover: var(--color-accent-hover);
+    --cta-color-hover: var(--color-background);
+    --cta-border-hover: transparent;
+  }
+
+  &.cta--tone-danger {
+    --cta-bg: var(--color-cherry-red);
+    --cta-color: var(--color-text-light);
+    --cta-border: transparent;
+    --cta-bg-hover: color-mix(in srgb, var(--color-cherry-red) 86%, black);
+    --cta-color-hover: var(--color-text-light);
+    --cta-border-hover: transparent;
+  }
+}
+
+.cta--fill-outline {
+  &.cta--tone-primary {
+    --cta-bg: transparent;
+    --cta-color: var(--color-amber-gold);
+    --cta-border: var(--color-amber-gold);
+    --cta-bg-hover: color-mix(in srgb, var(--color-amber-gold) 12%, transparent);
+    --cta-color-hover: var(--color-amber-gold);
+    --cta-border-hover: var(--color-amber-gold);
+  }
+
+  &.cta--tone-danger {
+    --cta-bg: transparent;
+    --cta-color: var(--color-cherry-red);
+    --cta-border: var(--color-cherry-red);
+    --cta-bg-hover: var(--color-cherry-red);
+    --cta-color-hover: var(--color-text-light);
+    --cta-border-hover: var(--color-cherry-red);
   }
 }
