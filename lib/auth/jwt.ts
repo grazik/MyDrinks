@@ -15,7 +15,7 @@ const getJwtSecret = () => {
   return new TextEncoder().encode(secret);
 };
 
-export const createAuthToken = async (
+export const createAuthToken = (
   payload: UserDto,
   expiresInSeconds = AUTH_TOKEN_EXPIRES_IN_SECONDS,
 ) => {
