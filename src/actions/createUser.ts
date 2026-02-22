@@ -2,13 +2,12 @@
 
 import { prisma } from "@/db/db";
 import { AUTH_TOKEN_EXPIRES_IN_SECONDS, createAuthToken } from "@/lib/auth/jwt";
+import { createPasswordHash } from "@/lib/auth/password";
 import { SignUpSchema } from "@/lib/validation/auth";
+import { AUTH_COOKIE_NAME, AUTH_ERRORS } from "@/src/constants/auth";
+import { Prisma } from "@prisma/client";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import bcrypt from "bcrypt";
-import { AUTH_COOKIE_NAME, AUTH_ERRORS } from "@/src/constants/auth";
-
-const BCRYPT_SALT_ROUNDS = 12;
 
 export interface CreateUserResult {
   ok: boolean;
@@ -30,38 +29,35 @@ export const createUser = async (
   const { name, email, password } = parsedData.data;
   const normalizedEmail = email.trim().toLowerCase();
 
-  const existingUser = await prisma.user.findUnique({
-    where: { email: normalizedEmail },
-    select: { id: true },
-  });
+  let token: string;
 
-  if (existingUser) {
-    return {
-      ok: false,
-      message: AUTH_ERRORS.emailAlreadyInUse,
-    };
+  try {
+    const passwordHash = await createPasswordHash(password);
+
+    const createdUser = await prisma.user.create({
+      data: {
+        name: name.trim(),
+        email: normalizedEmail,
+        passwordHash,
+      },
+      select: { id: true, email: true, role: true },
+    });
+
+    token = await createAuthToken({
+      sub: createdUser.id,
+      email: createdUser.email,
+      role: createdUser.role,
+    });
+  } catch (error) {
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2002"
+    ) {
+      return { ok: false, message: AUTH_ERRORS.emailAlreadyInUse };
+    }
+
+    return { ok: false, message: AUTH_ERRORS.createUserFailed };
   }
-
-  const passwordHash = await bcrypt.hash(password, BCRYPT_SALT_ROUNDS);
-
-  const createdUser = await prisma.user.create({
-    data: {
-      name: name.trim(),
-      email: normalizedEmail,
-      passwordHash,
-    },
-    select: {
-      id: true,
-      email: true,
-      role: true,
-    },
-  });
-
-  const token = await createAuthToken({
-    sub: createdUser.id,
-    email: createdUser.email,
-    role: createdUser.role,
-  });
 
   (await cookies()).set(AUTH_COOKIE_NAME, token, {
     httpOnly: true,

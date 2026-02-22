@@ -14,13 +14,7 @@ export const getUserDto = cache(async (): Promise<UserDto | null> => {
   try {
     const payload = await verifyAuthToken(token);
 
-    const parsedPayload = UserDtoSchema.safeParse(payload);
-
-    if (!parsedPayload.success) {
-      return null;
-    }
-
-    return parsedPayload.data;
+    return UserDtoSchema.parse(payload);
   } catch {
     return null;
   }

@@ -149,8 +149,7 @@ export const useForm = <T extends ZodType>({
     setErrors({});
 
     startTransition(async () => {
-      const t = await onSubmit(result.data);
-      console.log(t);
+      await onSubmit(result.data);
     });
   };
 

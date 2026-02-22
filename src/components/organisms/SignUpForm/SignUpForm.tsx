@@ -6,11 +6,24 @@ import "./sign-up-form.scss";
 import { useForm } from "@/src/hooks/useForm";
 import { SignUpSchema } from "@/lib/validation/auth";
 import { createUser } from "@/src/actions/createUser";
+import { Banner } from "@/src/components/atoms/Banner/Banner";
+import { useState } from "react";
 
 export const SignUpForm = () => {
+  const [error, setError] = useState("");
+
+  const onSubmit = async (data: unknown) => {
+    const { ok, message } = await createUser(data);
+    if (!ok) {
+      setError(message);
+    } else {
+      setError("");
+    }
+  };
+
   const { onChange, errors, onBlur, handleSubmit } = useForm({
     schema: SignUpSchema,
-    onSubmit: createUser,
+    onSubmit,
   });
 
   return (
@@ -20,6 +33,11 @@ export const SignUpForm = () => {
       onBlur={onBlur}
       onSubmit={handleSubmit}
     >
+      {error && (
+        <Banner variant="danger">
+          <p className={"error-text"}>{error}</p>
+        </Banner>
+      )}
       <TextField
         name={"name"}
         label={"Full name"}
@@ -37,14 +55,18 @@ export const SignUpForm = () => {
       <TextField
         name={"password"}
         label={"password"}
+        type={"password"}
         id={"password"}
+        autoComplete={"off"}
         placeholder={"*******"}
         errors={errors.password}
       />
       <TextField
         name={"confirm_password"}
         label={"Confirm Password"}
+        type={"password"}
         id={"confirm_password"}
+        autoComplete={"off"}
         placeholder={"*******"}
         errors={errors.confirm_password}
       />

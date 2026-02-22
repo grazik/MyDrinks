@@ -1,7 +1,7 @@
 import { ContentBand } from "@/src/components/atoms/ContentBand/ContentBand";
 import { Logo } from "@/src/components/atoms/Logo/Logo";
 import { signOut } from "@/src/actions/signOut";
-import { getUserDto } from "@/src/actions/getUserDto";
+import { getUserDto } from "@/lib/auth/getUserDto";
 
 import "./header.scss";
 import { Cta } from "@/src/components/atoms/Cta/Cta";

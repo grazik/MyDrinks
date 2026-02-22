@@ -1,0 +1,11 @@
+.banner {
+  --color: var(--color-amber-gold);
+
+  border: 1px solid var(--color);
+  border-radius: 12px;
+  padding: 16px;
+
+  &--danger {
+    --color: var(--color-cherry-red);
+  }
+}
