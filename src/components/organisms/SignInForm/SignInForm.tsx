@@ -23,7 +23,7 @@ export const SignInForm = () => {
         placeholder={"Password"}
         required={true}
       />
-      <Cta onClick={() => console.log("ASDAS")}>Sign In</Cta>
+      <Cta>Sign In</Cta>
     </form>
   );
 };

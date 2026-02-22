@@ -7,7 +7,8 @@ import { useForm } from "@/src/hooks/useForm";
 import { SignUpSchema } from "@/lib/validation/auth";
 import { createUser } from "@/src/actions/createUser";
 import { Banner } from "@/src/components/atoms/Banner/Banner";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Spinner } from "@/src/components/atoms/Spinner/Spinner";
 
 export const SignUpForm = () => {
   const [error, setError] = useState("");
@@ -21,10 +22,16 @@ export const SignUpForm = () => {
     }
   };
 
-  const { onChange, errors, onBlur, handleSubmit } = useForm({
+  const { onChange, errors, onBlur, handleSubmit, isPending } = useForm({
     schema: SignUpSchema,
     onSubmit,
   });
+
+  useEffect(() => {
+    if (isPending) {
+      setError("");
+    }
+  }, [isPending]);
 
   return (
     <form
@@ -70,7 +77,7 @@ export const SignUpForm = () => {
         placeholder={"*******"}
         errors={errors.confirm_password}
       />
-      <Cta onClick={() => {}}>Create Account</Cta>
+      <Cta disabled={isPending}>{isPending && <Spinner />} Create Account</Cta>
     </form>
   );
 };

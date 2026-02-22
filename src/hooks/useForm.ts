@@ -96,7 +96,6 @@ export const useForm = <T extends ZodType>({
     const form = e.currentTarget;
     const name = target.name;
 
-    console.log(name, isValidSchemaField(schema, name), touchedFields[name]);
     if (name && isValidSchemaField(schema, name) && touchedFields[name]) {
       validateField(form, name);
     }

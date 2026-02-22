@@ -7,6 +7,9 @@
   --cta-border-hover: var(--cta-border);
 
   text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: 8px 16px;
   border-radius: 3.35544e+07px;
   transition: background-color .3s ease-in-out, color .3s ease-in-out, outline-color .3s ease-in-out, border-color .3s ease-in-out;
@@ -14,6 +17,7 @@
   border: 1px solid var(--cta-border);
   background-color: var(--cta-bg);
   color: var(--cta-color);
+  gap: 1em;
 
   &:hover,
   &:focus {
@@ -25,6 +29,24 @@
   &:focus-visible {
     outline: 1px solid var(--color-accent-primary);
     outline-offset: 2px;
+  }
+
+  &:disabled,
+  &[aria-busy="true"] {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &:disabled:hover,
+  &:disabled:focus,
+  &:disabled:focus-visible,
+  &[aria-busy="true"]:hover,
+  &[aria-busy="true"]:focus,
+  &[aria-busy="true"]:focus-visible {
+    background-color: var(--cta-bg);
+    color: var(--cta-color);
+    border-color: var(--cta-border);
+    outline: none;
   }
 }
 
@@ -67,3 +89,4 @@
     --cta-border-hover: var(--color-cherry-red);
   }
 }
+
