@@ -1,5 +1,6 @@
 "use server";
 
+import { normalizeEmail } from "@/lib/auth/email";
 import { SignInSchema } from "@/lib/validation/auth";
 import { comparePasswordHash } from "@/lib/auth/password";
 import { prisma } from "@/db/db";
@@ -19,7 +20,7 @@ export const signIn = async (rawData: unknown): Promise<SignInResult> => {
     const { email, password } = SignInSchema.parse(rawData);
 
     user = await prisma.user.findUnique({
-      where: { email },
+      where: { email: normalizeEmail(email) },
     });
 
     const passwordMatch = await comparePasswordHash(

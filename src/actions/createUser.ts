@@ -4,6 +4,7 @@ import { prisma } from "@/db/db";
 import { AUTH_TOKEN_EXPIRES_IN_SECONDS, createAuthToken } from "@/lib/auth/jwt";
 import { createPasswordHash } from "@/lib/auth/password";
 import { SignUpSchema } from "@/lib/validation/auth";
+import { normalizeEmail } from "@/lib/auth/email";
 import { AUTH_COOKIE_NAME, AUTH_ERRORS } from "@/src/constants/auth";
 import { Prisma } from "@prisma/client";
 import { cookies } from "next/headers";
@@ -27,7 +28,7 @@ export const createUser = async (
   }
 
   const { name, email, password } = parsedData.data;
-  const normalizedEmail = email.trim().toLowerCase();
+  const normalizedEmail = normalizeEmail(email);
 
   let token: string;
 
