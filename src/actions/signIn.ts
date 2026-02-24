@@ -7,7 +7,7 @@ import { prisma } from "@/db/db";
 import { redirect } from "next/navigation";
 import { AUTH_TOKEN_EXPIRES_IN_SECONDS, createAuthToken } from "@/lib/auth/jwt";
 import { cookies } from "next/headers";
-import { AUTH_COOKIE_NAME } from "@/src/constants/auth";
+import { AUTH_COOKIE_NAME, AUTH_ERRORS } from "@/src/constants/auth";
 
 export interface SignInResult {
   ok: boolean;
@@ -15,10 +15,17 @@ export interface SignInResult {
 }
 
 export const signIn = async (rawData: unknown): Promise<SignInResult> => {
-  let user = null;
-  try {
-    const { email, password } = SignInSchema.parse(rawData);
+  const parsedData = SignInSchema.safeParse(rawData);
 
+  if (!parsedData.success) {
+    return { ok: false, message: AUTH_ERRORS.invalidSignInData };
+  }
+
+  const { email, password } = parsedData.data;
+
+  let user = null;
+
+  try {
     user = await prisma.user.findUnique({
       where: { email: normalizeEmail(email) },
     });
@@ -29,16 +36,10 @@ export const signIn = async (rawData: unknown): Promise<SignInResult> => {
     );
 
     if (!user || !user.isActive || !passwordMatch) {
-      return {
-        ok: false,
-        message: "Invalid email or password",
-      };
+      return { ok: false, message: AUTH_ERRORS.invalidCredentials };
     }
   } catch {
-    return {
-      ok: false,
-      message: "Wrong data format",
-    };
+    return { ok: false, message: AUTH_ERRORS.signInFailed };
   }
 
   const token = await createAuthToken({
