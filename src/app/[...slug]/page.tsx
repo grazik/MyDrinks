@@ -35,7 +35,7 @@ export default async function PDP({ params }: DrinkPageProps) {
   }
 
   return (
-    <>
+    <main className="wrapper">
       <ContentBand>
         <BackButton label={"Back"} />
       </ContentBand>
@@ -51,6 +51,6 @@ export default async function PDP({ params }: DrinkPageProps) {
           </div>
         </div>
       </div>
-    </>
+    </main>
   );
 }

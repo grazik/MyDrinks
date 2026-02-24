@@ -1,0 +1,28 @@
+.text-field {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 8px;
+
+  .text-field__label {
+    text-transform: uppercase;
+  }
+
+  .text-field__input {
+    width: 100%;
+    font-size: 1rem;
+    padding: 12px 16px;
+    appearance: none;
+    border: 1px solid var(--color-light-border);
+    border-radius: 10px;
+    background-color: var(--color-surface-base);
+    color: var(--color-text-light);
+
+    &:hover,
+    &:focus-visible {
+      border-color: var(--color-accent-primary);
+      outline: none;
+    }
+  }
+
+}

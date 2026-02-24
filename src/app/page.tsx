@@ -1,4 +1,3 @@
-import styles from "@/src/app/page.module.css";
 import { HeroBanner } from "@/src/components/molecules/HeroBanner/HeroBanner";
 import { DrinksGrid } from "@/src/components/organisms/DrinksGrid/DrinksGrid";
 import { DrinksFilter } from "@/src/components/organisms/DrinksFilter/DrinksFilter";
@@ -6,9 +5,9 @@ import { PageNav } from "@/src/components/organisms/PageNav/PageNav";
 
 export default function Home() {
   return (
-    <div className={styles.page}>
+    <div>
       <HeroBanner />
-      <main className={`wrapper ${styles.page}`}>
+      <main className="wrapper">
         <PageNav />
         <h2 className="section-heading">Recipes</h2>
         <DrinksFilter />

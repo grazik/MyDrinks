@@ -6,7 +6,6 @@
   color: var(--color-amber-gold);
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  margin-bottom: 1.5rem;
 
   &--light-color {
     color: var(--color-text-light)
@@ -67,6 +66,14 @@
   &--dark {
     color: var(--color-amber-gold);
   }
+}
+
+.error-text {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 1rem;
+  color: var(--color-cherry-red);
+  line-height: 1.4;
 }
 
 /* Button */
