@@ -4,3 +4,5 @@ node_modules
 .next
 .idea
 .DS_Store
+*storybook.log
+storybook-static
