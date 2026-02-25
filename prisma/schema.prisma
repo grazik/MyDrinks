@@ -52,6 +52,13 @@ enum IngredientType {
   herb
 }
 
+enum EventStatus {
+  DRAFT
+  UPCOMING
+  ACTIVE
+  COMPLETED
+}
+
 model Event {
   id          String       @id @default(uuid())
   title       String
@@ -60,6 +67,7 @@ model Event {
   eventDrink  EventDrink[]
   image       String
   slug        String       @unique
+  status      EventStatus  @default(DRAFT)
 }
 
 model EventDrink {

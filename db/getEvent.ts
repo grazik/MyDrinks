@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { prisma } from "@/db/db";
 
 export const getEventBySlug = async (slug: string) => {
@@ -9,6 +10,23 @@ export const getEventBySlug = async (slug: string) => {
 
   return event;
 };
+
+export const getActiveEventWithDrinkIds = cache(async () => {
+  const event = await prisma.event.findFirst({
+    where: {
+      status: "ACTIVE",
+    },
+    include: {
+      eventDrink: {
+        select: {
+          drinkId: true,
+        },
+      },
+    },
+  });
+
+  return event;
+});
 
 export const getEventWithDrinksBySlug = async (slug: string) => {
   const event = await prisma.event.findUnique({

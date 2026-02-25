@@ -20,10 +20,10 @@
 
   .event-drink__image-wrapper {
     overflow: hidden;
+    margin-bottom: 16px;
   }
 
   .event-drink__image {
-    margin-bottom: 16px;
     transition: transform .3s;
 
     @include breakpoints.tablet-only {
