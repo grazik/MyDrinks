@@ -6,15 +6,13 @@ import { Spinner } from "@/src/components/atoms/Spinner/Spinner";
 import { QuantityStepper } from "@/src/components/atoms/QuantityStepper/QuantityStepper";
 import { Toast } from "@/src/components/atoms/Toast/Toast";
 import "./quick-order-controls.scss";
-import { QuickOrderVariant } from "./types";
-
 interface QuickOrderControlsProps {
-  variant: QuickOrderVariant;
+  available: boolean;
   onOrder?: (quantity: number) => Promise<void>;
 }
 
 export const QuickOrderControls = ({
-  variant,
+  available = false,
   onOrder,
 }: QuickOrderControlsProps) => {
   const [quantity, setQuantity] = useState(1);
@@ -32,7 +30,7 @@ export const QuickOrderControls = ({
     });
   };
 
-  if (variant === QuickOrderVariant.UNAVAILABLE) {
+  if (!available) {
     return (
       <div className="quick-order-controls">
         <div className="quick-order-controls__unavailable-wrapper">

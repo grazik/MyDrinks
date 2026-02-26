@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
 import { fn } from "storybook/test";
 import { QuickOrderControls } from "./QuickOrderControls";
-import { QuickOrderVariant } from "./types";
 
 const meta: Meta<typeof QuickOrderControls> = {
   title: "Organisms/QuickOrderControls",
@@ -17,7 +16,7 @@ type Story = StoryObj<typeof QuickOrderControls>;
 
 export const Active: Story = {
   args: {
-    variant: QuickOrderVariant.ACTIVE,
+    available: true,
   },
   parameters: {
     docs: {
@@ -31,13 +30,13 @@ export const Active: Story = {
 
 export const ActiveWithDelay: Story = {
   args: {
-    variant: QuickOrderVariant.ACTIVE,
+    available: true,
     onOrder: () => new Promise((resolve) => setTimeout(resolve, 1500)),
   },
 };
 
 export const Unavailable: Story = {
   args: {
-    variant: QuickOrderVariant.UNAVAILABLE,
+    available: false,
   },
 };
