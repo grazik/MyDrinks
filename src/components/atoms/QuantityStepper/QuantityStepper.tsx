@@ -1,3 +1,6 @@
+import MinusIcon from "public/icons/minus.svg";
+import PlusIcon from "public/icons/plus.svg";
+
 import "./quantity-stepper.scss";
 
 interface QuantityStepperProps {
@@ -22,9 +25,14 @@ export const QuantityStepper = ({
         disabled={value <= min}
         aria-label="Decrease quantity"
       >
-        −
+        <MinusIcon />
       </button>
-      <span className="quantity-stepper__value" aria-live="polite">
+      <span
+        className="quantity-stepper__value"
+        aria-live="polite"
+        aria-atomic="true"
+        aria-label={`Quantity: ${value}`}
+      >
         {value}
       </span>
       <button
@@ -34,7 +42,7 @@ export const QuantityStepper = ({
         disabled={value >= max}
         aria-label="Increase quantity"
       >
-        +
+        <PlusIcon />
       </button>
     </div>
   );

@@ -6,11 +6,7 @@ import { Spinner } from "@/src/components/atoms/Spinner/Spinner";
 import { QuantityStepper } from "@/src/components/atoms/QuantityStepper/QuantityStepper";
 import { Toast } from "@/src/components/atoms/Toast/Toast";
 import "./quick-order-controls.scss";
-
-export enum QuickOrderVariant {
-  Active = "active",
-  Unavailable = "unavailable",
-}
+import { QuickOrderVariant } from "./types";
 
 interface QuickOrderControlsProps {
   variant: QuickOrderVariant;
@@ -36,7 +32,7 @@ export const QuickOrderControls = ({
     });
   };
 
-  if (variant === QuickOrderVariant.Unavailable) {
+  if (variant === QuickOrderVariant.UNAVAILABLE) {
     return (
       <div className="quick-order-controls">
         <div className="quick-order-controls__unavailable-wrapper">
@@ -58,7 +54,7 @@ export const QuickOrderControls = ({
   return (
     <>
       <Toast message="Order placed!" visible={showToast} />
-      <div className="quick-order-controls">
+      <div className="quick-order-controls quick-order-controls--sticky">
         <QuantityStepper value={quantity} onChange={setQuantity} />
         <Cta
           className="quick-order-controls__order-btn"

@@ -11,8 +11,7 @@
     border: none;
     color: var(--color-text-light);
     padding: 8px 12px;
-    font-size: 1.25rem;
-    line-height: 1;
+    line-height: 0;
     cursor: pointer;
 
     &:disabled {
