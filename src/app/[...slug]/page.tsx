@@ -43,14 +43,10 @@ export default async function PDP({ params }: DrinkPageProps) {
       <div className="pdp">
         <h1 className={"main-heading"}>{drink.name}</h1>
         <div className="pdp-content">
-          <div className="pdp-content__column">
-            {drink.image && <ImagesSection drink={drink} />}
-          </div>
-          <div className="pdp-content__column">
-            <IngredientsSection drinkId={drink.id} />
-            <PdpQuickOrderControls drinkId={drink.id} />
-            <RecipeSection recipe={drink.recipe} />
-          </div>
+          {drink.image && <ImagesSection drink={drink} />}
+          <IngredientsSection drinkId={drink.id} />
+          <PdpQuickOrderControls drinkId={drink.id} />
+          <RecipeSection recipe={drink.recipe} />
         </div>
       </div>
     </main>
