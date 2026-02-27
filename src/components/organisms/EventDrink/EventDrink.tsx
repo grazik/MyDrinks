@@ -2,6 +2,7 @@ import { Drink } from "@prisma/client";
 import Image from "next/image";
 import "./event-drink.scss";
 import { IngredientsSection } from "@/src/components/organisms/IngredientsSection/IngredientsSection";
+import { QuickOrderControls } from "@/src/components/organisms/QuickOrderControls/QuickOrderControls";
 import Link from "next/link";
 import { H3SectionHeading } from "@/src/components/atoms/SectionHeading/SectionHeading";
 
@@ -31,6 +32,7 @@ export const EventDrink = ({ drink }: EventDrinkProps) => {
 
       <div className="event-drink__section">
         <IngredientsSection Heading={H3SectionHeading} drinkId={drink.id} />
+        <QuickOrderControls drinkId={drink.id} />
       </div>
     </div>
   );

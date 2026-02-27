@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
 import { fn } from "storybook/test";
-import { QuickOrderControls } from "./QuickOrderControls";
+import { QuickOrderControlsClient } from "./QuickOrderControlsClient";
 
-const meta: Meta<typeof QuickOrderControls> = {
+const meta: Meta<typeof QuickOrderControlsClient> = {
   title: "Organisms/QuickOrderControls",
-  component: QuickOrderControls,
+  component: QuickOrderControlsClient,
   tags: ["autodocs"],
   args: {
     onOrder: fn(),
@@ -12,7 +12,7 @@ const meta: Meta<typeof QuickOrderControls> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof QuickOrderControls>;
+type Story = StoryObj<typeof QuickOrderControlsClient>;
 
 export const Active: Story = {
   args: {

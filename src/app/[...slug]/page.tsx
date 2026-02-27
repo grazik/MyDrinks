@@ -8,7 +8,7 @@ import { ContentBand } from "@/src/components/atoms/ContentBand/ContentBand";
 import { BackButton } from "@/src/components/atoms/BackButton/BackButton";
 
 import "./pdp.scss";
-import { QuickOrderControls } from "@/src/components/organisms/QuickOrderControls/QuickOrderControls";
+import { PdpQuickOrderControls } from "./PdpQuickOrderControls";
 
 interface DrinkPageProps {
   params: Promise<{ slug: string[] }>;
@@ -48,7 +48,7 @@ export default async function PDP({ params }: DrinkPageProps) {
           </div>
           <div className="pdp-content__column">
             <IngredientsSection drinkId={drink.id} />
-            <QuickOrderControls available={true} />
+            <PdpQuickOrderControls drinkId={drink.id} />
             <RecipeSection recipe={drink.recipe} />
           </div>
         </div>

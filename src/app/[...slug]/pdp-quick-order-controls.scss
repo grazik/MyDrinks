@@ -1,0 +1,12 @@
+@use '/src/styles/breakpoints';
+
+.pdp-quick-order-controls {
+  &:has(.quick-order-controls--available) {
+    position: sticky;
+    bottom: 0;
+
+    @include breakpoints.from-tablet-landscape {
+      position: static;
+    }
+  }
+}
