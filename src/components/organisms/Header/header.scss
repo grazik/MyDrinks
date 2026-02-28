@@ -2,8 +2,24 @@
   padding-block: 1rem;
   display: flex;
   align-items: center;
+  gap: 20px;
 
   .header__spacer {
     margin-left: auto;
+  }
+
+  .header__orders-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    color: var(--color-text-light);
+    font-size: 0.875rem;
+    opacity: 0.7;
+    transition: opacity 0.15s ease;
+
+    &:hover {
+      opacity: 1;
+    }
   }
 }
