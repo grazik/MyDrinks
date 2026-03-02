@@ -1,18 +1,24 @@
-import { isArrayNonNullable } from "@/src/types/generic.types";
+import {
+  isArrayNonNullable,
+  objectEntries,
+  objectFromEntries,
+} from "@/src/types/generic.types";
 
 export const valuesToCssVariables = <T extends Record<string, string | number>>(
   mapper: T,
 ) => {
-  type CssVariablesKeys = keyof typeof mapper;
-  type CssVariablesValues = (typeof mapper)[CssVariablesKeys];
+  type Keys = keyof T;
+  type Values = T[Keys];
 
   return (
-    values: Record<CssVariablesKeys, string | undefined | null | number>,
-  ): Partial<Record<CssVariablesValues, string>> => {
-    const valuesEntries = (Object.entries(values) as Entries<typeof values>)
-      .filter(isArrayNonNullable)
-      .map(([colorKey, color]) => [mapper[colorKey], color]);
+    values: Partial<Record<Keys, string | null | number>>,
+  ): Partial<Record<Values, string | number>> => {
+    const entries = objectEntries(values)
+      .filter((entry): entry is [Keys, string | number] =>
+        isArrayNonNullable(entry),
+      )
+      .map(([key, value]): [Values, string | number] => [mapper[key], value]);
 
-    return Object.fromEntries(valuesEntries);
+    return objectFromEntries(entries);
   };
 };

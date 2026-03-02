@@ -4,9 +4,9 @@ import { valuesToCssVariables } from "@/src/utils/valuesToCssVariables";
 
 interface TagProps {
   title: string;
-  bgColor: string;
-  color: string;
-  borderRadius: number;
+  bgColor?: string;
+  color?: string;
+  borderRadius?: number;
 }
 
 const VALUE_CSS_MAPPER = {
