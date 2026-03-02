@@ -1,4 +1,38 @@
 .status-bar {
-  display: flex;
-  gap: 8px;
+  --bg-color: var(--color-amber-gold);
+  --font-color: var(--color-text-light);
+
+  position: relative;
+  display: inline-flex;
+  border-radius: 8px;
+  overflow: hidden;
+  padding: 4px 8px;
+  font-size: .875rem;
+  background-color: var(--color-muted-gray);
+  color: var(--font-color);
+
+  &--success {
+    --bg-color: var(--color-lime-green);
+    --font-color: var(--color-background);
+  }
+
+  .status-bar__segment {
+    z-index: 1;
+    flex-basis: 100%;
+    text-align: center;
+  }
+
+  .status-bar__segment--active:has(~ .status-bar__segment--active) {
+    border-right: 1px solid currentColor;
+  }
+
+  .status-bar__color {
+    background-color: var(--bg-color);
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    top: 0;
+    width: 0;
+    transition: width 0.3s ease-in-out, background-color 0.1s ease-in-out;
+  }
 }
