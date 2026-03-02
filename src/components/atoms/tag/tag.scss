@@ -1,0 +1,7 @@
+.tag {
+  padding: 4px 8px;
+  background-color: var(--tag-bg-color, var(--color-amber-gold));
+  font-size: .875rem;
+  border-radius: var(--tag-border-radius, 4px);
+  color: var(--tag-color, #000);
+}

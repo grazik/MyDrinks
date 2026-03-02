@@ -1,12 +1,20 @@
-:root {
-  --color-background: #010B13;
-  --color-amber-gold: #C19552;
-  --color-lime-green: #B9FF66;
-  --color-cherry-red: #D20A2E;
-  --color-text-light: #FFFFFF;
-  --color-muted-gray: #1E2D3D;
+$color-background: #010B13;
+$color-amber-gold: #C19552;
+$color-lime-green: #B9FF66;
+$color-cherry-red: #D20A2E;
+$color-text-light: #FFFFFF;
+$color-muted-gray: #1E2D3D;
+$color-surface-base: #21384A;
 
-  --color-surface-base: #21384A;
+:root {
+  --color-background: #{$color-background};
+  --color-amber-gold: #{$color-amber-gold};
+  --color-lime-green: #{$color-lime-green};
+  --color-cherry-red: #{$color-cherry-red};
+  --color-text-light: #{$color-text-light};
+  --color-muted-gray: #{$color-muted-gray};
+
+  --color-surface-base: #{$color-surface-base};
   --color-accent-primary: var(--color-amber-gold);
   --color-accent-hover: color-mix(in srgb, var(--color-accent-primary) 70%, transparent);
   --color-light-border: color-mix(in srgb, var(--color-text-light) 10%, transparent);

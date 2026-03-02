@@ -23,6 +23,7 @@ model Drink {
   image       String?
   slug        String
   EventDrink  EventDrink[]
+  Order       Order[]
 }
 
 model Ingredient {
@@ -68,6 +69,7 @@ model Event {
   image       String
   slug        String       @unique
   status      EventStatus  @default(DRAFT)
+  Order       Order[]
 }
 
 model EventDrink {
@@ -93,4 +95,32 @@ model User {
   isActive     Boolean  @default(true)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+  Order        Order[]
+}
+
+enum OrderStatus {
+  PENDING
+  MIXING
+  READY
+  COMPLETED
+  CANCELLED
+}
+
+model Order {
+  id          String      @id @default(uuid())
+  orderNumber Int         @default(autoincrement()) // Czytelny numer dla UI/Barmana
+  quantity    Int
+  status      OrderStatus @default(PENDING)
+  event       Event       @relation(fields: [eventId], references: [id])
+  eventId     String
+  drink       Drink       @relation(fields: [drinkId], references: [id])
+  drinkId     String
+  user        User        @relation(fields: [userId], references: [id])
+  userId      String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId, eventId])
+  @@index([eventId, status])
 }
