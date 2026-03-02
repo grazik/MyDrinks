@@ -108,7 +108,7 @@ enum OrderStatus {
 
 model Order {
   id          String      @id @default(uuid())
-  orderNumber Int         @default(autoincrement()) // Czytelny numer dla UI/Barmana
+  orderNumber Int         @default(autoincrement())
   quantity    Int
   status      OrderStatus @default(PENDING)
   event       Event       @relation(fields: [eventId], references: [id])

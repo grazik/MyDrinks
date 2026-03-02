@@ -1,9 +1,28 @@
+import React, { CSSProperties } from "react";
 import "./tag.scss";
+import { valuesToCssVariables } from "@/src/utils/valuesToCssVariables";
 
 interface TagProps {
   title: string;
+  bgColor: string;
+  color: string;
+  borderRadius: number;
 }
 
-export const Tag = ({ title }: TagProps) => {
-  return <span className="tag">{title}</span>;
+const VALUE_CSS_MAPPER = {
+  bgColor: "--tag-bg-color",
+  color: "--tag-color",
+  borderRadius: "--tag-border-radius",
+} as const;
+
+const tagValuesToCssVariables = valuesToCssVariables(VALUE_CSS_MAPPER);
+
+export const Tag = ({ title, ...rest }: TagProps) => {
+  const cssVariables = tagValuesToCssVariables(rest);
+
+  return (
+    <span className="tag" style={cssVariables as CSSProperties}>
+      {title}
+    </span>
+  );
 };
