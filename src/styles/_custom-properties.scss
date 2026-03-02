@@ -1,0 +1,17 @@
+@use "variables" as *;
+
+:root {
+  --color-background: #{$color-background};
+  --color-amber-gold: #{$color-amber-gold};
+  --color-lime-green: #{$color-lime-green};
+  --color-cherry-red: #{$color-cherry-red};
+  --color-text-light: #{$color-text-light};
+  --color-muted-gray: #{$color-muted-gray};
+
+  --color-surface-base: #{$color-surface-base};
+  --color-accent-primary: var(--color-amber-gold);
+  --color-accent-hover: color-mix(in srgb, var(--color-accent-primary) 70%, transparent);
+  --color-light-border: color-mix(in srgb, var(--color-text-light) 10%, transparent);
+  --color-overlay-hover: rgba(255, 255, 255, 0.07);
+  --color-overlay-focus: rgba(255, 255, 255, 0.1);
+}
