@@ -28,6 +28,16 @@ export const getActiveEventWithDrinkIds = cache(async () => {
   return event;
 });
 
+export const getActiveEvent = cache(async () => {
+  const event = await prisma.event.findFirst({
+    where: {
+      status: "ACTIVE",
+    },
+  });
+
+  return event;
+});
+
 export const getEventWithDrinksBySlug = async (slug: string) => {
   const event = await prisma.event.findUnique({
     where: {

@@ -1,10 +1,13 @@
-import { OrderCard } from "@/src/components/molecules/OrderCard/OrderCard";
+import { getActiveEvent } from "@/db/getEvent";
+import { ActiveOrdersSection } from "@/src/app/orders/ActiveOrdersSection";
 
-export default function OrdersPage() {
+export default async function OrdersPage() {
+  const activeEvent = await getActiveEvent();
+
   return (
     <main className="wrapper">
       <h1>Orders</h1>
-      <OrderCard />
+      <ActiveOrdersSection event={activeEvent} />
     </main>
   );
 }
