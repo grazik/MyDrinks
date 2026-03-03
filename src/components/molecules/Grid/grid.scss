@@ -1,0 +1,20 @@
+@use '../../../styles/breakpoints';
+
+.grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(var(--cols-mobile), 1fr);
+  margin-top: 32px;
+
+  @include breakpoints.from-tablet {
+    grid-template-columns: repeat(var(--cols-tablet), 1fr);
+  }
+
+  @include breakpoints.from-tablet-landscape {
+    grid-template-columns: repeat(var(--cols-tablet-landscape), 1fr);
+  }
+
+  @include breakpoints.from-desktop {
+    grid-template-columns: repeat(var(--cols-desktop), 1fr);
+  }
+}

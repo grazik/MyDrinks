@@ -1,6 +1,6 @@
 import { prisma } from "../../../../db/db";
-import "./drinks-grid.scss";
 import { DrinksGridClient } from "@/src/components/organisms/DrinksGrid/DrinksGridClient";
+import { Grid } from "@/src/components/molecules/Grid/Grid";
 import { Suspense } from "react";
 
 export const DrinksGrid = async () => {
@@ -15,10 +15,10 @@ export const DrinksGrid = async () => {
   });
 
   return (
-    <section className="drinks-grid">
+    <Grid cols={{ mobile: 2, tablet: 3, tabletLandscape: 4, desktop: 5 }}>
       <Suspense>
         <DrinksGridClient drinksWithIngredients={drinksWithIngredients} />
       </Suspense>
-    </section>
+    </Grid>
   );
 };

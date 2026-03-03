@@ -1,9 +1,13 @@
-import "./orders-grid.scss";
+import { Grid } from "@/src/components/molecules/Grid/Grid";
 
 type OrdersGridProps = {
   children: React.ReactNode;
 };
 
 export const OrdersGrid = ({ children }: OrdersGridProps) => {
-  return <div className="orders-grid">{children}</div>;
+  return (
+    <Grid cols={{ mobile: 1, tabletLandscape: 2, desktop: 3 }}>
+      {children}
+    </Grid>
+  );
 };
