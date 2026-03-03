@@ -6,7 +6,7 @@ export default async function OrdersPage() {
 
   return (
     <main className="wrapper">
-      <h1>Orders</h1>
+      <h1 className="main-heading">Orders</h1>
       <ActiveOrdersSection event={activeEvent} />
     </main>
   );

@@ -2,7 +2,7 @@ import Image from "next/image";
 import "./card-content.scss";
 
 interface CardContentProps {
-  image: string;
+  image: string | null;
   quantity: number;
   drinkName: string;
 }
@@ -14,13 +14,15 @@ export const CardContent = ({
 }: CardContentProps) => {
   return (
     <div className="order-card__content">
-      <Image
-        className="order-card__content-image"
-        src={image}
-        alt={""}
-        width={80}
-        height={120}
-      />
+      {image && (
+        <Image
+          className="order-card__content-image"
+          src={image}
+          alt={""}
+          width={80}
+          height={120}
+        />
+      )}
       <p className={"body-text"}>
         {quantity}x {drinkName}
       </p>
