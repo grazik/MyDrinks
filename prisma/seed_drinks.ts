@@ -1,14 +1,12 @@
 import { PrismaClient } from "@prisma/client";
 
-const prisma = new PrismaClient();
-
-async function main() {
+async function main(prisma: PrismaClient) {
   // Add Whisky Old Fashioned drink
   const whiskyOldFashioned = await prisma.drink.create({
     data: {
       name: "Whisky Old Fashioned",
-      recipe: `1. Stir the **simple syrup**, **water**, and **bitters** in a glass.  
-2. Add the **ice cubes** and **bourbon**.  
+      recipe: `1. Stir the **simple syrup**, **water**, and **bitters** in a glass.
+2. Add the **ice cubes** and **bourbon**.
 3. Garnish as desired.`,
       createdAt: new Date("2025-04-07T15:54:00Z"), // Current date
       ingredients: {
@@ -56,10 +54,10 @@ async function main() {
   const mohito = await prisma.drink.create({
     data: {
       name: "Mohito",
-      recipe: `1. Muddle the **mint leaves**, **lime wedges**, and **sugar** in a glass to release the flavors.  
-2. Fill the glass with **ice cubes**.  
-3. Pour in the **white rum**.  
-4. Top up with **soda water** and stir well.  
+      recipe: `1. Muddle the **mint leaves**, **lime wedges**, and **sugar** in a glass to release the flavors.
+2. Fill the glass with **ice cubes**.
+3. Pour in the **white rum**.
+4. Top up with **soda water** and stir well.
 5. Garnish with a **mint sprig** and enjoy! 🍹`,
       createdAt: new Date("2025-04-07T15:54:00Z"), // Current date
       ingredients: {
@@ -127,10 +125,10 @@ async function main() {
   const mintJulep = await prisma.drink.create({
     data: {
       name: "Mint Julep",
-      recipe: `1. Muddle **mint leaves** and **sugar** (or **simple syrup**) in a glass or julep cup.  
-2. Fill the glass with **crushed ice**.  
-3. Pour in the **bourbon** and stir until well chilled.  
-4. Top with more **crushed ice** and garnish with a **mint sprig**.  
+      recipe: `1. Muddle **mint leaves** and **sugar** (or **simple syrup**) in a glass or julep cup.
+2. Fill the glass with **crushed ice**.
+3. Pour in the **bourbon** and stir until well chilled.
+4. Top with more **crushed ice** and garnish with a **mint sprig**.
 5. Enjoy! 🥃🌿`,
       createdAt: new Date("2025-04-07T15:54:00Z"), // Current date
       ingredients: {
@@ -175,11 +173,16 @@ async function main() {
   console.log("Added drink:", mintJulep);
 }
 
-main()
-  .catch((e) => {
-    console.error(e);
-    process.exit(1);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+export { main };
+
+if (process.argv[1]?.endsWith("seed_drinks.ts")) {
+  const prisma = new PrismaClient();
+  main(prisma)
+    .catch((e) => {
+      console.error(e);
+      process.exit(1);
+    })
+    .finally(async () => {
+      await prisma.$disconnect();
+    });
+}
