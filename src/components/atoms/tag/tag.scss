@@ -1,7 +1,16 @@
 .tag {
+  --bg-color:  var(--tag-bg-color, var(--color-amber-gold));
+  --border-radius: var(--tag-border-radius, 4px);
+  --color: var(--tag-color, var(--color-text-light));
+
   padding: 4px 8px;
-  background-color: var(--tag-bg-color, var(--color-amber-gold));
+  background-color: var(--bg-color);
   font-size: .875rem;
-  border-radius: var(--tag-border-radius, 4px);
-  color: var(--tag-color, #000);
+  border-radius: var(--border-radius);
+  color: var(--color);
+
+  &--subtle  {
+    background-color: color-mix(in srgb, var(--bg-color) 15%, transparent);
+    color: var(--bg-color);
+  }
 }

@@ -7,6 +7,7 @@ interface TagProps {
   bgColor?: string;
   color?: string;
   borderRadius?: number;
+  variant?: "solid" | "subtle";
 }
 
 const VALUE_CSS_MAPPER = {
@@ -17,11 +18,14 @@ const VALUE_CSS_MAPPER = {
 
 const tagValuesToCssVariables = valuesToCssVariables(VALUE_CSS_MAPPER);
 
-export const Tag = ({ title, ...rest }: TagProps) => {
+export const Tag = ({ title, variant = "solid", ...rest }: TagProps) => {
   const cssVariables = tagValuesToCssVariables(rest);
 
   return (
-    <span className="tag" style={cssVariables as CSSProperties}>
+    <span
+      className={`tag tag--${variant}`}
+      style={cssVariables as CSSProperties}
+    >
       {title}
     </span>
   );
