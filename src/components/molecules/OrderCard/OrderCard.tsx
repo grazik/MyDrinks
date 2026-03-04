@@ -30,7 +30,7 @@ export const OrderCard = ({ order }: OrderCardProps) => {
 
 const CancelledOrderCard = ({ order }: OrderCardProps) => {
   return (
-    <div className="order-card">
+    <div className="order-card order-card--cancelled">
       <Header
         orderNumber={order.orderNumber}
         createdAt={order.createdAt}
@@ -54,7 +54,7 @@ const CancelledOrderCard = ({ order }: OrderCardProps) => {
 
 const CompletedOrderCard = ({ order }: OrderCardProps) => {
   return (
-    <div className="order-card">
+    <div className="order-card order-card--completed">
       <Header
         orderNumber={order.orderNumber}
         createdAt={order.createdAt}
