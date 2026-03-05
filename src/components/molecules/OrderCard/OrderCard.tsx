@@ -7,6 +7,10 @@ import { OrderStatus, Prisma } from "@prisma/client";
 
 import "./order-card.scss";
 import { CardContent } from "@/src/components/molecules/OrderCard/components/CardContent";
+import {
+  Actions,
+  CancelOrder,
+} from "@/src/components/molecules/OrderCard/components/Actions";
 
 type OrderWithDrink = Prisma.OrderGetPayload<{ include: { drink: true } }>;
 
@@ -89,6 +93,11 @@ const ActiveOrderCard = ({ order }: OrderCardProps) => {
         quantity={order.quantity}
         drinkName={order.drink.name}
       />
+      {order.status === OrderStatus.PENDING && (
+        <Actions>
+          <CancelOrder />
+        </Actions>
+      )}
     </div>
   );
 };

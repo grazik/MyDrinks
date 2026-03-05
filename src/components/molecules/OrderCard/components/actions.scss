@@ -1,0 +1,9 @@
+.order-card__actions {
+  display: flex;
+  width: 100%;
+  align-items: stretch;
+
+  >  * {
+    flex: 1;
+  }
+}

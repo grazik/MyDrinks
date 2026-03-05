@@ -1,5 +1,5 @@
 .order-card {
-  --border-color: var(--color-light-border);
+  --border-color: color-mix(in srgb, var(--color-amber-gold) 60%, transparent);
 
   background-color: var(--color-surface-base);
   border-radius: 12px;
