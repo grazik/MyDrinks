@@ -87,8 +87,9 @@ cart or basket — users place immediate "Quick Orders" only.
 |---|---|
 | PLP – "All Drinks" tab | ❌ Never show Quick Order UI (recipe discovery only) |
 | PLP – "Events" tab | ✅ Show Quick Order UI only for drinks in the active event |
-| PDP (Single Drink View) | ✅ Always show Quick Order UI |
+| PDP (Single Drink View) | ✅ Always show Quick Order UI (authenticated users only) |
 | PDP – drink not in active event | Show a **disabled gray button** ("Unavailable Tonight") with explanatory micro-copy |
+| PDP – unauthenticated user | ❌ Do not show Quick Order UI — only authenticated users may place orders |
 
 ### /orders Page
 

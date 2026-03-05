@@ -14,8 +14,8 @@ export const EventDrink = ({ drink }: EventDrinkProps) => {
   return (
     <div className="event-drink">
       <div className="event-drink__section">
-        <h3 className="subsection-heading">{drink.name}</h3>
         <Link href={drink.slug} className="event-drink__link">
+          <h3 className="subsection-heading">{drink.name}</h3>
           {drink.image && (
             <div className="event-drink__image-wrapper">
               <Image
