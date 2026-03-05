@@ -1,20 +1,40 @@
-import { Event } from "@prisma/client";
-import { UserDto } from "@/lib/dto/user";
-import { cache } from "react";
 import { prisma } from "@/db/db";
 
-export const getUserOrdersForEvent = cache(
-  async (user: UserDto, event: Event) => {
-    const orders = await prisma.order.findMany({
-      where: {
-        userId: user.sub,
-        eventId: event.id,
-      },
-      include: {
-        drink: true,
-      },
-    });
+export const getUserOrdersForEvent = async (
+  userId: string,
+  eventId: string,
+) => {
+  const orders = await prisma.order.findMany({
+    where: {
+      userId,
+      eventId,
+    },
+    include: {
+      drink: true,
+    },
+  });
 
-    return orders;
-  },
-);
+  return orders;
+};
+
+export const getAllOrdersForEvent = async (eventId: string) => {
+  const orders = await prisma.order.findMany({
+    where: {
+      eventId,
+    },
+    include: {
+      drink: true,
+      user: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: "asc",
+    },
+  });
+
+  return orders;
+};
