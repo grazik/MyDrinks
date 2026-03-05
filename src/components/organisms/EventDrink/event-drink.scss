@@ -20,10 +20,10 @@
 
   .event-drink__image-wrapper {
     overflow: hidden;
+    margin-bottom: 16px;
   }
 
   .event-drink__image {
-    margin-bottom: 16px;
     transition: transform .3s;
 
     @include breakpoints.tablet-only {
@@ -38,6 +38,9 @@
 
   .event-drink__section {
     flex-basis: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
   }
 
   .event-drink__link {

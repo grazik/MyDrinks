@@ -1,0 +1,16 @@
+.order-card__content {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.order-card__content-image {
+  border-radius: 16px;
+}
+
+.order-card--cancelled {
+  .order-card__content-image {
+    opacity: 0.5;
+    filter: grayscale(100%);
+  }
+}

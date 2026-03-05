@@ -1,0 +1,19 @@
+.order-card {
+  --border-color: color-mix(in srgb, var(--color-amber-gold) 60%, transparent);
+
+  background-color: var(--color-surface-base);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border: 1px solid var(--border-color);
+
+  &--completed {
+    --border-color: color-mix(in srgb, var(--color-lime-green) 30%, transparent);
+  }
+
+  &--cancelled {
+    --border-color: color-mix(in srgb, var(--color-cherry-red) 50%, transparent);
+  }
+}

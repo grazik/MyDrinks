@@ -83,6 +83,15 @@
   font-size: 1rem;
 }
 
+/* Semantic Color Text */
+.text-success {
+  color: var(--color-lime-green);
+}
+
+.text-danger {
+  color: var(--color-cherry-red);
+}
+
 /* Source Link */
 .source-link {
   font-family: var(--font-body);

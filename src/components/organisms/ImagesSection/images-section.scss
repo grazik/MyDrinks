@@ -2,12 +2,12 @@
 
 .images-section {
   width: 100%;
-  position: sticky;
-  top: 0;
+  position: relative;
   aspect-ratio: 2/3;
 
   @include breakpoints.from-tablet-landscape {
-    aspect-ratio: 2/3;
+    position: sticky;
+    top: 0;
     max-height: initial;
   }
 }

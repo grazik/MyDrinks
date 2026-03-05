@@ -1,0 +1,11 @@
+@use 'variables' as *;
+
+:export {
+  colorBackground: $color-background;
+  colorAmberGold: $color-amber-gold;
+  colorLimeGreen: $color-lime-green;
+  colorCherryRed: $color-cherry-red;
+  colorTextLight: $color-text-light;
+  colorMutedGray: $color-muted-gray;
+  colorSurfaceBase: $color-surface-base;
+}

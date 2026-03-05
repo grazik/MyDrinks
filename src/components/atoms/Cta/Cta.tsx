@@ -12,10 +12,7 @@ interface CommonCtaProps {
   tone?: CtaTone;
 }
 
-type ButtonProps = CommonCtaProps &
-  ButtonHTMLAttributes<HTMLButtonElement> & {
-    href?: never;
-  };
+type ButtonProps = CommonCtaProps & ButtonHTMLAttributes<HTMLButtonElement>;
 
 type LinkProps = CommonCtaProps &
   AnchorHTMLAttributes<HTMLAnchorElement> & {
@@ -24,16 +21,25 @@ type LinkProps = CommonCtaProps &
 
 type CtaProps = ButtonProps | LinkProps;
 
-const isLink = (props: CtaProps): props is LinkProps => "href" in props;
+export const Cta = ({
+  fill = "solid",
+  tone = "primary",
+  className,
+  ...rest
+}: CtaProps) => {
+  const classNames = [
+    "cta",
+    "button",
+    `cta--fill-${fill}`,
+    `cta--tone-${tone}`,
+    className,
+  ]
+    .filter(Boolean)
+    .join(" ");
 
-export const Cta = (props: CtaProps) => {
-  const { fill = "solid", tone = "primary" } = props;
-
-  const classNames = `cta button cta--fill-${fill} cta--tone-${tone}`;
-
-  if (isLink(props)) {
-    return <Link className={classNames} {...props} />;
+  if ("href" in rest) {
+    return <Link className={classNames} {...rest} />;
   }
 
-  return <button className={classNames} {...props} />;
+  return <button className={classNames} {...rest} />;
 };

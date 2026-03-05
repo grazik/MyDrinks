@@ -1,9 +1,6 @@
-// prisma/seed.ts
 import { PrismaClient } from "@prisma/client";
 
-const prisma = new PrismaClient();
-
-async function main() {
+async function main(prisma: PrismaClient) {
   console.log("Starting seed...");
 
   // Halloween 2025 Event
@@ -15,6 +12,7 @@ async function main() {
         "Spooky cocktails for your Halloween party. Dark, mysterious, and delicious drinks to set the perfect eerie atmosphere.",
       eventDate: new Date("2025-10-31T20:00:00Z"),
       image: "/images/events/halloween_2025.jpeg",
+      status: "ACTIVE",
       eventDrink: {
         create: [
           { drinkId: "76b99174-bfe0-456f-85e8-ec86e45e9779" }, // White Russian
@@ -83,11 +81,16 @@ async function main() {
   console.log({ halloween, christmas, newYears });
 }
 
-main()
-  .catch((e) => {
-    console.error(e);
-    process.exit(1);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+export { main };
+
+if (process.argv[1]?.endsWith("seed_events.ts")) {
+  const prisma = new PrismaClient();
+  main(prisma)
+    .catch((e) => {
+      console.error(e);
+      process.exit(1);
+    })
+    .finally(async () => {
+      await prisma.$disconnect();
+    });
+}

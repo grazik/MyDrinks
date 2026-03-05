@@ -1,10 +1,11 @@
-@use "variables";
+@use "custom-properties";
 @use "typography";
 @use "reset";
 @use "utils";
 
 body {
-  background-color: var(--color-background) ;
+  background-color: var(--color-background);
+  font-family: var(--font-body);
 }
 
 .wrapper {
