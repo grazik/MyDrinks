@@ -1,7 +1,11 @@
-export default function DashboardPage() {
+import { H1Heading } from "@/src/components/atoms/SectionHeading/SectionHeading";
+import { getActiveEvent } from "@/db/getEvent";
+
+export default async function DashboardPage() {
+  const activeEvent = getActiveEvent();
   return (
     <main className="wrapper">
-      <h1 className="main-heading">Dashboard</h1>
+      <H1Heading>Dashboard</H1Heading>
     </main>
   );
 }

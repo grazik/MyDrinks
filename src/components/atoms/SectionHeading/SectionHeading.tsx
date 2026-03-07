@@ -28,3 +28,8 @@ export const H3SectionHeading = sectionHeadingFactory({
   Heading: "h3",
   className: "subsection-heading",
 });
+
+export const H1Heading = sectionHeadingFactory({
+  Heading: "h1",
+  className: "main-heading",
+});
