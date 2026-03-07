@@ -9,6 +9,7 @@
   --color-muted-gray: #{$color-muted-gray};
 
   --color-surface-base: #{$color-surface-base};
+  --color-surface-dark: #{$color-surface-dark};
   --color-accent-primary: var(--color-amber-gold);
   --color-accent-hover: color-mix(in srgb, var(--color-accent-primary) 70%, transparent);
   --color-light-border: color-mix(in srgb, var(--color-text-light) 10%, transparent);
