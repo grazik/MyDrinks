@@ -1,0 +1,10 @@
+.tabs-list {
+  padding-block: 16px;
+  border-block: 1px solid var(--color-light-border);
+
+  &__inner {
+    display: flex;
+    gap: 8px;
+    background-color: var(--color-surface-dark);
+  }
+}
