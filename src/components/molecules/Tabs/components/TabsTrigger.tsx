@@ -13,6 +13,7 @@ export const TabsTrigger = ({ value, children }: TabsTriggerProps) => {
   const { activeTab, setActiveTab } = useTabsContext();
   return (
     <button
+      type="button"
       aria-selected={activeTab === value}
       className="tabs-trigger body-text"
       id={`tab-${value}`}

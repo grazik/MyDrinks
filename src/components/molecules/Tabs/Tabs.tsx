@@ -1,15 +1,33 @@
-import { ReactNode } from "react";
+"use client";
+import { ReactNode, useState } from "react";
 import { TabsList, TabsPanel, TabsTrigger } from "./components";
 import "./tabs.scss";
 import { TabsContextProvider } from "@/src/components/molecules/Tabs/components/TabsContextProvider";
 
-type TabsProps = {
+type BaseProps = {
   children: ReactNode;
-  activeTab: string;
-  setActiveTab: (activeTab: string) => void;
+  defaultValue?: string;
 };
 
-export const Tabs = ({ children, activeTab, setActiveTab }: TabsProps) => {
+type ControlledProps = BaseProps & {
+  value: string;
+  onValueChange: (value: string) => void;
+};
+
+type UncontrolledProps = BaseProps & {
+  value?: never;
+  onValueChange?: never;
+};
+
+type TabsProps = ControlledProps | UncontrolledProps;
+
+export const Tabs = ({ children, defaultValue = "", value, onValueChange }: TabsProps) => {
+  const [internalTab, setInternalTab] = useState(defaultValue);
+
+  const isControlled = value !== undefined;
+  const activeTab = isControlled ? value : internalTab;
+  const setActiveTab = isControlled ? onValueChange : setInternalTab;
+
   return (
     <div className="tabs">
       <TabsContextProvider activeTab={activeTab} setActiveTab={setActiveTab}>

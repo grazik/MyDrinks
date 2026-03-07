@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import "./tabs-list.scss";
 
 type TabsListProps = {
-  children: ReactNode | ReactNode[];
+  children: ReactNode;
 };
 export const TabsList = ({ children }: TabsListProps) => {
   return (
