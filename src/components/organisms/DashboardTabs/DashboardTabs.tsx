@@ -1,22 +1,38 @@
 "use client";
 import { Tabs } from "@/src/components/molecules/Tabs/Tabs";
-import { PendingStatusScreen } from "@/src/components/organisms/DashboardStatusScreens";
+import { ReactNode } from "react";
 
-export const DashboardTabs = () => {
+const TabsOrder = [
+  { name: "pendingTab", label: "Pending" },
+  { name: "mixingTab", label: "Mixing" },
+  { name: "readyTab", label: "Ready" },
+  { name: "historyTab", label: "⏰ History" },
+] as const;
+
+type TabPanels = {
+  [key in (typeof TabsOrder)[number]["name"]]: ReactNode;
+};
+
+type DashboardTabsProps = {
+  tabs: TabPanels;
+};
+
+export const DashboardTabs = ({ tabs }: DashboardTabsProps) => {
   return (
-    <Tabs defaultValue={"foo"}>
+    <Tabs defaultValue={TabsOrder[0].name}>
       <Tabs.List>
-        <Tabs.Trigger value="foo">foo</Tabs.Trigger>
-        <Tabs.Trigger value="bar">bar</Tabs.Trigger>
-        <Tabs.Trigger value="baz">baz</Tabs.Trigger>
-        <Tabs.Trigger value="bazzz">bazzz</Tabs.Trigger>
+        {TabsOrder.map(({ name, label }) => (
+          <Tabs.Trigger key={name} value={name}>
+            {label}
+          </Tabs.Trigger>
+        ))}
       </Tabs.List>
-      <Tabs.Panel value="foo">
-        <PendingStatusScreen />
-      </Tabs.Panel>
-      <Tabs.Panel value="bar">Bar</Tabs.Panel>
-      <Tabs.Panel value="baz">Baz</Tabs.Panel>
-      <Tabs.Panel value="bazzh">Baz</Tabs.Panel>
+
+      {TabsOrder.map(({ name }) => (
+        <Tabs.Panel key={name} value={name}>
+          {tabs[name] ?? null}
+        </Tabs.Panel>
+      ))}
     </Tabs>
   );
 };
