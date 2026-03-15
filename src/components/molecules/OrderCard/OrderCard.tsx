@@ -3,7 +3,7 @@ import {
   Header,
   HeaderVariant,
 } from "@/src/components/molecules/OrderCard/components/Header";
-import { OrderStatus, Prisma } from "@prisma/client";
+import { OrderStatus } from "@prisma/client";
 
 import "./order-card.scss";
 import { CardContent } from "@/src/components/molecules/OrderCard/components/CardContent";
@@ -11,8 +11,7 @@ import {
   Actions,
   CancelOrder,
 } from "@/src/components/molecules/OrderCard/components/Actions";
-
-type OrderWithDrink = Prisma.OrderGetPayload<{ include: { drink: true } }>;
+import { OrderWithDrink } from "@/src/types/order.types";
 
 type OrderCardProps = {
   order: OrderWithDrink;

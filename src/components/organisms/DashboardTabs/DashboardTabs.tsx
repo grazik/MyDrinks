@@ -1,36 +1,40 @@
 "use client";
 import { Tabs } from "@/src/components/molecules/Tabs/Tabs";
-import { ReactNode } from "react";
+import { OrderTab, GroupedOrders } from "@/src/utils/orders/orders";
+import { OrderWithDrink } from "@/src/types/order.types";
+import { DashboardTabsPanel } from "@/src/components/organisms/DashboardTabsPanel/DashboardTabsPanel";
 
-const TabsOrder = [
-  { name: "pendingTab", label: "Pending" },
-  { name: "mixingTab", label: "Mixing" },
-  { name: "readyTab", label: "Ready" },
-  { name: "historyTab", label: "⏰ History" },
-] as const;
-
-type TabPanels = {
-  [key in (typeof TabsOrder)[number]["name"]]: ReactNode;
-};
+const TABS_CONFIG: { name: OrderTab; label: string }[] = [
+  { name: "pending", label: "Pending" },
+  { name: "mixing", label: "Mixing" },
+  { name: "ready", label: "Ready" },
+  { name: "history", label: "⏰ History" },
+];
 
 type DashboardTabsProps = {
-  tabs: TabPanels;
+  groupedOrders: GroupedOrders<OrderWithDrink>;
 };
 
-export const DashboardTabs = ({ tabs }: DashboardTabsProps) => {
+export const DashboardTabs = ({ groupedOrders }: DashboardTabsProps) => {
   return (
-    <Tabs defaultValue={TabsOrder[0].name}>
+    <Tabs defaultValue={TABS_CONFIG[0].name}>
       <Tabs.List>
-        {TabsOrder.map(({ name, label }) => (
-          <Tabs.Trigger key={name} value={name}>
-            {label}
-          </Tabs.Trigger>
-        ))}
+        {TABS_CONFIG.map(({ name, label }) => {
+          const orders = groupedOrders[name] ?? [];
+          return (
+            <Tabs.Trigger key={name} value={name}>
+              {label} ({orders.length})
+            </Tabs.Trigger>
+          );
+        })}
       </Tabs.List>
 
-      {TabsOrder.map(({ name }) => (
+      {TABS_CONFIG.map(({ name }) => (
         <Tabs.Panel key={name} value={name}>
-          {tabs[name] ?? null}
+          <DashboardTabsPanel
+            orders={groupedOrders[name] ?? []}
+            variant={name}
+          />
         </Tabs.Panel>
       ))}
     </Tabs>
