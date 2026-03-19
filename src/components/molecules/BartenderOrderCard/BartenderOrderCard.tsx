@@ -1,0 +1,46 @@
+import { OrderWithDrinkAndUser, Order } from "@/src/types/order.types";
+import { QuantityBadge } from "@/src/components/molecules/BartenderOrderCard/components/QuantityBadge";
+import { ActiveCardActions } from "@/src/components/molecules/BartenderOrderCard/components/ActiveCardActions";
+import { TimeFromNow } from "@/src/components/atoms/TimeFromNow/TimeFromNow";
+import { OrderStatus } from "@prisma/client";
+
+import "./bartender-order-card.scss";
+
+type BartenderOrderCardProps = {
+  order: OrderWithDrinkAndUser;
+};
+
+const isHistoryCard = (order: Order) => {
+  return (
+    order.status === OrderStatus.COMPLETED ||
+    order.status === OrderStatus.CANCELLED
+  );
+};
+
+export const BartenderOrderCard = ({ order }: BartenderOrderCardProps) => {
+  if (isHistoryCard(order)) {
+    return <HistoryCard order={order} />;
+  }
+
+  return <ActiveCard order={order} />;
+};
+
+const ActiveCard = ({ order }: BartenderOrderCardProps) => {
+  return (
+    <div className="bartender-order-card">
+      <div className="bartender-order-card__header">
+        <TimeFromNow date={order.updatedAt} />
+        <QuantityBadge quantity={order.quantity} />
+      </div>
+      <div className="bartender-order-card__body">
+        <p className="body-text">{order.drink.name}</p>
+        <p className="bartender-order-card__user">For: {order.user.name}</p>
+      </div>
+      <ActiveCardActions status={order.status} />
+    </div>
+  );
+};
+
+const HistoryCard = ({}: BartenderOrderCardProps) => {
+  return <div className="bartender-order-card"></div>;
+};

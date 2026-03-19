@@ -1,3 +1,9 @@
+export type UnionToIntersection<U> = (
+  U extends unknown ? (x: U) => void : never
+) extends (x: infer I) => void
+  ? I
+  : never;
+
 export type NonNullableFields<T> = {
   [K in keyof T]: NonNullable<T[K]>;
 };

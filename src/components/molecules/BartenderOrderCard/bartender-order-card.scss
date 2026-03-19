@@ -1,0 +1,36 @@
+.bartender-order-card {
+  --border-color: var(--light-gray);
+
+  background-color: var(--color-surface-dark);
+  border-radius: 10px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border: 1px solid var(--border-color);
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__user {
+    font-size: 1rem;
+    color: var(--color-text-muted)
+
+  }
+
+  &__actions {
+    display: flex;
+    gap: 8px;
+  }
+
+  &__action--secondary {
+    flex: 1;
+  }
+
+  &__action--primary {
+    flex: 3;
+  }
+}

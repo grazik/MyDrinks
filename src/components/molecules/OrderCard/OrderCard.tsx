@@ -78,6 +78,7 @@ const CompletedOrderCard = ({ order }: OrderCardProps) => {
     </div>
   );
 };
+
 const ActiveOrderCard = ({ order }: OrderCardProps) => {
   return (
     <div className="order-card">

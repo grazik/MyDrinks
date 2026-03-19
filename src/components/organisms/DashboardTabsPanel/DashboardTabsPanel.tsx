@@ -5,10 +5,10 @@ import {
   PendingStatusScreen,
   ReadyStatusScreen,
 } from "@/src/components/organisms/DashboardStatusScreen/DashboardStatusScreens";
-import { OrderWithDrink } from "@/src/types/order.types";
+import { OrderWithDrinkAndUser } from "@/src/types/order.types";
 import { OrdersGrid } from "@/src/components/organisms/OrdersGrid/OrdersGrid";
-import { OrderCard } from "@/src/components/molecules/OrderCard/OrderCard";
 import { ReactNode } from "react";
+import { BartenderOrderCard } from "@/src/components/molecules/BartenderOrderCard/BartenderOrderCard";
 
 const STATUS_SCREEN_COMPONENT: { [key in OrderTab]: () => ReactNode } = {
   pending: PendingStatusScreen,
@@ -18,7 +18,7 @@ const STATUS_SCREEN_COMPONENT: { [key in OrderTab]: () => ReactNode } = {
 };
 
 type DashboardTabsPanelProps = {
-  orders: OrderWithDrink[];
+  orders: OrderWithDrinkAndUser[];
   variant: OrderTab;
 };
 
@@ -35,7 +35,7 @@ export const DashboardTabsPanel = ({
     <div>
       <OrdersGrid>
         {orders.map((order) => (
-          <OrderCard order={order} key={order.id} />
+          <BartenderOrderCard order={order} key={order.id} />
         ))}
       </OrdersGrid>
     </div>
