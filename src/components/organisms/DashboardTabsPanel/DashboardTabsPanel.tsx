@@ -32,12 +32,10 @@ export const DashboardTabsPanel = ({
   }
 
   return (
-    <div>
-      <OrdersGrid>
-        {orders.map((order) => (
-          <BartenderOrderCard order={order} key={order.id} />
-        ))}
-      </OrdersGrid>
-    </div>
+    <OrdersGrid cols={variant === "history" ? { mobile: 1 } : undefined}>
+      {orders.map((order) => (
+        <BartenderOrderCard order={order} key={order.id} />
+      ))}
+    </OrdersGrid>
   );
 };

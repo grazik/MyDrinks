@@ -1,8 +1,11 @@
+import { ComponentType } from "react";
 import { OrderWithDrinkAndUser, Order } from "@/src/types/order.types";
 import { QuantityBadge } from "@/src/components/molecules/BartenderOrderCard/components/QuantityBadge";
 import { ActiveCardActions } from "@/src/components/molecules/BartenderOrderCard/components/ActiveCardActions";
 import { TimeFromNow } from "@/src/components/atoms/TimeFromNow/TimeFromNow";
 import { OrderStatus } from "@prisma/client";
+import CheckIcon from "public/icons/check.svg";
+import XCircleIcon from "public/icons/x-circle.svg";
 
 import "./bartender-order-card.scss";
 
@@ -41,6 +44,55 @@ const ActiveCard = ({ order }: BartenderOrderCardProps) => {
   );
 };
 
-const HistoryCard = ({}: BartenderOrderCardProps) => {
-  return <div className="bartender-order-card"></div>;
+type HistoryStatusConfig = {
+  Icon: ComponentType<{ className?: string }>;
+  label: string;
+  className: string;
+  strikethrough: boolean;
+};
+
+const HISTORY_STATUS_CONFIG: Partial<Record<OrderStatus, HistoryStatusConfig>> =
+  {
+    [OrderStatus.COMPLETED]: {
+      Icon: CheckIcon,
+      label: "Served at",
+      className: "bartender-order-card__status--completed",
+      strikethrough: false,
+    },
+    [OrderStatus.CANCELLED]: {
+      Icon: XCircleIcon,
+      label: "Cancelled at",
+      className: "bartender-order-card__status--cancelled",
+      strikethrough: true,
+    },
+  };
+
+const HistoryCard = ({ order }: BartenderOrderCardProps) => {
+  const config = HISTORY_STATUS_CONFIG[order.status];
+
+  if (!config) return null;
+
+  const { Icon } = config;
+
+  const time = order.updatedAt.toLocaleTimeString("pl-pl", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
+  return (
+    <div className="bartender-order-card bartender-order-card--history">
+      <p className={`bartender-order-card__status ${config.className}`}>
+        <Icon className="bartender-order-card__status-icon" />
+        {config.label} {time}
+      </p>
+      <div className="bartender-order-card__body">
+        <p
+          className={`body-text${config.strikethrough ? " bartender-order-card__drink--cancelled" : ""}`}
+        >
+          {order.quantity}× {order.drink.name}
+        </p>
+        <p className="bartender-order-card__user">For: {order.user.name}</p>
+      </div>
+    </div>
+  );
 };

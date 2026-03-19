@@ -1,5 +1,5 @@
 .bartender-order-card {
-  --border-color: var(--light-gray);
+  --border-color: var(--color-light-border);
 
   background-color: var(--color-surface-dark);
   border-radius: 10px;
@@ -17,8 +17,7 @@
 
   &__user {
     font-size: 1rem;
-    color: var(--color-text-muted)
-
+    color: var(--color-text-muted);
   }
 
   &__actions {
@@ -32,5 +31,35 @@
 
   &__action--primary {
     flex: 3;
+  }
+
+  &__status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.875rem;
+
+    &-icon {
+      flex-shrink: 0;
+      width: 14px;
+      height: 14px;
+    }
+
+    &--completed {
+      color: var(--color-lime-green);
+    }
+
+    &--cancelled {
+      color: var(--color-cherry-red);
+    }
+  }
+
+  &__drink--cancelled {
+    text-decoration: line-through;
+    color: var(--color-text-muted);
+  }
+
+  &--history {
+    background-color: var(--color-background);
   }
 }
