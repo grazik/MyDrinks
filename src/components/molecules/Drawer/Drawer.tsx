@@ -13,11 +13,19 @@ type DrawerProps = {
   children: ReactNode;
 };
 
-export const Drawer = ({ side, isOpen, onClose, label, children }: DrawerProps) => {
+export const Drawer = ({
+  side,
+  isOpen,
+  onClose,
+  label,
+  children,
+}: DrawerProps) => {
   const drawerRef = useRef<HTMLDivElement>(null);
   const previouslyFocusedRef = useRef<HTMLElement | null>(null);
   const onCloseRef = useRef(onClose);
-  useEffect(() => { onCloseRef.current = onClose; });
+  useEffect(() => {
+    onCloseRef.current = onClose;
+  });
 
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
     if (e.key === "Escape") {
@@ -27,7 +35,7 @@ export const Drawer = ({ side, isOpen, onClose, label, children }: DrawerProps) 
 
     if (e.key === "Tab" && drawerRef.current) {
       const focusable = drawerRef.current.querySelectorAll<HTMLElement>(
-        'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])'
+        'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])',
       );
       if (focusable.length === 0) {
         e.preventDefault();

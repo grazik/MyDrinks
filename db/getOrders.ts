@@ -1,4 +1,5 @@
 import { prisma } from "@/db/db";
+import { drinkWithIngredients, orderUser } from "@/db/orderIncludes";
 
 export const getUserOrdersForEvent = async (
   userId: string,
@@ -23,13 +24,8 @@ export const getAllOrdersForEvent = async (eventId: string) => {
       eventId,
     },
     include: {
-      drink: true,
-      user: {
-        select: {
-          id: true,
-          name: true,
-        },
-      },
+      ...drinkWithIngredients,
+      ...orderUser,
     },
     orderBy: {
       createdAt: "asc",

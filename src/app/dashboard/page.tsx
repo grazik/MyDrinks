@@ -4,6 +4,10 @@ import { DashboardTabs } from "@/src/components/organisms/DashboardTabs/Dashboar
 import { NoActiveEvent } from "@/src/app/dashboard/NoActiveEvent";
 import { getAllOrdersForEvent } from "@/dal/orders";
 import { groupOrdersByTab } from "@/src/utils/orders/orders";
+import { RecipePanel } from "@/src/components/organisms/RecipePanel/RecipePanel";
+
+import "./page.scss";
+import { SelectedOrderProvider } from "@/src/contexts/SelectedOrderContext/SelectedOrderProvider";
 
 export default async function DashboardPage() {
   const activeEvent = await getActiveEvent();
@@ -21,7 +25,12 @@ export default async function DashboardPage() {
         <H1Heading>Dashboard</H1Heading>
       </div>
 
-      <DashboardTabs groupedOrders={groupedOrders} />
+      <div className="dashboard__content">
+        <SelectedOrderProvider>
+          <DashboardTabs groupedOrders={groupedOrders} />
+          <RecipePanel />
+        </SelectedOrderProvider>
+      </div>
     </main>
   );
 }

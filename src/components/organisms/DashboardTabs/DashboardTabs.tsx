@@ -1,7 +1,7 @@
 "use client";
 import { Tabs } from "@/src/components/molecules/Tabs/Tabs";
 import { OrderTab, GroupedOrders } from "@/src/utils/orders/orders";
-import { OrderWithDrink } from "@/src/types/order.types";
+import { OrderWithDrinkWithIngredientsAndUser } from "@/src/types/order.types";
 import { DashboardTabsPanel } from "@/src/components/organisms/DashboardTabsPanel/DashboardTabsPanel";
 
 const TABS_CONFIG: { name: OrderTab; label: string }[] = [
@@ -12,7 +12,7 @@ const TABS_CONFIG: { name: OrderTab; label: string }[] = [
 ];
 
 type DashboardTabsProps = {
-  groupedOrders: GroupedOrders<OrderWithDrink>;
+  groupedOrders: GroupedOrders<OrderWithDrinkWithIngredientsAndUser>;
 };
 
 export const DashboardTabs = ({ groupedOrders }: DashboardTabsProps) => {

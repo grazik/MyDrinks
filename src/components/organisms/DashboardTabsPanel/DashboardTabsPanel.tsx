@@ -5,7 +5,7 @@ import {
   PendingStatusScreen,
   ReadyStatusScreen,
 } from "@/src/components/organisms/DashboardStatusScreen/DashboardStatusScreens";
-import { OrderWithDrinkAndUser } from "@/src/types/order.types";
+import { OrderWithDrinkWithIngredientsAndUser } from "@/src/types/order.types";
 import { OrdersGrid } from "@/src/components/organisms/OrdersGrid/OrdersGrid";
 import { ReactNode } from "react";
 import { BartenderOrderCard } from "@/src/components/molecules/BartenderOrderCard/BartenderOrderCard";
@@ -18,7 +18,7 @@ const STATUS_SCREEN_COMPONENT: { [key in OrderTab]: () => ReactNode } = {
 };
 
 type DashboardTabsPanelProps = {
-  orders: OrderWithDrinkAndUser[];
+  orders: OrderWithDrinkWithIngredientsAndUser[];
   variant: OrderTab;
 };
 
