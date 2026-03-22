@@ -3,7 +3,7 @@ import "./recipe-panel.scss";
 
 import { useBreakpoint } from "@/src/hooks/useBreakpoint";
 import { Drawer } from "@/src/components/molecules/Drawer/Drawer";
-import { useContext, useEffect, useLayoutEffect, useState } from "react";
+import { useContext, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { selectedOrderContext } from "@/src/contexts/SelectedOrderContext/selectedOrderContext";
 import { OrderWithDrinkWithIngredientsAndUser } from "@/src/types/order.types";
 import { H2SectionHeading } from "@/src/components/atoms/SectionHeading/SectionHeading";
@@ -90,11 +90,17 @@ export const RecipePanel = () => {
   const breakpoint = useBreakpoint();
   const { setSelectedOrder, selectedOrder } = useContext(selectedOrderContext);
 
-  useLayoutEffect(() => {
-    setSelectedOrder(null);
-  }, [breakpoint, setSelectedOrder]);
+  const isDesktop = breakpoint === "desktop";
+  const wasDesktopRef = useRef(isDesktop);
 
-  if (breakpoint === "desktop") {
+  useLayoutEffect(() => {
+    if (wasDesktopRef.current !== isDesktop) {
+      wasDesktopRef.current = isDesktop;
+      setSelectedOrder(null);
+    }
+  }, [isDesktop, setSelectedOrder]);
+
+  if (isDesktop) {
     return (
       <aside className="recipe-panel">
         {selectedOrder ? (

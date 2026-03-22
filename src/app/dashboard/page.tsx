@@ -1,4 +1,3 @@
-import { H1Heading } from "@/src/components/atoms/SectionHeading/SectionHeading";
 import { getActiveEvent } from "@/db/getEvent";
 import { DashboardTabs } from "@/src/components/organisms/DashboardTabs/DashboardTabs";
 import { NoActiveEvent } from "@/src/app/dashboard/NoActiveEvent";
