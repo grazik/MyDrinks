@@ -21,10 +21,6 @@ export default async function DashboardPage() {
 
   return (
     <main>
-      <div className="wrapper page">
-        <H1Heading>Dashboard</H1Heading>
-      </div>
-
       <div className="dashboard__content">
         <SelectedOrderProvider>
           <DashboardTabs groupedOrders={groupedOrders} />
