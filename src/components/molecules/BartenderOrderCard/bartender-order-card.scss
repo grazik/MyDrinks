@@ -9,6 +9,10 @@
   gap: 16px;
   border: 1px solid var(--border-color);
 
+  &--selected {
+    border-color: var(--color-amber-gold);
+  }
+
   &__header {
     display: flex;
     align-items: center;

@@ -7,8 +7,11 @@ import {
 } from "@/src/components/organisms/DashboardStatusScreen/DashboardStatusScreens";
 import { OrderWithDrinkWithIngredientsAndUser } from "@/src/types/order.types";
 import { OrdersGrid } from "@/src/components/organisms/OrdersGrid/OrdersGrid";
-import { ReactNode } from "react";
+import { ReactNode, use } from "react";
 import { BartenderOrderCard } from "@/src/components/molecules/BartenderOrderCard/BartenderOrderCard";
+import { selectedOrderContext } from "@/src/contexts/SelectedOrderContext/selectedOrderContext";
+
+import "./dashboard-tabs-panel.scss";
 
 const STATUS_SCREEN_COMPONENT: { [key in OrderTab]: () => ReactNode } = {
   pending: PendingStatusScreen,
@@ -31,11 +34,20 @@ export const DashboardTabsPanel = ({
     return <StatusScreen />;
   }
 
+  const { setSelectedOrder, selectedOrder } = use(selectedOrderContext);
+
   return (
-    <OrdersGrid cols={variant === "history" ? { mobile: 1 } : undefined}>
-      {orders.map((order) => (
-        <BartenderOrderCard order={order} key={order.id} />
-      ))}
-    </OrdersGrid>
+    <div className="dashboard-tabs-panel">
+      <OrdersGrid cols={variant === "history" ? { mobile: 1 } : undefined}>
+        {orders.map((order) => (
+          <BartenderOrderCard
+            order={order}
+            key={order.id}
+            isSelected={selectedOrder?.id === order.id}
+            onClick={() => setSelectedOrder(order)}
+          />
+        ))}
+      </OrdersGrid>
+    </div>
   );
 };

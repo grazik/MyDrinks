@@ -1,6 +1,14 @@
+@use '/src/styles/breakpoints';
+
 .recipe-panel {
   height: 100%;
   overflow-y: auto;
+
+  @include breakpoints.from-desktop {
+    position: sticky;
+    top: 0;
+    height: 100dvh;
+  }
 
   &__hero {
     position: relative;

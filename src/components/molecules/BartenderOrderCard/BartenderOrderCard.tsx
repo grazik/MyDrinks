@@ -11,6 +11,8 @@ import "./bartender-order-card.scss";
 
 type BartenderOrderCardProps = {
   order: OrderWithDrinkAndUser;
+  onClick?: () => void;
+  isSelected?: boolean;
 };
 
 const isHistoryCard = (order: Order) => {
@@ -20,17 +22,30 @@ const isHistoryCard = (order: Order) => {
   );
 };
 
-export const BartenderOrderCard = ({ order }: BartenderOrderCardProps) => {
+export const BartenderOrderCard = ({
+  order,
+  onClick,
+  isSelected,
+}: BartenderOrderCardProps) => {
   if (isHistoryCard(order)) {
-    return <HistoryCard order={order} />;
+    return (
+      <HistoryCard order={order} onClick={onClick} isSelected={isSelected} />
+    );
   }
 
-  return <ActiveCard order={order} />;
+  return <ActiveCard order={order} onClick={onClick} isSelected={isSelected} />;
 };
 
-const ActiveCard = ({ order }: BartenderOrderCardProps) => {
+const ActiveCard = ({
+  order,
+  onClick,
+  isSelected,
+}: BartenderOrderCardProps) => {
   return (
-    <div className="bartender-order-card">
+    <div
+      className={`bartender-order-card ${isSelected ? "bartender-order-card--selected" : ""}`}
+      onClick={onClick}
+    >
       <div className="bartender-order-card__header">
         <TimeFromNow date={order.updatedAt} />
         <QuantityBadge quantity={order.quantity} />
@@ -67,7 +82,11 @@ const HISTORY_STATUS_CONFIG: Partial<Record<OrderStatus, HistoryStatusConfig>> =
     },
   };
 
-const HistoryCard = ({ order }: BartenderOrderCardProps) => {
+const HistoryCard = ({
+  order,
+  onClick,
+  isSelected,
+}: BartenderOrderCardProps) => {
   const config = HISTORY_STATUS_CONFIG[order.status];
 
   if (!config) return null;
@@ -80,7 +99,10 @@ const HistoryCard = ({ order }: BartenderOrderCardProps) => {
   });
 
   return (
-    <div className="bartender-order-card bartender-order-card--history">
+    <div
+      className={`bartender-order-card bartender-order-card--history ${isSelected ? "bartender-order-card--selected" : ""}`}
+      onClick={onClick}
+    >
       <p className={`bartender-order-card__status ${config.className}`}>
         <Icon className="bartender-order-card__status-icon" />
         {config.label} {time}

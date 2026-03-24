@@ -19,7 +19,7 @@ export default async function DashboardPage() {
   const groupedOrders = groupOrdersByTab(orders);
 
   return (
-    <main>
+    <main className="dashboard">
       <div className="dashboard__content">
         <SelectedOrderProvider>
           <DashboardTabs groupedOrders={groupedOrders} />

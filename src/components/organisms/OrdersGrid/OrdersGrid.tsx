@@ -12,6 +12,9 @@ type OrdersGridProps = {
   cols?: ComponentProps<typeof Grid>["cols"];
 };
 
-export const OrdersGrid = ({ children, cols = DEFAULT_COLS }: OrdersGridProps) => {
+export const OrdersGrid = ({
+  children,
+  cols = DEFAULT_COLS,
+}: OrdersGridProps) => {
   return <Grid cols={cols}>{children}</Grid>;
 };
