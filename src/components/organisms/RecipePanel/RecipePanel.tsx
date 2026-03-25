@@ -6,7 +6,6 @@ import { Drawer } from "@/src/components/molecules/Drawer/Drawer";
 import {
   useContext,
   useEffect,
-  useLayoutEffect,
   useRef,
   useState,
 } from "react";
@@ -99,7 +98,7 @@ export const RecipePanel = () => {
   const isDesktop = breakpoint === "desktop";
   const wasDesktopRef = useRef(isDesktop);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (wasDesktopRef.current && !isDesktop) {
       setSelectedOrder(null);
     }
