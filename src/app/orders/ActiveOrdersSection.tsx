@@ -1,6 +1,6 @@
 import { Event, OrderStatus } from "@prisma/client";
 import { H2SectionHeading } from "@/src/components/atoms/SectionHeading/SectionHeading";
-import { getCurrentUserOrdersForEvent } from "@/lib/orders/getOrders";
+import { getMyOrdersForEvent } from "@/dal/orders";
 import { OrderCard } from "@/src/components/molecules/OrderCard/OrderCard";
 import { OrdersGrid } from "@/src/components/organisms/OrdersGrid/OrdersGrid";
 
@@ -26,7 +26,7 @@ const STATUS_ORDERING: Record<OrderStatus, number> = {
 };
 
 const ActiveOrdersSectionWithEvent = async ({ event }: { event: Event }) => {
-  const userOrders = (await getCurrentUserOrdersForEvent(event)) ?? [];
+  const userOrders = await getMyOrdersForEvent(event.id);
 
   const sortedOrders = userOrders.toSorted(
     (a, b) => STATUS_ORDERING[a.status] - STATUS_ORDERING[b.status],

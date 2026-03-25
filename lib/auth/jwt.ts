@@ -1,6 +1,6 @@
 import { jwtVerify, SignJWT } from "jose";
 import { AUTH_ERRORS } from "@/src/constants/auth";
-import { UserDto } from "@/lib/dto/user";
+import { UserDto, UserDtoSchema } from "@/lib/dto/user";
 
 const JWT_ALGORITHM = "HS256";
 const AUTH_TOKEN_EXPIRES_IN_SECONDS = 60 * 60 * 24 * 7;
@@ -32,6 +32,11 @@ export const verifyAuthToken = async (token: string) => {
   });
 
   return payload;
+};
+
+export const parseAuthToken = async (token: string): Promise<UserDto> => {
+  const payload = await verifyAuthToken(token);
+  return UserDtoSchema.parse(payload);
 };
 
 export { AUTH_TOKEN_EXPIRES_IN_SECONDS };

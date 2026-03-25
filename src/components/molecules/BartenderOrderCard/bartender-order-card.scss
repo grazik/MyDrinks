@@ -1,0 +1,69 @@
+.bartender-order-card {
+  --border-color: var(--color-light-border);
+
+  background-color: var(--color-surface-dark);
+  border-radius: 10px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border: 1px solid var(--border-color);
+
+  &--selected {
+    border-color: var(--color-amber-gold);
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__user {
+    font-size: 1rem;
+    color: var(--color-text-muted);
+  }
+
+  &__actions {
+    display: flex;
+    gap: 8px;
+  }
+
+  &__action--secondary {
+    flex: 1;
+  }
+
+  &__action--primary {
+    flex: 3;
+  }
+
+  &__status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.875rem;
+
+    &-icon {
+      flex-shrink: 0;
+      width: 14px;
+      height: 14px;
+    }
+
+    &--completed {
+      color: var(--color-lime-green);
+    }
+
+    &--cancelled {
+      color: var(--color-cherry-red);
+    }
+  }
+
+  &__drink--cancelled {
+    text-decoration: line-through;
+    color: var(--color-text-muted);
+  }
+
+  &--history {
+    background-color: var(--color-background);
+  }
+}

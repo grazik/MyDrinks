@@ -1,4 +1,4 @@
-import { getIngredientsByDrinkId } from "../../../../db/getDrinkIngredients";
+import { getIngredientsByDrinkId } from "@/db/getDrinkIngredients";
 import "./ingredients-section.scss";
 import {
   H2SectionHeading,

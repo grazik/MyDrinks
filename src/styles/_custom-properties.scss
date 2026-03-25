@@ -6,9 +6,11 @@
   --color-lime-green: #{$color-lime-green};
   --color-cherry-red: #{$color-cherry-red};
   --color-text-light: #{$color-text-light};
+  --color-text-muted: #{$color-text-muted};
   --color-muted-gray: #{$color-muted-gray};
 
   --color-surface-base: #{$color-surface-base};
+  --color-surface-dark: #{$color-surface-dark};
   --color-accent-primary: var(--color-amber-gold);
   --color-accent-hover: color-mix(in srgb, var(--color-accent-primary) 70%, transparent);
   --color-light-border: color-mix(in srgb, var(--color-text-light) 10%, transparent);

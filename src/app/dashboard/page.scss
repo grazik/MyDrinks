@@ -1,0 +1,17 @@
+@use '/src/styles/breakpoints';
+
+.dashboard {
+  &__content {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 0fr;
+
+    @include breakpoints.from-desktop {
+      grid-template-columns: 75fr 25fr;
+
+      & > :first-child {
+        border-right: 1px solid var(--color-light-border);
+      }
+    }
+  }
+}

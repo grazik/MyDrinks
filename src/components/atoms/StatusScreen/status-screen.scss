@@ -1,0 +1,30 @@
+.status-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+
+  &__icon {
+    opacity: 0.6;
+  }
+
+  &__title {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 1.25rem;
+    color: var(--color-text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 0;
+  }
+
+  &__description {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    color: var(--color-text-light);
+    opacity: 0.5;
+    line-height: 1.5;
+    margin: 0;
+  }
+}

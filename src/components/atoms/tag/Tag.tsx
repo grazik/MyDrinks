@@ -7,6 +7,7 @@ interface TagProps {
   bgColor?: string;
   color?: string;
   borderRadius?: number;
+  fontSize?: string;
   variant?: "solid" | "subtle";
 }
 
@@ -14,6 +15,7 @@ const VALUE_CSS_MAPPER = {
   bgColor: "--tag-bg-color",
   color: "--tag-color",
   borderRadius: "--tag-border-radius",
+  fontSize: "--tag-font-size",
 } as const;
 
 const tagValuesToCssVariables = valuesToCssVariables(VALUE_CSS_MAPPER);
