@@ -20,6 +20,12 @@
     row-gap: 2rem;
     align-items: start;
 
+    &:not(:has(> .pdp-quick-order-controls)) {
+      grid-template-areas:
+        "image ingredients"
+        "image recipe";
+    }
+
     .images-section { grid-area: image; }
     .ingredients-section { grid-area: ingredients; }
     .pdp-quick-order-controls { grid-area: controls; }
