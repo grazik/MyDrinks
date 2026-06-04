@@ -4,8 +4,6 @@
   left: 50%;
   transform: translateX(-50%) translateY(-8px);
   z-index: 1000;
-  background: var(--color-lime-green);
-  color: #010B13;
   padding: 10px 20px;
   border-radius: 8px;
   font-size: 0.875rem;
@@ -14,6 +12,16 @@
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.2s ease, transform 0.2s ease;
+
+  &--success {
+    background: var(--color-lime-green);
+    color: var(--color-background);
+  }
+
+  &--error {
+    background: var(--color-cherry-red);
+    color: var(--color-text-light);
+  }
 
   &--visible {
     opacity: 1;

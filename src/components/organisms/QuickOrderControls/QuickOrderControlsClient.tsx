@@ -17,7 +17,11 @@ export const QuickOrderControlsClient = ({
   onOrder,
 }: QuickOrderControlsClientProps) => {
   const [quantity, setQuantity] = useState(1);
-  const [toast, setToast] = useState({ message: "", visible: false });
+  const [toast, setToast] = useState<{
+    message: string;
+    visible: boolean;
+    variant: "success" | "error";
+  }>({ message: "", visible: false, variant: "success" });
   const [isPending, startTransition] = useTransition();
 
   const handleOrder = () => {
@@ -27,10 +31,10 @@ export const QuickOrderControlsClient = ({
       const result = await onOrder(quantity);
 
       if (result.ok) {
-        setToast({ message: "Order placed!", visible: true });
+        setToast({ message: "Order placed!", visible: true, variant: "success" });
         setQuantity(1);
       } else {
-        setToast({ message: result.message, visible: true });
+        setToast({ message: result.message, visible: true, variant: "error" });
       }
 
       setTimeout(() => setToast((prev) => ({ ...prev, visible: false })), 2500);
@@ -58,7 +62,11 @@ export const QuickOrderControlsClient = ({
 
   return (
     <>
-      <Toast message={toast.message} visible={toast.visible} />
+      <Toast
+        message={toast.message}
+        visible={toast.visible}
+        variant={toast.variant}
+      />
       <div className="quick-order-controls quick-order-controls--available">
         <QuantityStepper value={quantity} onChange={setQuantity} />
         <Cta

@@ -1,6 +1,6 @@
 export const ORDER_ERRORS = {
-  invalidData: "invalid data",
-  unauthorized: "unauthorized",
-  noActiveEvent: "no active event",
-  noDrinkInActiveEvent: "drink is not a part of active event",
+  invalidData: "Something looks off with that order. Please try again.",
+  unauthorized: "Please sign in to place an order.",
+  noActiveEvent: "The bar is closed right now — no event is active.",
+  noDrinkInActiveEvent: "This drink isn't on tonight's menu.",
 };
