@@ -6,12 +6,11 @@ import { getUserDto } from "@/lib/auth/getUserDto";
 import { createOrder } from "@/db/createOrder";
 import { getActiveEventWithDrinkIds } from "@/db/getEvent";
 import { z } from "zod";
-
-export type OrderResult = { ok: true } | { ok: false; message: string };
+import type { ActionResult } from "@/src/types/generic.types";
 
 export const orderDrink = async (
   data: z.infer<typeof orderDtoSchema>,
-): Promise<OrderResult> => {
+): Promise<ActionResult> => {
   const user = await getUserDto();
 
   if (!user) {

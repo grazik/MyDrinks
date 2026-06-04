@@ -6,11 +6,11 @@ import { Spinner } from "@/src/components/atoms/Spinner/Spinner";
 import { QuantityStepper } from "@/src/components/atoms/QuantityStepper/QuantityStepper";
 import { Toast } from "@/src/components/atoms/Toast/Toast";
 import { useToast } from "@/src/hooks/useToast";
-import type { OrderResult } from "@/src/actions/orderDrink";
+import type { ActionResult } from "@/src/types/generic.types";
 import "./quick-order-controls.scss";
 interface QuickOrderControlsClientProps {
   available: boolean;
-  onOrder?: (quantity: number) => Promise<OrderResult>;
+  onOrder?: (quantity: number) => Promise<ActionResult>;
 }
 
 export const QuickOrderControlsClient = ({

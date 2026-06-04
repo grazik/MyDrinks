@@ -66,21 +66,23 @@ type HistoryStatusConfig = {
   strikethrough: boolean;
 };
 
-const HISTORY_STATUS_CONFIG: Partial<Record<OrderStatus, HistoryStatusConfig>> =
-  {
-    [OrderStatus.COMPLETED]: {
-      Icon: CheckIcon,
-      label: "Served at",
-      className: "bartender-order-card__status--completed",
-      strikethrough: false,
-    },
-    [OrderStatus.CANCELLED]: {
-      Icon: XCircleIcon,
-      label: "Cancelled at",
-      className: "bartender-order-card__status--cancelled",
-      strikethrough: true,
-    },
-  };
+const HISTORY_STATUS_CONFIG: Record<OrderStatus, HistoryStatusConfig | null> = {
+  [OrderStatus.PENDING]: null,
+  [OrderStatus.MIXING]: null,
+  [OrderStatus.READY]: null,
+  [OrderStatus.COMPLETED]: {
+    Icon: CheckIcon,
+    label: "Served at",
+    className: "bartender-order-card__status--completed",
+    strikethrough: false,
+  },
+  [OrderStatus.CANCELLED]: {
+    Icon: XCircleIcon,
+    label: "Cancelled at",
+    className: "bartender-order-card__status--cancelled",
+    strikethrough: true,
+  },
+};
 
 const HistoryCard = ({
   order,

@@ -3,24 +3,16 @@
 import { OrderStatus } from "@prisma/client";
 import { getUserDto } from "@/lib/auth/getUserDto";
 import { isStaff } from "@/lib/auth/roles";
-import { ORDER_ERRORS } from "@/src/constants/order";
+import { ORDER_ERRORS, ALLOWED_TRANSITIONS } from "@/src/constants/order";
 import { getOrderById } from "@/db/getOrders";
 import z from "zod";
 import { setOrderStatus } from "@/db/updateOrder";
-import type { OrderResult } from "@/src/actions/orderDrink";
-
-const ALLOWED_TRANSITIONS: Record<OrderStatus, OrderStatus[]> = {
-  [OrderStatus.PENDING]: [OrderStatus.MIXING, OrderStatus.CANCELLED],
-  [OrderStatus.MIXING]: [OrderStatus.READY, OrderStatus.CANCELLED],
-  [OrderStatus.READY]: [OrderStatus.COMPLETED, OrderStatus.CANCELLED],
-  [OrderStatus.COMPLETED]: [],
-  [OrderStatus.CANCELLED]: [],
-};
+import type { ActionResult } from "@/src/types/generic.types";
 
 export const updateOrderStatus = async (
   orderId: string,
   orderStatus: OrderStatus,
-): Promise<OrderResult> => {
+): Promise<ActionResult> => {
   const user = await getUserDto();
 
   if (!user || !isStaff(user.role)) {

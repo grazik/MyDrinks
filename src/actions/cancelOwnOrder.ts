@@ -6,10 +6,10 @@ import { getOrderById } from "@/db/getOrders";
 import { setOrderStatus } from "@/db/updateOrder";
 import { getUserDto } from "@/lib/auth/getUserDto";
 import { ORDER_ERRORS } from "@/src/constants/order";
-import type { OrderResult } from "@/src/actions/orderDrink";
+import type { ActionResult } from "@/src/types/generic.types";
 
 /** Customer self-service cancellation. Bartenders cancel via updateOrderStatus(id, CANCELLED). */
-export const cancelOwnOrder = async (orderId: string): Promise<OrderResult> => {
+export const cancelOwnOrder = async (orderId: string): Promise<ActionResult> => {
   const user = await getUserDto();
 
   if (!user) {
