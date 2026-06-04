@@ -54,7 +54,7 @@ const ActiveCard = ({
         <p className="body-text">{order.drink.name}</p>
         <p className="bartender-order-card__user">For: {order.user.name}</p>
       </div>
-      <ActiveCardActions status={order.status} />
+      <ActiveCardActions orderId={order.id} status={order.status} />
     </div>
   );
 };

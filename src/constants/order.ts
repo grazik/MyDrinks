@@ -5,4 +5,6 @@ export const ORDER_ERRORS = {
   noDrinkInActiveEvent: "This drink isn't on tonight's menu.",
   notFound: "We couldn't find that order.",
   notCancellable: "This order can no longer be cancelled.",
+  forbidden: "You don't have permission to update this order.",
+  invalidTransition: "That status change isn't allowed for this order.",
 };

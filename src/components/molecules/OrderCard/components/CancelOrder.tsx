@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import { Cta } from "@/src/components/atoms/Cta/Cta";
 import { Spinner } from "@/src/components/atoms/Spinner/Spinner";
 import { Toast } from "@/src/components/atoms/Toast/Toast";
+import { useToast } from "@/src/hooks/useToast";
 import { cancelOwnOrder } from "@/src/actions/cancelOwnOrder";
 
 type CancelOrderProps = {
@@ -12,7 +13,7 @@ type CancelOrderProps = {
 
 export const CancelOrder = ({ orderId }: CancelOrderProps) => {
   const [isConfirming, setIsConfirming] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const { toastProps, showToast } = useToast();
   const [isPending, startTransition] = useTransition();
 
   const handleConfirm = () => {
@@ -20,16 +21,15 @@ export const CancelOrder = ({ orderId }: CancelOrderProps) => {
       const result = await cancelOwnOrder(orderId);
 
       if (!result.ok) {
-        setError(result.message);
+        showToast(result.message);
         setIsConfirming(false);
-        setTimeout(() => setError(null), 2500);
       }
     });
   };
 
   return (
     <>
-      <Toast message={error ?? ""} visible={Boolean(error)} variant="error" />
+      <Toast {...toastProps} />
       {isConfirming ? (
         <>
           <Cta
