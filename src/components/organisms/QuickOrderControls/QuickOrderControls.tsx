@@ -1,6 +1,7 @@
 import { getUserDto } from "@/lib/auth/getUserDto";
 import { getActiveEventWithDrinkIds } from "@/db/getEvent";
 import { QuickOrderControlsClient } from "./QuickOrderControlsClient";
+import { orderDrink } from "@/src/actions/orderDrink";
 
 interface QuickOrderControlsProps {
   drinkId: string;
@@ -18,5 +19,16 @@ export const QuickOrderControls = async ({
 
   const available = event.eventDrink.some((ed) => ed.drinkId === drinkId);
 
-  return <QuickOrderControlsClient available={available} />;
+  return (
+    <QuickOrderControlsClient
+      available={available}
+      onOrder={async (quantity) => {
+        "use server";
+        return orderDrink({
+          drinkId,
+          quantity,
+        });
+      }}
+    />
+  );
 };
