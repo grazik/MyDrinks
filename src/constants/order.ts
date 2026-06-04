@@ -3,4 +3,6 @@ export const ORDER_ERRORS = {
   unauthorized: "Please sign in to place an order.",
   noActiveEvent: "The bar is closed right now — no event is active.",
   noDrinkInActiveEvent: "This drink isn't on tonight's menu.",
+  notFound: "We couldn't find that order.",
+  notCancellable: "This order can no longer be cancelled.",
 };

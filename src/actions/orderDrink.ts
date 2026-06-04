@@ -3,7 +3,7 @@
 import { orderDtoSchema } from "@/lib/dto/order";
 import { ORDER_ERRORS } from "@/src/constants/order";
 import { getUserDto } from "@/lib/auth/getUserDto";
-import { prisma } from "@/db/db";
+import { createOrder } from "@/db/createOrder";
 import { getActiveEventWithDrinkIds } from "@/db/getEvent";
 import { z } from "zod";
 
@@ -50,13 +50,11 @@ export const orderDrink = async (
     };
   }
 
-  await prisma.order.create({
-    data: {
-      quantity,
-      drinkId,
-      userId: user.sub,
-      eventId: activeEvent.id,
-    },
+  await createOrder({
+    quantity,
+    drinkId,
+    userId: user.sub,
+    eventId: activeEvent.id,
   });
 
   return {
