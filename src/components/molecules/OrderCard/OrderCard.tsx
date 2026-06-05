@@ -7,10 +7,8 @@ import { OrderStatus } from "@prisma/client";
 
 import "./order-card.scss";
 import { CardContent } from "@/src/components/molecules/OrderCard/components/CardContent";
-import {
-  Actions,
-  CancelOrder,
-} from "@/src/components/molecules/OrderCard/components/Actions";
+import { Actions } from "@/src/components/molecules/OrderCard/components/Actions";
+import { CancelOrder } from "@/src/components/molecules/OrderCard/components/CancelOrder";
 import { OrderWithDrink } from "@/src/types/order.types";
 
 type OrderCardProps = {
@@ -95,7 +93,7 @@ const ActiveOrderCard = ({ order }: OrderCardProps) => {
       />
       {order.status === OrderStatus.PENDING && (
         <Actions>
-          <CancelOrder />
+          <CancelOrder orderId={order.id} />
         </Actions>
       )}
     </div>

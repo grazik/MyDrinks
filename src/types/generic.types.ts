@@ -1,3 +1,6 @@
+/** Result envelope for server actions that report success/failure back to the client (rather than redirecting): success, or failure with a user-facing message. */
+export type ActionResult = { ok: true } | { ok: false; message: string };
+
 export type UnionToIntersection<U> = (
   U extends unknown ? (x: U) => void : never
 ) extends (x: infer I) => void

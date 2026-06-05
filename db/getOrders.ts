@@ -18,6 +18,12 @@ export const getUserOrdersForEvent = async (
   return orders;
 };
 
+export const getOrderById = async (orderId: string) => {
+  return prisma.order.findUnique({
+    where: { id: orderId },
+  });
+};
+
 export const getAllOrdersForEvent = async (eventId: string) => {
   const orders = await prisma.order.findMany({
     where: {

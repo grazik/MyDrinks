@@ -5,10 +5,12 @@ import { Cta } from "@/src/components/atoms/Cta/Cta";
 import { Spinner } from "@/src/components/atoms/Spinner/Spinner";
 import { QuantityStepper } from "@/src/components/atoms/QuantityStepper/QuantityStepper";
 import { Toast } from "@/src/components/atoms/Toast/Toast";
+import { useToast } from "@/src/hooks/useToast";
+import type { ActionResult } from "@/src/types/generic.types";
 import "./quick-order-controls.scss";
 interface QuickOrderControlsClientProps {
   available: boolean;
-  onOrder?: (quantity: number) => Promise<void>;
+  onOrder?: (quantity: number) => Promise<ActionResult>;
 }
 
 export const QuickOrderControlsClient = ({
@@ -16,17 +18,21 @@ export const QuickOrderControlsClient = ({
   onOrder,
 }: QuickOrderControlsClientProps) => {
   const [quantity, setQuantity] = useState(1);
-  const [showToast, setShowToast] = useState(false);
+  const { toastProps, showToast } = useToast();
   const [isPending, startTransition] = useTransition();
 
   const handleOrder = () => {
     if (!onOrder) return;
 
     startTransition(async () => {
-      await onOrder(quantity);
-      setShowToast(true);
-      setQuantity(1);
-      setTimeout(() => setShowToast(false), 2500);
+      const result = await onOrder(quantity);
+
+      if (result.ok) {
+        showToast("Order placed!", "success");
+        setQuantity(1);
+      } else {
+        showToast(result.message);
+      }
     });
   };
 
@@ -51,7 +57,7 @@ export const QuickOrderControlsClient = ({
 
   return (
     <>
-      <Toast message="Order placed!" visible={showToast} />
+      <Toast {...toastProps} />
       <div className="quick-order-controls quick-order-controls--available">
         <QuantityStepper value={quantity} onChange={setQuantity} />
         <Cta
