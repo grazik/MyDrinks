@@ -24,6 +24,16 @@ export const getOrderById = async (orderId: string) => {
   });
 };
 
+export const getOrderByIdWithUserAndIngredients = async (orderId: string) => {
+  return prisma.order.findUnique({
+    where: { id: orderId },
+    include: {
+      ...drinkWithIngredients,
+      ...orderUser,
+    },
+  });
+};
+
 export const getAllOrdersForEvent = async (eventId: string) => {
   const orders = await prisma.order.findMany({
     where: {

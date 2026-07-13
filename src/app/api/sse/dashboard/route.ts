@@ -4,11 +4,14 @@ import { OrderEvent, ORDERS_BARTENDER_CHANNEL } from "@/lib/realtime/channels";
 import { orderEmitter } from "@/lib/sse/emitter";
 import { ensurePgListener } from "@/lib/sse/pgListener";
 import { getActiveEventWithDrinkIds } from "@/db/getEvent";
-import { getAllOrdersForEvent, getOrderById } from "@/db/getOrders";
+import {
+  getAllOrdersForEvent,
+  getOrderByIdWithUserAndIngredients,
+} from "@/db/getOrders";
 import { encodeSseEvent } from "@/src/utils/sse";
+import { BarEvent } from "@/lib/sse/types";
 
 export async function GET() {
-  const encoder = new TextEncoder();
   const user = await getUserDto();
 
   if (!user) {
@@ -42,7 +45,7 @@ export async function GET() {
           `[SSE Dashboard] ${new Date().toISOString()} incoming new event | id: ${user.sub}, order: ${payload.orderId}.`,
         );
 
-        const order = await getOrderById(payload.orderId);
+        const order = await getOrderByIdWithUserAndIngredients(payload.orderId);
 
         if (!order) {
           console.log(
@@ -56,7 +59,7 @@ export async function GET() {
           console.log(
             `[SSE Dashboard] ${new Date().toISOString()} Order found | id: ${user.sub}, order: ${payload.orderId}, eventId: ${activeEvent?.id}.`,
           );
-          controller.enqueue(encodeSseEvent("order_updated", order));
+          controller.enqueue(encodeSseEvent(BarEvent.ORDER_UPDATED, order));
         } else {
           console.log(
             `[SSE Dashboard] ${new Date().toISOString()} Order not part of active event | id: ${user.sub}, order: ${payload.orderId}, eventId: ${activeEvent?.id}.`,
@@ -70,12 +73,12 @@ export async function GET() {
         console.log(
           `[SSE Dashboard] ${new Date().toISOString()} Active event present | id: ${user.sub}.`,
         );
-        controller.enqueue(encodeSseEvent("all_orders", allOrders));
+        controller.enqueue(encodeSseEvent(BarEvent.ALL_ORDERS, allOrders));
       } else {
         console.log(
           `[SSE Dashboard] ${new Date().toISOString()} No active event | id: ${user.sub}.`,
         );
-        controller.enqueue(encodeSseEvent("bar_closed", null));
+        controller.enqueue(encodeSseEvent(BarEvent.BAR_CLOSED, null));
       }
     },
   });
