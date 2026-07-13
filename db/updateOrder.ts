@@ -1,5 +1,4 @@
 import { OrderStatus } from "@prisma/client";
-import { prisma } from "@/db/db";
 import { notify } from "@/db/notify";
 import {
   ORDERS_BARTENDER_CHANNEL,
@@ -8,7 +7,7 @@ import {
 
 export const setOrderStatus = (orderId: string, status: OrderStatus) =>
   notify(
-    prisma.order.update({ where: { id: orderId }, data: { status } }),
+    (tx) => tx.order.update({ where: { id: orderId }, data: { status } }),
     [ORDERS_CUSTOMER_CHANNEL, ORDERS_BARTENDER_CHANNEL],
-    { orderId },
+    () => ({ orderId }),
   );
