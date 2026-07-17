@@ -3,6 +3,7 @@ import { H2SectionHeading } from "@/src/components/atoms/SectionHeading/SectionH
 import { getMyOrdersForEvent } from "@/dal/orders";
 import { OrderCard } from "@/src/components/molecules/OrderCard/OrderCard";
 import { OrdersGrid } from "@/src/components/organisms/OrdersGrid/OrdersGrid";
+import { ActiveOrdersSectionClient } from "@/src/app/orders/ActiveOrdersSectionClient";
 
 const ActiveOrdersSectionNoEvent = () => {
   return (
@@ -17,28 +18,14 @@ const ActiveOrdersSectionNoEvent = () => {
   );
 };
 
-const STATUS_ORDERING: Record<OrderStatus, number> = {
-  [OrderStatus.READY]: 0,
-  [OrderStatus.MIXING]: 1,
-  [OrderStatus.PENDING]: 2,
-  [OrderStatus.COMPLETED]: 3,
-  [OrderStatus.CANCELLED]: 4,
-};
-
 const ActiveOrdersSectionWithEvent = async ({ event }: { event: Event }) => {
   const userOrders = await getMyOrdersForEvent(event.id);
-
-  const sortedOrders = userOrders.toSorted(
-    (a, b) => STATUS_ORDERING[a.status] - STATUS_ORDERING[b.status],
-  );
 
   return (
     <section>
       <H2SectionHeading>Abba</H2SectionHeading>
       <OrdersGrid>
-        {sortedOrders.map((order) => (
-          <OrderCard order={order} key={order.id} />
-        ))}
+        <ActiveOrdersSectionClient initialOrders={userOrders} />
       </OrdersGrid>
     </section>
   );

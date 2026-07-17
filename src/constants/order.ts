@@ -19,3 +19,11 @@ export const ALLOWED_TRANSITIONS: Record<OrderStatus, OrderStatus[]> = {
   [OrderStatus.COMPLETED]: [],
   [OrderStatus.CANCELLED]: [],
 };
+
+export const STATUS_ORDERING: Record<OrderStatus, number> = {
+  [OrderStatus.READY]: 0,
+  [OrderStatus.MIXING]: 1,
+  [OrderStatus.PENDING]: 2,
+  [OrderStatus.COMPLETED]: 3,
+  [OrderStatus.CANCELLED]: 4,
+};
