@@ -1,6 +1,6 @@
 import { Client } from "pg";
 import { ALL_CHANNELS } from "@/lib/realtime/channels";
-import { orderEmitter } from "./emitter";
+import { emitOrderEvent } from "./emitter";
 
 const globalForListener = globalThis as unknown as {
   pgListenerReady?: Promise<void>;
@@ -16,7 +16,7 @@ const createListener = async () => {
   client.on("notification", (msg) => {
     if (!msg.payload) return;
     try {
-      orderEmitter.emit(msg.channel, JSON.parse(msg.payload));
+      emitOrderEvent(msg.channel, JSON.parse(msg.payload));
     } catch (err) {
       console.error(
         `[pgListener] failed to parse payload on ${msg.channel}`,

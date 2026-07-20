@@ -21,3 +21,45 @@ const dateReviver = (key: string, value: unknown) =>
 
 export const parseSseData = <T>(raw: string): T =>
   JSON.parse(raw, dateReviver) as T;
+
+const HEARTBEAT_FRAME = encoder.encode(":\n\n");
+
+export const startHeartbeat = (
+  enqueue: (chunk: Uint8Array) => boolean,
+  onClose: () => void,
+  time = 15000,
+) => {
+  const interval = setInterval(() => {
+    if (!enqueue(HEARTBEAT_FRAME)) {
+      clearInterval(interval);
+      onClose();
+    }
+  }, time);
+
+  return () => clearInterval(interval);
+};
+
+export const safeEnqueue = (controller: ReadableStreamDefaultController) => {
+  let isClosed = false;
+
+  const enqueue = (data: Uint8Array) => {
+    if (isClosed) {
+      return false;
+    }
+
+    try {
+      controller.enqueue(data);
+      return true;
+    } catch (err) {
+      isClosed = true;
+      console.error("[sse] enqueue failed; treating stream as closed", err);
+      return false;
+    }
+  };
+
+  const markClosed = () => {
+    isClosed = true;
+  };
+
+  return { enqueue, markClosed };
+};

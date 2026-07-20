@@ -1,14 +1,14 @@
 import { getUserDto } from "@/lib/auth/getUserDto";
 import { isStaff } from "@/lib/auth/roles";
 import { OrderEvent, ORDERS_BARTENDER_CHANNEL } from "@/lib/realtime/channels";
-import { orderEmitter } from "@/lib/sse/emitter";
+import { subscribeToOrderEmitter } from "@/lib/sse/emitter";
 import { ensurePgListener } from "@/lib/sse/pgListener";
 import { getActiveEventWithDrinkIds } from "@/db/getEvent";
 import {
   getAllOrdersForEvent,
   getOrderByIdWithUserAndIngredients,
 } from "@/db/getOrders";
-import { encodeSseEvent } from "@/src/utils/sse";
+import { encodeSseEvent, safeEnqueue, startHeartbeat } from "@/src/utils/sse";
 import { BarEvent } from "@/lib/sse/types";
 
 export async function GET() {
@@ -35,37 +35,55 @@ export async function GET() {
   }
 
   await ensurePgListener();
+  let teardown = () => {};
 
   const activeEvent = await getActiveEventWithDrinkIds();
 
   const stream = new ReadableStream({
     async start(controller) {
-      orderEmitter.on(ORDERS_BARTENDER_CHANNEL, async (payload: OrderEvent) => {
-        console.log(
-          `[SSE Dashboard] ${new Date().toISOString()} incoming new event | id: ${user.sub}, order: ${payload.orderId}.`,
-        );
+      const { enqueue, markClosed } = safeEnqueue(controller);
 
-        const order = await getOrderByIdWithUserAndIngredients(payload.orderId);
+      const stopHeartbeat = startHeartbeat(enqueue, () => teardown());
 
-        if (!order) {
+      const unsubscribeOrderEmitter = subscribeToOrderEmitter(
+        ORDERS_BARTENDER_CHANNEL,
+        async (payload: OrderEvent) => {
           console.log(
-            `[SSE Dashboard] ${new Date().toISOString()} Order not found | id: ${user.sub}, order: ${payload.orderId}.`,
+            `[SSE Dashboard] ${new Date().toISOString()} incoming new event | id: ${user.sub}, order: ${payload.orderId}.`,
           );
-        } else if (
-          activeEvent?.eventDrink.find(
-            ({ drinkId }) => drinkId === order.drinkId,
-          )
-        ) {
-          console.log(
-            `[SSE Dashboard] ${new Date().toISOString()} Order found | id: ${user.sub}, order: ${payload.orderId}, eventId: ${activeEvent?.id}.`,
+
+          const order = await getOrderByIdWithUserAndIngredients(
+            payload.orderId,
           );
-          controller.enqueue(encodeSseEvent(BarEvent.ORDER_UPDATED, order));
-        } else {
-          console.log(
-            `[SSE Dashboard] ${new Date().toISOString()} Order not part of active event | id: ${user.sub}, order: ${payload.orderId}, eventId: ${activeEvent?.id}.`,
-          );
-        }
-      });
+
+          if (!order) {
+            console.log(
+              `[SSE Dashboard] ${new Date().toISOString()} Order not found | id: ${user.sub}, order: ${payload.orderId}.`,
+            );
+          } else if (
+            activeEvent?.eventDrink.find(
+              ({ drinkId }) => drinkId === order.drinkId,
+            )
+          ) {
+            console.log(
+              `[SSE Dashboard] ${new Date().toISOString()} Order found | id: ${user.sub}, order: ${payload.orderId}, eventId: ${activeEvent?.id}.`,
+            );
+            enqueue(encodeSseEvent(BarEvent.ORDER_UPDATED, order));
+          } else {
+            console.log(
+              `[SSE Dashboard] ${new Date().toISOString()} Order not part of active event | id: ${user.sub}, order: ${payload.orderId}, eventId: ${activeEvent?.id}.`,
+            );
+          }
+        },
+      );
+
+      // Single idempotent teardown both paths converge on: the stream's
+      // `cancel` (graceful disconnect) and a failed heartbeat (half-open).
+      teardown = () => {
+        stopHeartbeat();
+        unsubscribeOrderEmitter();
+        markClosed();
+      };
 
       if (activeEvent) {
         const allOrders = await getAllOrdersForEvent(activeEvent.id);
@@ -73,13 +91,16 @@ export async function GET() {
         console.log(
           `[SSE Dashboard] ${new Date().toISOString()} Active event present | id: ${user.sub}.`,
         );
-        controller.enqueue(encodeSseEvent(BarEvent.ALL_ORDERS, allOrders));
+        enqueue(encodeSseEvent(BarEvent.ALL_ORDERS, allOrders));
       } else {
         console.log(
           `[SSE Dashboard] ${new Date().toISOString()} No active event | id: ${user.sub}.`,
         );
-        controller.enqueue(encodeSseEvent(BarEvent.BAR_CLOSED, null));
+        enqueue(encodeSseEvent(BarEvent.BAR_CLOSED, null));
       }
+    },
+    cancel() {
+      teardown();
     },
   });
 
