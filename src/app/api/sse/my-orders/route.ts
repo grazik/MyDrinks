@@ -1,11 +1,20 @@
 import { getUserDto } from "@/lib/auth/getUserDto";
-import { OrderEvent, ORDERS_CUSTOMER_CHANNEL } from "@/lib/realtime/channels";
-import { subscribeToOrderEmitter } from "@/lib/sse/emitter";
+import { ORDERS_CUSTOMER_CHANNEL } from "@/lib/realtime/channels";
+import { subscribeToBarUpdates } from "@/lib/sse/emitter";
 import { ensurePgListener } from "@/lib/sse/pgListener";
 import { getActiveEventWithDrinkIds } from "@/db/getEvent";
-import { getUserOrderById, getUserOrdersForEvent } from "@/db/getOrders";
+import { getUserOrdersForEvent } from "@/db/getOrders";
 import { encodeSseEvent, safeEnqueue, startHeartbeat } from "@/src/utils/sse";
-import { BarEvent } from "@/lib/sse/types";
+import { BarEvent, BarUpdate } from "@/lib/sse/types";
+import {
+  OrderWithDrink,
+  OrderWithDrinkWithIngredientsAndUser,
+} from "@/src/types/order.types";
+
+const toCustomerOrder = ({
+  user,
+  ...order
+}: OrderWithDrinkWithIngredientsAndUser): OrderWithDrink => order;
 
 export async function GET() {
   const user = await getUserDto();
@@ -31,22 +40,17 @@ export async function GET() {
 
       const stopHeartbeat = startHeartbeat(enqueue, () => teardown());
 
-      const unsubscribeOrderEmitter = subscribeToOrderEmitter(
+      const unsubscribeOrderEmitter = subscribeToBarUpdates(
         ORDERS_CUSTOMER_CHANNEL,
-        async (payload: OrderEvent) => {
+        ({ order }: BarUpdate) => {
+          // The customer channel is a broadcast; only forward the subscriber's
+          // own orders. This in-memory guard replaces the former per-event
+          // ownership query.
+          if (order.userId !== user.sub) return;
+
           console.log(
-            `[SSE MyOrders] ${new Date().toISOString()} incoming new event | id: ${user.sub}, order: ${payload.orderId}.`,
+            `[SSE MyOrders] ${new Date().toISOString()} incoming new event | id: ${user.sub}, order: ${order.id}.`,
           );
-
-          const order = await getUserOrderById(user.sub, payload.orderId);
-
-          if (!order) {
-            console.log(
-              `[SSE MyOrders] ${new Date().toISOString()} Order not found | id: ${user.sub}, order: ${payload.orderId}.`,
-            );
-
-            return;
-          }
 
           if (
             activeEvent?.eventDrink.find(
@@ -54,12 +58,17 @@ export async function GET() {
             )
           ) {
             console.log(
-              `[SSE MyOrders] ${new Date().toISOString()} Order found | id: ${user.sub}, order: ${payload.orderId}, eventId: ${activeEvent?.id}.`,
+              `[SSE MyOrders] ${new Date().toISOString()} Order found | id: ${user.sub}, order: ${order.id}, eventId: ${activeEvent?.id}.`,
             );
-            enqueue(encodeSseEvent(BarEvent.USER_ORDER_UPDATED, order));
+            enqueue(
+              encodeSseEvent(
+                BarEvent.USER_ORDER_UPDATED,
+                toCustomerOrder(order),
+              ),
+            );
           } else {
             console.log(
-              `[SSE MyOrders] ${new Date().toISOString()} Order not part of active event | id: ${user.sub}, order: ${payload.orderId}, eventId: ${activeEvent?.id}.`,
+              `[SSE MyOrders] ${new Date().toISOString()} Order not part of active event | id: ${user.sub}, order: ${order.id}, eventId: ${activeEvent?.id}.`,
             );
           }
         },

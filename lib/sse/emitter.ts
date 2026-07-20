@@ -1,34 +1,35 @@
 import { EventEmitter } from "node:events";
-import { Channel, OrderEvent } from "@/lib/realtime/channels";
+import { Channel } from "@/lib/realtime/channels";
+import { BarUpdate } from "./types";
 
 const globalForEmitter = globalThis as unknown as {
-  orderEmitter?: EventEmitter;
+  barEmitter?: EventEmitter;
 };
 
 /**
- * In-process event bus. The pg listener re-emits Postgres NOTIFY payloads onto
- * this emitter; SSE route handlers subscribe to it per connection.
+ * In-process event bus. The pg listener re-emits enriched Postgres NOTIFY
+ * payloads onto this emitter; SSE route handlers subscribe to it per connection.
  */
-const orderEmitter = globalForEmitter.orderEmitter ?? new EventEmitter();
+const barEmitter = globalForEmitter.barEmitter ?? new EventEmitter();
 
 // Each open SSE connection adds a listener, so lift the default 10-listener cap
 // to avoid spurious MaxListenersExceededWarning under normal load.
-orderEmitter.setMaxListeners(0);
+barEmitter.setMaxListeners(0);
 
-export const subscribeToOrderEmitter = (
+export const subscribeToBarUpdates = (
   channel: Channel,
-  handler: (payload: OrderEvent) => void,
+  handler: (update: BarUpdate) => void,
 ) => {
-  orderEmitter.on(channel, handler);
+  barEmitter.on(channel, handler);
 
   return () => {
-    orderEmitter.off(channel, handler);
+    barEmitter.off(channel, handler);
   };
 };
 
-export const emitOrderEvent = (channel: string, payload: OrderEvent) =>
-  orderEmitter.emit(channel, payload);
+export const emitBarUpdate = (channel: string, update: BarUpdate) =>
+  barEmitter.emit(channel, update);
 
 if (process.env.NODE_ENV !== "production") {
-  globalForEmitter.orderEmitter = orderEmitter;
+  globalForEmitter.barEmitter = barEmitter;
 }

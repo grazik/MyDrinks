@@ -1,6 +1,8 @@
 import { Client } from "pg";
 import { ALL_CHANNELS } from "@/lib/realtime/channels";
-import { emitOrderEvent } from "./emitter";
+import { emitBarUpdate } from "./emitter";
+import { NotifyEvent, NotifyPayload } from "@/lib/sse/types";
+import { getOrderByIdWithUserAndIngredients } from "@/db/getOrders";
 
 const globalForListener = globalThis as unknown as {
   pgListenerReady?: Promise<void>;
@@ -13,10 +15,32 @@ const createListener = async () => {
     console.error("[pgListener] connection error", err);
   });
 
-  client.on("notification", (msg) => {
+  client.on("notification", async (msg) => {
     if (!msg.payload) return;
     try {
-      emitOrderEvent(msg.channel, JSON.parse(msg.payload));
+      const { notifyType, data }: NotifyPayload = JSON.parse(msg.payload);
+      switch (notifyType) {
+        case NotifyEvent.CREATE_ORDER:
+        case NotifyEvent.UPDATE_ORDER: {
+          // Enrich once per NOTIFY; every subscriber gets the same object so
+          // the SSE routes never re-query the DB per connection.
+          const order = await getOrderByIdWithUserAndIngredients(data.orderId);
+
+          if (!order) {
+            console.error(
+              `[pgListener] order not found for ${notifyType}: ${data.orderId}`,
+            );
+            break;
+          }
+
+          emitBarUpdate(msg.channel, { type: notifyType, order });
+          break;
+        }
+
+        default:
+          console.error(`[pgListener] notify type not handled, ${notifyType}`);
+          notifyType satisfies never;
+      }
     } catch (err) {
       console.error(
         `[pgListener] failed to parse payload on ${msg.channel}`,
