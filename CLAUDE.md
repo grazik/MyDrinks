@@ -67,6 +67,14 @@ AUTH_SECRET        # JWT signing secret
 API_SECRET_KEY     # API route middleware key
 ```
 
+## Comments
+
+Default to no comment — a stale comment is worse than none.
+
+- Explain **why, not what**. If code needs a "what" comment, improve the naming instead.
+- The best comments state a **constraint**: what breaks if this changes (e.g. "MUST match the DB trigger payload").
+- Never narrate structure or the change just made; no ticket numbers or changelog notes (that lives in git).
+
 ## UX Constraints & Upcoming Features
 
 > These rules define the intended product behavior and must be followed
