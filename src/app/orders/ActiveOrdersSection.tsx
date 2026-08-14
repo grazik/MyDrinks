@@ -1,4 +1,4 @@
-import { Event } from "@prisma/client";
+import { type Event } from "@prisma/client";
 import { H2SectionHeading } from "@/src/components/atoms/SectionHeading/SectionHeading";
 import { getMyOrdersForEvent } from "@/dal/orders";
 import { ActiveOrdersSectionClient } from "@/src/app/orders/ActiveOrdersSectionClient";

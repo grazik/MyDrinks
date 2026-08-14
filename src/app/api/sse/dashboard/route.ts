@@ -44,13 +44,16 @@ export async function GET() {
 
       const unsubscribeOrderEmitter = subscribeToBarUpdates(
         ORDERS_BARTENDER_CHANNEL,
-        (update: BarUpdate) => {
+        async (update: BarUpdate) => {
           if (update.type === NotifyEvent.BAR_OPENED) {
             console.log(
               `[SSE Dashboard] ${new Date().toISOString()} BAR OPENED | new active event id: ${update.event.id} title: ${update.event.title}`,
             );
             activeEvent = update.event;
             enqueue(encodeSseEvent(BarEvent.BAR_OPENED, update.event));
+
+            const allOrders = await getAllOrdersForEvent(activeEvent.id);
+            enqueue(encodeSseEvent(BarEvent.ALL_ORDERS, allOrders));
             return;
           }
 

@@ -9,17 +9,17 @@ import { DashboardClient } from "@/src/app/dashboard/DashboardClient";
 export default async function DashboardPage() {
   const activeEvent = await getActiveEvent();
 
-  if (!activeEvent) {
-    return <NoActiveEvent />;
-  }
-
-  const orders = await getAllOrdersForEvent(activeEvent.id);
+  const orders = activeEvent && (await getAllOrdersForEvent(activeEvent.id));
 
   return (
     <main className="dashboard">
       <div className="dashboard__content">
         <SelectedOrderProvider>
-          <DashboardClient initialOrders={orders} />
+          <DashboardClient
+            initialOrders={orders}
+            initialEvent={activeEvent}
+            noEventSection={<NoActiveEvent />}
+          />
         </SelectedOrderProvider>
       </div>
     </main>
