@@ -7,6 +7,9 @@ export type UnionToIntersection<U> = (
   ? I
   : never;
 
+/** Any key on T beyond Allowed's keys is required to be `never`, so a value carrying extra fields fails to satisfy it. Use with `satisfies` to reject excess properties structural typing would otherwise permit. */
+export type Exact<T, Allowed> = T & Record<Exclude<keyof T, keyof Allowed>, never>;
+
 export type NonNullableFields<T> = {
   [K in keyof T]: NonNullable<T[K]>;
 };

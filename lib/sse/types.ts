@@ -3,7 +3,9 @@ import {
   OrderWithDrinkWithIngredientsAndUser,
 } from "@/src/types/order.types";
 import { ActiveEventWithDrinkIds } from "@/src/types/event.types";
+import { Exact } from "@/src/types/generic.types";
 import { OrderEvent } from "@/lib/realtime/channels";
+import { type Event } from "@prisma/client";
 
 export enum NotifyEvent {
   CREATE_ORDER = "create_order",
@@ -68,5 +70,11 @@ export type BarEventPayloads = SatisfiesAllEvents<{
   [BarEvent.USER_ALL_ORDERS]: OrderWithDrink[];
   [BarEvent.USER_ORDER_UPDATED]: OrderWithDrink;
   [BarEvent.BAR_CLOSED]: null;
-  [BarEvent.BAR_OPENED]: ActiveEventWithDrinkIds;
+  [BarEvent.BAR_OPENED]: Event;
 }>;
+
+// The BAR_OPENED payload is deliberately the scalar Event row — relations must not ride along.
+export const toEventView = ({
+  eventDrink,
+  ...event
+}: ActiveEventWithDrinkIds): Event => event satisfies Exact<typeof event, Event>;

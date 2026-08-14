@@ -5,7 +5,7 @@ import { ensurePgListener } from "@/lib/sse/pgListener";
 import { getActiveEventWithDrinkIds } from "@/db/getEvent";
 import { getUserOrdersForEvent } from "@/db/getOrders";
 import { encodeSseEvent, safeEnqueue, startHeartbeat } from "@/src/utils/sse";
-import { BarEvent, BarUpdate, NotifyEvent } from "@/lib/sse/types";
+import { BarEvent, BarUpdate, NotifyEvent, toEventView } from "@/lib/sse/types";
 import {
   OrderWithDrink,
   OrderWithDrinkWithIngredientsAndUser,
@@ -48,7 +48,7 @@ export async function GET() {
               `[SSE MyOrders] ${new Date().toISOString()} BAR OPENED | new active event id: ${update.event.id} title: ${update.event.title}`,
             );
             activeEvent = update.event;
-            enqueue(encodeSseEvent(BarEvent.BAR_OPENED, update.event));
+            enqueue(encodeSseEvent(BarEvent.BAR_OPENED, toEventView(update.event)));
             const allOrders = await getUserOrdersForEvent(
               user.sub,
               activeEvent.id,
