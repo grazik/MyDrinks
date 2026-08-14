@@ -3,6 +3,7 @@ import { ALL_CHANNELS } from "@/lib/realtime/channels";
 import { emitBarUpdate } from "./emitter";
 import { NotifyEvent, NotifyPayload } from "@/lib/sse/types";
 import { getOrderByIdWithUserAndIngredients } from "@/db/getOrders";
+import { getActiveEventWithDrinkIdsFresh } from "@/db/getEvent";
 
 const globalForListener = globalThis as unknown as {
   pgListenerReady?: Promise<void>;
@@ -22,8 +23,6 @@ const createListener = async () => {
       switch (notifyType) {
         case NotifyEvent.CREATE_ORDER:
         case NotifyEvent.UPDATE_ORDER: {
-          // Enrich once per NOTIFY; every subscriber gets the same object so
-          // the SSE routes never re-query the DB per connection.
           const order = await getOrderByIdWithUserAndIngredients(data.orderId);
 
           if (!order) {
@@ -36,6 +35,24 @@ const createListener = async () => {
           emitBarUpdate(msg.channel, { type: notifyType, order });
           break;
         }
+
+        case NotifyEvent.BAR_OPENED: {
+          const event = await getActiveEventWithDrinkIdsFresh();
+
+          if (!event) {
+            console.error(
+              `[pgListener] bar opened but no active event found: ${data.eventId}`,
+            );
+            break;
+          }
+
+          emitBarUpdate(msg.channel, { type: notifyType, event });
+          break;
+        }
+
+        case NotifyEvent.BAR_CLOSED:
+          emitBarUpdate(msg.channel, { type: notifyType, event: null });
+          break;
 
         default:
           console.error(`[pgListener] notify type not handled, ${notifyType}`);

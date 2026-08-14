@@ -6,7 +6,7 @@ import { ensurePgListener } from "@/lib/sse/pgListener";
 import { getActiveEventWithDrinkIds } from "@/db/getEvent";
 import { getAllOrdersForEvent } from "@/db/getOrders";
 import { encodeSseEvent, safeEnqueue, startHeartbeat } from "@/src/utils/sse";
-import { BarEvent, BarUpdate } from "@/lib/sse/types";
+import { BarEvent, BarUpdate, NotifyEvent } from "@/lib/sse/types";
 
 export async function GET() {
   const user = await getUserDto();
@@ -44,7 +44,19 @@ export async function GET() {
 
       const unsubscribeOrderEmitter = subscribeToBarUpdates(
         ORDERS_BARTENDER_CHANNEL,
-        ({ order }: BarUpdate) => {
+        (update: BarUpdate) => {
+          // TODO: handle bar open/close for the dashboard (e.g. refresh the
+          // order list on open, signal closed). For now only order updates
+          // drive the stream.
+          if (
+            update.type !== NotifyEvent.CREATE_ORDER &&
+            update.type !== NotifyEvent.UPDATE_ORDER
+          ) {
+            return;
+          }
+
+          const { order } = update;
+
           console.log(
             `[SSE Dashboard] ${new Date().toISOString()} incoming new event | id: ${user.sub}, order: ${order.id}.`,
           );

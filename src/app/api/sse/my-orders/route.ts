@@ -5,7 +5,7 @@ import { ensurePgListener } from "@/lib/sse/pgListener";
 import { getActiveEventWithDrinkIds } from "@/db/getEvent";
 import { getUserOrdersForEvent } from "@/db/getOrders";
 import { encodeSseEvent, safeEnqueue, startHeartbeat } from "@/src/utils/sse";
-import { BarEvent, BarUpdate } from "@/lib/sse/types";
+import { BarEvent, BarUpdate, NotifyEvent } from "@/lib/sse/types";
 import {
   OrderWithDrink,
   OrderWithDrinkWithIngredientsAndUser,
@@ -42,10 +42,20 @@ export async function GET() {
 
       const unsubscribeOrderEmitter = subscribeToBarUpdates(
         ORDERS_CUSTOMER_CHANNEL,
-        ({ order }: BarUpdate) => {
-          // The customer channel is a broadcast; only forward the subscriber's
-          // own orders. This in-memory guard replaces the former per-event
-          // ownership query.
+        (update: BarUpdate) => {
+          // TODO: handle bar open/close for the customer stream. For now only
+          // order updates drive it.
+          if (
+            update.type !== NotifyEvent.CREATE_ORDER &&
+            update.type !== NotifyEvent.UPDATE_ORDER
+          ) {
+            return;
+          }
+
+          const { order } = update;
+
+          // The customer channel is a broadcast: every connection receives every
+          // customer's orders, so without this guard a customer sees others'.
           if (order.userId !== user.sub) return;
 
           console.log(

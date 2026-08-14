@@ -2,11 +2,16 @@ import {
   OrderWithDrink,
   OrderWithDrinkWithIngredientsAndUser,
 } from "@/src/types/order.types";
+import { ActiveEventWithDrinkIds } from "@/src/types/event.types";
 import { OrderEvent } from "@/lib/realtime/channels";
 
 export enum NotifyEvent {
   CREATE_ORDER = "create_order",
   UPDATE_ORDER = "update_order",
+  // String values are the wire discriminant and MUST match the payload emitted
+  // by the DB trigger in prisma/sql/bar_status_trigger.sql.
+  BAR_OPENED = "bar_opened",
+  BAR_CLOSED = "bar_closed",
 }
 
 type CreateOrderNotifyPayload = {
@@ -19,15 +24,34 @@ type UpdateOrderNotifyPayload = {
   data: OrderEvent;
 };
 
-export type NotifyPayload = CreateOrderNotifyPayload | UpdateOrderNotifyPayload;
+type BarNotifyPayload = {
+  notifyType: NotifyEvent.BAR_OPENED | NotifyEvent.BAR_CLOSED;
+  data: { eventId: string };
+};
 
-// Enriched in-process bus message. The pg listener re-fetches the full order
-// once per NOTIFY and broadcasts this to every subscriber, so SSE routes filter
-// in memory instead of re-querying the DB per connection.
-export type BarUpdate = {
+export type NotifyPayload =
+  | CreateOrderNotifyPayload
+  | UpdateOrderNotifyPayload
+  | BarNotifyPayload;
+
+// Carries the fully-enriched record so subscribers read from the bus; the
+// listener fetches once per NOTIFY rather than each connection re-querying.
+type OrderBarUpdate = {
   type: NotifyEvent.CREATE_ORDER | NotifyEvent.UPDATE_ORDER;
   order: OrderWithDrinkWithIngredientsAndUser;
 };
+
+type BarOpenedUpdate = {
+  type: NotifyEvent.BAR_OPENED;
+  event: ActiveEventWithDrinkIds;
+};
+
+type BarClosedUpdate = {
+  type: NotifyEvent.BAR_CLOSED;
+  event: null;
+};
+
+export type BarUpdate = OrderBarUpdate | BarOpenedUpdate | BarClosedUpdate;
 
 export enum BarEvent {
   ORDER_UPDATED = "order_updated",
