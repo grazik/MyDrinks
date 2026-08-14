@@ -32,7 +32,7 @@ export async function GET() {
   await ensurePgListener();
   let teardown = () => {};
 
-  const activeEvent = await getActiveEventWithDrinkIds();
+  let activeEvent = await getActiveEventWithDrinkIds();
 
   const stream = new ReadableStream({
     async start(controller) {
@@ -42,13 +42,31 @@ export async function GET() {
 
       const unsubscribeOrderEmitter = subscribeToBarUpdates(
         ORDERS_CUSTOMER_CHANNEL,
-        (update: BarUpdate) => {
-          // TODO: handle bar open/close for the customer stream. For now only
-          // order updates drive it.
-          if (
-            update.type !== NotifyEvent.CREATE_ORDER &&
-            update.type !== NotifyEvent.UPDATE_ORDER
-          ) {
+        async (update: BarUpdate) => {
+          if (update.type === NotifyEvent.BAR_OPENED) {
+            console.log(
+              `[SSE MyOrders] ${new Date().toISOString()} BAR OPENED | new active event id: ${update.event.id} title: ${update.event.title}`,
+            );
+            activeEvent = update.event;
+            enqueue(encodeSseEvent(BarEvent.BAR_OPENED, update.event));
+            const allOrders = await getUserOrdersForEvent(
+              user.sub,
+              activeEvent.id,
+            );
+
+            console.log(
+              `[SSE MyOrders] ${new Date().toISOString()} Active event present | id: ${user.sub}.`,
+            );
+            enqueue(encodeSseEvent(BarEvent.USER_ALL_ORDERS, allOrders));
+            return;
+          }
+
+          if (update.type === NotifyEvent.BAR_CLOSED) {
+            console.log(
+              `[SSE MyOrders] ${new Date().toISOString()} BAR CLOSED | active event -> null`,
+            );
+            activeEvent = null;
+            enqueue(encodeSseEvent(BarEvent.BAR_CLOSED, null));
             return;
           }
 

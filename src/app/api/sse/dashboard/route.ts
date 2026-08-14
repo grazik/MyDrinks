@@ -34,7 +34,7 @@ export async function GET() {
   await ensurePgListener();
   let teardown = () => {};
 
-  const activeEvent = await getActiveEventWithDrinkIds();
+  let activeEvent = await getActiveEventWithDrinkIds();
 
   const stream = new ReadableStream({
     async start(controller) {
@@ -45,20 +45,28 @@ export async function GET() {
       const unsubscribeOrderEmitter = subscribeToBarUpdates(
         ORDERS_BARTENDER_CHANNEL,
         (update: BarUpdate) => {
-          // TODO: handle bar open/close for the dashboard (e.g. refresh the
-          // order list on open, signal closed). For now only order updates
-          // drive the stream.
-          if (
-            update.type !== NotifyEvent.CREATE_ORDER &&
-            update.type !== NotifyEvent.UPDATE_ORDER
-          ) {
+          if (update.type === NotifyEvent.BAR_OPENED) {
+            console.log(
+              `[SSE Dashboard] ${new Date().toISOString()} BAR OPENED | new active event id: ${update.event.id} title: ${update.event.title}`,
+            );
+            activeEvent = update.event;
+            enqueue(encodeSseEvent(BarEvent.BAR_OPENED, update.event));
+            return;
+          }
+
+          if (update.type === NotifyEvent.BAR_CLOSED) {
+            console.log(
+              `[SSE Dashboard] ${new Date().toISOString()} BAR CLOSED | active event -> null`,
+            );
+            activeEvent = null;
+            enqueue(encodeSseEvent(BarEvent.BAR_CLOSED, null));
             return;
           }
 
           const { order } = update;
 
           console.log(
-            `[SSE Dashboard] ${new Date().toISOString()} incoming new event | id: ${user.sub}, order: ${order.id}.`,
+            `[SSE Dashboard] ${new Date().toISOString()} incoming new order | id: ${user.sub}, order: ${order.id}.`,
           );
 
           if (

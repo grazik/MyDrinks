@@ -1,9 +1,11 @@
-import { Event, OrderStatus } from "@prisma/client";
+import { Event } from "@prisma/client";
 import { H2SectionHeading } from "@/src/components/atoms/SectionHeading/SectionHeading";
 import { getMyOrdersForEvent } from "@/dal/orders";
-import { OrderCard } from "@/src/components/molecules/OrderCard/OrderCard";
-import { OrdersGrid } from "@/src/components/organisms/OrdersGrid/OrdersGrid";
 import { ActiveOrdersSectionClient } from "@/src/app/orders/ActiveOrdersSectionClient";
+
+type ActiveOrdersSectionProps = {
+  event: Event | null;
+};
 
 const ActiveOrdersSectionNoEvent = () => {
   return (
@@ -18,27 +20,16 @@ const ActiveOrdersSectionNoEvent = () => {
   );
 };
 
-const ActiveOrdersSectionWithEvent = async ({ event }: { event: Event }) => {
-  const userOrders = await getMyOrdersForEvent(event.id);
+export const ActiveOrdersSection = async ({
+  event,
+}: ActiveOrdersSectionProps) => {
+  const userOrders = event && (await getMyOrdersForEvent(event.id));
 
   return (
-    <section>
-      <H2SectionHeading>Abba</H2SectionHeading>
-      <OrdersGrid>
-        <ActiveOrdersSectionClient initialOrders={userOrders} />
-      </OrdersGrid>
-    </section>
+    <ActiveOrdersSectionClient
+      initialOrders={userOrders}
+      initialEvent={event}
+      noEventSection={<ActiveOrdersSectionNoEvent />}
+    />
   );
-};
-
-type ActiveOrdersSectionProps = {
-  event: Event | null;
-};
-
-export const ActiveOrdersSection = ({ event }: ActiveOrdersSectionProps) => {
-  if (!event) {
-    return <ActiveOrdersSectionNoEvent />;
-  }
-
-  return <ActiveOrdersSectionWithEvent event={event} />;
 };
