@@ -42,6 +42,18 @@ export async function GET() {
 
       const stopHeartbeat = startHeartbeat(enqueue, () => teardown());
 
+      // Erroring the stream is the recovery path: EventSource reconnects on
+      // its own and the reconnect GET re-sends a full snapshot, so a failed
+      // update must fail the stream rather than leave the client out of sync.
+      const fail = (err: unknown) => {
+        console.error(
+          `[SSE Dashboard] ${new Date().toISOString()} stream failed; client will reconnect | id: ${user.sub}`,
+          err,
+        );
+        teardown();
+        controller.error(err);
+      };
+
       const unsubscribeOrderEmitter = subscribeToBarUpdates(
         ORDERS_BARTENDER_CHANNEL,
         async (update: BarUpdate) => {
@@ -87,6 +99,7 @@ export async function GET() {
             );
           }
         },
+        fail,
       );
 
       // Single idempotent teardown both paths converge on: the stream's
@@ -97,18 +110,24 @@ export async function GET() {
         markClosed();
       };
 
-      if (activeEvent) {
-        const allOrders = await getAllOrdersForEvent(activeEvent.id);
+      // A rejection escaping start() would error the stream without running
+      // teardown, leaking the heartbeat interval and emitter subscription.
+      try {
+        if (activeEvent) {
+          const allOrders = await getAllOrdersForEvent(activeEvent.id);
 
-        console.log(
-          `[SSE Dashboard] ${new Date().toISOString()} Active event present | id: ${user.sub}.`,
-        );
-        enqueue(encodeSseEvent(BarEvent.ALL_ORDERS, allOrders));
-      } else {
-        console.log(
-          `[SSE Dashboard] ${new Date().toISOString()} No active event | id: ${user.sub}.`,
-        );
-        enqueue(encodeSseEvent(BarEvent.BAR_CLOSED, null));
+          console.log(
+            `[SSE Dashboard] ${new Date().toISOString()} Active event present | id: ${user.sub}.`,
+          );
+          enqueue(encodeSseEvent(BarEvent.ALL_ORDERS, allOrders));
+        } else {
+          console.log(
+            `[SSE Dashboard] ${new Date().toISOString()} No active event | id: ${user.sub}.`,
+          );
+          enqueue(encodeSseEvent(BarEvent.BAR_CLOSED, null));
+        }
+      } catch (err) {
+        fail(err);
       }
     },
     cancel() {

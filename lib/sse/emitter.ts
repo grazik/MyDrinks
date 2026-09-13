@@ -18,12 +18,24 @@ barEmitter.setMaxListeners(0);
 
 export const subscribeToBarUpdates = (
   channel: Channel,
-  handler: (update: BarUpdate) => void,
+  handler: (update: BarUpdate) => void | Promise<void>,
+  onError: (err: unknown) => void = (err) =>
+    console.error(`[emitter] handler failed on ${channel}`, err),
 ) => {
-  barEmitter.on(channel, handler);
+  // emit() drops the promise an async handler returns, so a rejection there
+  // would escape as an unhandled rejection and take down the process.
+  const safeHandler = async (update: BarUpdate) => {
+    try {
+      await handler(update);
+    } catch (err) {
+      onError(err);
+    }
+  };
+
+  barEmitter.on(channel, safeHandler);
 
   return () => {
-    barEmitter.off(channel, handler);
+    barEmitter.off(channel, safeHandler);
   };
 };
 
