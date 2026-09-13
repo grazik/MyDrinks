@@ -3,10 +3,11 @@ import { isStaff } from "@/lib/auth/roles";
 import { ORDERS_BARTENDER_CHANNEL } from "@/lib/realtime/channels";
 import { subscribeToBarUpdates } from "@/lib/sse/emitter";
 import { ensurePgListener } from "@/lib/sse/pgListener";
-import { getActiveEventWithDrinkIds } from "@/db/getEvent";
+import { getActiveEventWithDrinkIdsFresh } from "@/db/getEvent";
 import { getAllOrdersForEvent } from "@/db/getOrders";
 import { encodeSseEvent, safeEnqueue, startHeartbeat } from "@/src/utils/sse";
 import { BarEvent, BarUpdate, NotifyEvent, toEventView } from "@/lib/sse/types";
+import { ActiveEventWithDrinkIds } from "@/src/types/event.types";
 
 export async function GET() {
   const user = await getUserDto();
@@ -34,7 +35,7 @@ export async function GET() {
   await ensurePgListener();
   let teardown = () => {};
 
-  let activeEvent = await getActiveEventWithDrinkIds();
+  let activeEvent: ActiveEventWithDrinkIds | null = null;
 
   const stream = new ReadableStream({
     async start(controller) {
@@ -54,6 +55,29 @@ export async function GET() {
         controller.error(err);
       };
 
+      // The event is re-read from the DB, never taken from the closure: a
+      // resync means any NOTIFY — including bar open/close — may have been lost.
+      const sendSnapshot = async () => {
+        const event = await getActiveEventWithDrinkIdsFresh();
+        activeEvent = event;
+
+        if (!event) {
+          console.log(
+            `[SSE Dashboard] ${new Date().toISOString()} No active event | id: ${user.sub}.`,
+          );
+          enqueue(encodeSseEvent(BarEvent.BAR_CLOSED, null));
+          return;
+        }
+
+        const allOrders = await getAllOrdersForEvent(event.id);
+
+        console.log(
+          `[SSE Dashboard] ${new Date().toISOString()} Active event present | id: ${user.sub}.`,
+        );
+        enqueue(encodeSseEvent(BarEvent.BAR_OPENED, toEventView(event)));
+        enqueue(encodeSseEvent(BarEvent.ALL_ORDERS, allOrders));
+      };
+
       const unsubscribeOrderEmitter = subscribeToBarUpdates(
         ORDERS_BARTENDER_CHANNEL,
         async (update: BarUpdate) => {
@@ -61,11 +85,15 @@ export async function GET() {
             console.log(
               `[SSE Dashboard] ${new Date().toISOString()} BAR OPENED | new active event id: ${update.event.id} title: ${update.event.title}`,
             );
-            activeEvent = update.event;
-            enqueue(encodeSseEvent(BarEvent.BAR_OPENED, toEventView(update.event)));
+            await sendSnapshot();
+            return;
+          }
 
-            const allOrders = await getAllOrdersForEvent(activeEvent.id);
-            enqueue(encodeSseEvent(BarEvent.ALL_ORDERS, allOrders));
+          if (update.type === NotifyEvent.RESYNC) {
+            console.log(
+              `[SSE Dashboard] ${new Date().toISOString()} RESYNC | id: ${user.sub}.`,
+            );
+            await sendSnapshot();
             return;
           }
 
@@ -113,19 +141,7 @@ export async function GET() {
       // A rejection escaping start() would error the stream without running
       // teardown, leaking the heartbeat interval and emitter subscription.
       try {
-        if (activeEvent) {
-          const allOrders = await getAllOrdersForEvent(activeEvent.id);
-
-          console.log(
-            `[SSE Dashboard] ${new Date().toISOString()} Active event present | id: ${user.sub}.`,
-          );
-          enqueue(encodeSseEvent(BarEvent.ALL_ORDERS, allOrders));
-        } else {
-          console.log(
-            `[SSE Dashboard] ${new Date().toISOString()} No active event | id: ${user.sub}.`,
-          );
-          enqueue(encodeSseEvent(BarEvent.BAR_CLOSED, null));
-        }
+        await sendSnapshot();
       } catch (err) {
         fail(err);
       }

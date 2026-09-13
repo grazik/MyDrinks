@@ -7,13 +7,26 @@ import { getActiveEventWithDrinkIdsFresh } from "@/db/getEvent";
 
 const globalForListener = globalThis as unknown as {
   pgListenerReady?: Promise<void>;
+  pgListenerHasConnected?: boolean;
 };
+
+const RECONNECT_BASE_DELAY_MS = 1_000;
+const RECONNECT_MAX_DELAY_MS = 30_000;
 
 const createListener = async () => {
   const client = new Client({ connectionString: process.env.DATABASE_URL });
 
+  // A replaced client's late errors must not reset global state again — that
+  // would orphan the healthy replacement and spawn a duplicate listener.
+  let isReplaced = false;
   client.on("error", (err) => {
-    console.error("[pgListener] connection error", err);
+    if (isReplaced) return;
+    isReplaced = true;
+
+    console.error("[pgListener] connection lost; scheduling reconnect", err);
+    client.end().catch(() => {});
+    globalForListener.pgListenerReady = undefined;
+    scheduleReconnect();
   });
 
   client.on("notification", async (msg) => {
@@ -71,12 +84,40 @@ const createListener = async () => {
   await Promise.all(
     ALL_CHANNELS.map((channel) => client.query(`LISTEN ${channel}`)),
   );
+
+  // NOTIFYs fired while the listener was down are lost for good; subscribers
+  // must rebuild their state from the DB instead of trusting the stream.
+  if (globalForListener.pgListenerHasConnected) {
+    console.log("[pgListener] reconnected; broadcasting resync");
+    for (const channel of ALL_CHANNELS) {
+      emitBarUpdate(channel, { type: NotifyEvent.RESYNC });
+    }
+  }
+  globalForListener.pgListenerHasConnected = true;
+};
+
+const scheduleReconnect = (attempt = 0) => {
+  const delay = Math.min(
+    RECONNECT_BASE_DELAY_MS * 2 ** attempt,
+    RECONNECT_MAX_DELAY_MS,
+  );
+
+  setTimeout(() => {
+    ensurePgListener().catch((err) => {
+      console.error(
+        `[pgListener] reconnect attempt ${attempt + 1} failed`,
+        err,
+      );
+      scheduleReconnect(attempt + 1);
+    });
+  }, delay);
 };
 
 export const ensurePgListener = (): Promise<void> => {
   if (!globalForListener.pgListenerReady) {
     globalForListener.pgListenerReady = createListener().catch((err) => {
       // Reset so a later request retries instead of caching a failed init.
+      console.error("[pgListener] couldn't create a listener", err);
       globalForListener.pgListenerReady = undefined;
       throw err;
     });

@@ -14,6 +14,7 @@ export enum NotifyEvent {
   // by the DB trigger in prisma/sql/bar_status_trigger.sql.
   BAR_OPENED = "bar_opened",
   BAR_CLOSED = "bar_closed",
+  RESYNC = "resync",
 }
 
 type CreateOrderNotifyPayload = {
@@ -51,7 +52,15 @@ type BarClosedUpdate = {
   event: null;
 };
 
-export type BarUpdate = OrderBarUpdate | BarOpenedUpdate | BarClosedUpdate;
+type ResyncUpdate = {
+  type: NotifyEvent.RESYNC;
+};
+
+export type BarUpdate =
+  | OrderBarUpdate
+  | BarOpenedUpdate
+  | BarClosedUpdate
+  | ResyncUpdate;
 
 export enum BarEvent {
   ORDER_UPDATED = "order_updated",

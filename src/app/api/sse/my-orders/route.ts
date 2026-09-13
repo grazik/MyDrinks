@@ -2,7 +2,7 @@ import { getUserDto } from "@/lib/auth/getUserDto";
 import { ORDERS_CUSTOMER_CHANNEL } from "@/lib/realtime/channels";
 import { subscribeToBarUpdates } from "@/lib/sse/emitter";
 import { ensurePgListener } from "@/lib/sse/pgListener";
-import { getActiveEventWithDrinkIds } from "@/db/getEvent";
+import { getActiveEventWithDrinkIdsFresh } from "@/db/getEvent";
 import { getUserOrdersForEvent } from "@/db/getOrders";
 import { encodeSseEvent, safeEnqueue, startHeartbeat } from "@/src/utils/sse";
 import { BarEvent, BarUpdate, NotifyEvent, toEventView } from "@/lib/sse/types";
@@ -10,6 +10,7 @@ import {
   OrderWithDrink,
   OrderWithDrinkWithIngredientsAndUser,
 } from "@/src/types/order.types";
+import { ActiveEventWithDrinkIds } from "@/src/types/event.types";
 
 const toCustomerOrder = ({
   user,
@@ -32,7 +33,7 @@ export async function GET() {
   await ensurePgListener();
   let teardown = () => {};
 
-  let activeEvent = await getActiveEventWithDrinkIds();
+  let activeEvent: ActiveEventWithDrinkIds | null = null;
 
   const stream = new ReadableStream({
     async start(controller) {
@@ -52,6 +53,29 @@ export async function GET() {
         controller.error(err);
       };
 
+      // The event is re-read from the DB, never taken from the closure: a
+      // resync means any NOTIFY — including bar open/close — may have been lost.
+      const sendSnapshot = async () => {
+        const event = await getActiveEventWithDrinkIdsFresh();
+        activeEvent = event;
+
+        if (!event) {
+          console.log(
+            `[SSE MyOrders] ${new Date().toISOString()} No active event | id: ${user.sub}.`,
+          );
+          enqueue(encodeSseEvent(BarEvent.BAR_CLOSED, null));
+          return;
+        }
+
+        const allOrders = await getUserOrdersForEvent(user.sub, event.id);
+
+        console.log(
+          `[SSE MyOrders] ${new Date().toISOString()} Active event present | id: ${user.sub}.`,
+        );
+        enqueue(encodeSseEvent(BarEvent.BAR_OPENED, toEventView(event)));
+        enqueue(encodeSseEvent(BarEvent.USER_ALL_ORDERS, allOrders));
+      };
+
       const unsubscribeOrderEmitter = subscribeToBarUpdates(
         ORDERS_CUSTOMER_CHANNEL,
         async (update: BarUpdate) => {
@@ -59,17 +83,15 @@ export async function GET() {
             console.log(
               `[SSE MyOrders] ${new Date().toISOString()} BAR OPENED | new active event id: ${update.event.id} title: ${update.event.title}`,
             );
-            activeEvent = update.event;
-            enqueue(encodeSseEvent(BarEvent.BAR_OPENED, toEventView(update.event)));
-            const allOrders = await getUserOrdersForEvent(
-              user.sub,
-              activeEvent.id,
-            );
+            await sendSnapshot();
+            return;
+          }
 
+          if (update.type === NotifyEvent.RESYNC) {
             console.log(
-              `[SSE MyOrders] ${new Date().toISOString()} Active event present | id: ${user.sub}.`,
+              `[SSE MyOrders] ${new Date().toISOString()} RESYNC | id: ${user.sub}.`,
             );
-            enqueue(encodeSseEvent(BarEvent.USER_ALL_ORDERS, allOrders));
+            await sendSnapshot();
             return;
           }
 
@@ -126,22 +148,7 @@ export async function GET() {
       // A rejection escaping start() would error the stream without running
       // teardown, leaking the heartbeat interval and emitter subscription.
       try {
-        if (activeEvent) {
-          const allOrders = await getUserOrdersForEvent(
-            user.sub,
-            activeEvent.id,
-          );
-
-          console.log(
-            `[SSE MyOrders] ${new Date().toISOString()} Active event present | id: ${user.sub}.`,
-          );
-          enqueue(encodeSseEvent(BarEvent.USER_ALL_ORDERS, allOrders));
-        } else {
-          console.log(
-            `[SSE MyOrders] ${new Date().toISOString()} No active event | id: ${user.sub}.`,
-          );
-          enqueue(encodeSseEvent(BarEvent.BAR_CLOSED, null));
-        }
+        await sendSnapshot();
       } catch (err) {
         fail(err);
       }
