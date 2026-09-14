@@ -1,8 +1,11 @@
-import { Event, OrderStatus } from "@prisma/client";
+import { type Event } from "@prisma/client";
 import { H2SectionHeading } from "@/src/components/atoms/SectionHeading/SectionHeading";
 import { getMyOrdersForEvent } from "@/dal/orders";
-import { OrderCard } from "@/src/components/molecules/OrderCard/OrderCard";
-import { OrdersGrid } from "@/src/components/organisms/OrdersGrid/OrdersGrid";
+import { ActiveOrdersSectionClient } from "@/src/app/orders/ActiveOrdersSectionClient";
+
+type ActiveOrdersSectionProps = {
+  event: Event | null;
+};
 
 const ActiveOrdersSectionNoEvent = () => {
   return (
@@ -17,41 +20,16 @@ const ActiveOrdersSectionNoEvent = () => {
   );
 };
 
-const STATUS_ORDERING: Record<OrderStatus, number> = {
-  [OrderStatus.READY]: 0,
-  [OrderStatus.MIXING]: 1,
-  [OrderStatus.PENDING]: 2,
-  [OrderStatus.COMPLETED]: 3,
-  [OrderStatus.CANCELLED]: 4,
-};
-
-const ActiveOrdersSectionWithEvent = async ({ event }: { event: Event }) => {
-  const userOrders = await getMyOrdersForEvent(event.id);
-
-  const sortedOrders = userOrders.toSorted(
-    (a, b) => STATUS_ORDERING[a.status] - STATUS_ORDERING[b.status],
-  );
+export const ActiveOrdersSection = async ({
+  event,
+}: ActiveOrdersSectionProps) => {
+  const userOrders = event && (await getMyOrdersForEvent(event.id));
 
   return (
-    <section>
-      <H2SectionHeading>Abba</H2SectionHeading>
-      <OrdersGrid>
-        {sortedOrders.map((order) => (
-          <OrderCard order={order} key={order.id} />
-        ))}
-      </OrdersGrid>
-    </section>
+    <ActiveOrdersSectionClient
+      initialOrders={userOrders}
+      initialEvent={event}
+      noEventSection={<ActiveOrdersSectionNoEvent />}
+    />
   );
-};
-
-type ActiveOrdersSectionProps = {
-  event: Event | null;
-};
-
-export const ActiveOrdersSection = ({ event }: ActiveOrdersSectionProps) => {
-  if (!event) {
-    return <ActiveOrdersSectionNoEvent />;
-  }
-
-  return <ActiveOrdersSectionWithEvent event={event} />;
 };

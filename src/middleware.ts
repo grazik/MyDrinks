@@ -7,21 +7,6 @@ import { isStaff } from "@/lib/auth/roles";
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // API routes — require x-api-key header
-  if (pathname.startsWith("/api")) {
-    const apiKey = request.headers.get("x-api-key");
-    const validApiKey = process.env.API_SECRET_KEY;
-
-    if (!apiKey || apiKey !== validApiKey) {
-      return NextResponse.json(
-        { error: "Unauthorized - Invalid or missing API key" },
-        { status: 401 },
-      );
-    }
-
-    return NextResponse.next();
-  }
-
   // Protected pages — require a valid auth token
   if (pathname.startsWith("/orders") || pathname.startsWith("/dashboard")) {
     const token = request.cookies.get(AUTH_COOKIE_NAME)?.value;

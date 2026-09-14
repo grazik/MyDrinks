@@ -1,29 +1,25 @@
 import { getActiveEvent } from "@/db/getEvent";
-import { DashboardTabs } from "@/src/components/organisms/DashboardTabs/DashboardTabs";
 import { NoActiveEvent } from "@/src/app/dashboard/NoActiveEvent";
 import { getAllOrdersForEvent } from "@/dal/orders";
-import { groupOrdersByTab } from "@/src/utils/orders/orders";
-import { RecipePanel } from "@/src/components/organisms/RecipePanel/RecipePanel";
 
 import "./page.scss";
 import { SelectedOrderProvider } from "@/src/contexts/SelectedOrderContext/SelectedOrderProvider";
+import { DashboardClient } from "@/src/app/dashboard/DashboardClient";
 
 export default async function DashboardPage() {
   const activeEvent = await getActiveEvent();
 
-  if (!activeEvent) {
-    return <NoActiveEvent />;
-  }
-
-  const orders = await getAllOrdersForEvent(activeEvent.id);
-  const groupedOrders = groupOrdersByTab(orders);
+  const orders = activeEvent && (await getAllOrdersForEvent(activeEvent.id));
 
   return (
     <main className="dashboard">
       <div className="dashboard__content">
         <SelectedOrderProvider>
-          <DashboardTabs groupedOrders={groupedOrders} />
-          <RecipePanel />
+          <DashboardClient
+            initialOrders={orders}
+            initialEvent={activeEvent}
+            noEventSection={<NoActiveEvent />}
+          />
         </SelectedOrderProvider>
       </div>
     </main>

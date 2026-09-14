@@ -11,8 +11,8 @@ export const getEventBySlug = async (slug: string) => {
   return event;
 };
 
-export const getActiveEventWithDrinkIds = cache(async () => {
-  const event = await prisma.event.findFirst({
+const findActiveEventWithDrinkIds = () =>
+  prisma.event.findFirst({
     where: {
       status: "ACTIVE",
     },
@@ -25,8 +25,11 @@ export const getActiveEventWithDrinkIds = cache(async () => {
     },
   });
 
-  return event;
-});
+export const getActiveEventWithDrinkIds = cache(findActiveEventWithDrinkIds);
+
+// The pg listener is long-lived and runs outside a request scope; wrapping this
+// in cache() would pin the first result and serve a stale event thereafter.
+export const getActiveEventWithDrinkIdsFresh = findActiveEventWithDrinkIds;
 
 export const getActiveEvent = cache(async () => {
   const event = await prisma.event.findFirst({
