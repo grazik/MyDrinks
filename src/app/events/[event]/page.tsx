@@ -38,7 +38,7 @@ export default async function EventPage({ params }: DrinkPageProps) {
   return (
     <main className="wrapper">
       <ContentBand>
-        <BackButton label={"Back"} />
+        <BackButton label={"Back"} fallbackHref={"/events"} />
       </ContentBand>
       <div className="event-page">
         <EventPageHeader
