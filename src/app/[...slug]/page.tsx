@@ -38,7 +38,7 @@ export default async function PDP({ params }: DrinkPageProps) {
   return (
     <main className="wrapper">
       <ContentBand>
-        <BackButton label={"Back"} />
+        <BackButton label={"Back"} fallbackHref={"/"} />
       </ContentBand>
       <div className="pdp">
         <h1 className={"main-heading"}>{drink.name}</h1>

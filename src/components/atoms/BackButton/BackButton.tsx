@@ -1,20 +1,44 @@
 "use client";
 
-import ArrowLeft from "public/icons/arrow-left.svg";
+import { MouseEvent } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
+import ArrowLeft from "public/icons/arrow-left.svg";
 
 import "./back-button.scss";
 
 interface BackButtonProps {
   label: string;
+  fallbackHref: string;
 }
 
-export const BackButton = ({ label }: BackButtonProps) => {
+// Navigation API isn't in TypeScript's DOM lib yet.
+type WindowWithNavigation = Window & {
+  navigation?: { canGoBack: boolean };
+};
+
+const canGoBackInApp = () =>
+  (window as WindowWithNavigation).navigation?.canGoBack === true;
+
+export const BackButton = ({ label, fallbackHref }: BackButtonProps) => {
   const router = useRouter();
 
+  const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
+    if (!canGoBackInApp()) {
+      return;
+    }
+
+    event.preventDefault();
+    router.back();
+  };
+
   return (
-    <button onClick={router.back} className={"back-button body-text"}>
+    <Link
+      href={fallbackHref}
+      onClick={handleClick}
+      className={"back-button body-text"}
+    >
       <ArrowLeft /> {label}
-    </button>
+    </Link>
   );
 };
