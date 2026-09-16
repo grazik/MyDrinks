@@ -7,6 +7,7 @@ import { DashboardTabs } from "@/src/components/organisms/DashboardTabs/Dashboar
 import { RecipePanel } from "@/src/components/organisms/RecipePanel/RecipePanel";
 import { SseHandlers, useSse } from "@/src/hooks/useSse";
 import { BarEvent } from "@/lib/sse/types";
+import { withViewTransition } from "@/src/utils/viewTransition";
 
 interface DashboardClientProps {
   initialOrders: OrderWithDrinkWithIngredientsAndUser[] | null;
@@ -28,12 +29,16 @@ export const DashboardClient = ({
         setOrders(allOrders);
       },
       [BarEvent.ORDER_UPDATED]: (order) => {
-        setOrders((prev) =>
-          prev.some(({ id }) => id === order.id)
-            ? prev.map((existing) =>
-                existing.id === order.id ? order : existing,
-              )
-            : [...prev, order],
+        // Deliberately not on ALL_ORDERS: a resync reshuffles the whole board,
+        // and animating every card at once reads as noise.
+        withViewTransition(() =>
+          setOrders((prev) =>
+            prev.some(({ id }) => id === order.id)
+              ? prev.map((existing) =>
+                  existing.id === order.id ? order : existing,
+                )
+              : [...prev, order],
+          ),
         );
       },
       [BarEvent.BAR_CLOSED]: () => {

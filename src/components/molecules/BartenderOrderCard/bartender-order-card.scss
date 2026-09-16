@@ -1,6 +1,8 @@
 .bartender-order-card {
   --border-color: var(--color-light-border);
 
+  view-transition-class: order-card;
+
   background-color: var(--color-surface-dark);
   border-radius: 10px;
   padding: 16px;
