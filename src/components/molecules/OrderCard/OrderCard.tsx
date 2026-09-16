@@ -13,25 +13,44 @@ import { OrderWithDrink } from "@/src/types/order.types";
 
 type OrderCardProps = {
   order: OrderWithDrink;
+  isRecentlyUpdated?: boolean;
 };
 
-export const OrderCard = ({ order }: OrderCardProps) => {
+const cardClassName = (variant: string | null, isRecentlyUpdated?: boolean) =>
+  ["order-card", variant, isRecentlyUpdated && "order-card--just-updated"]
+    .filter(Boolean)
+    .join(" ");
+
+// MUST be unique across rendered cards — a duplicate name aborts the whole
+// view transition.
+const viewTransitionStyle = (order: OrderWithDrink) => ({
+  viewTransitionName: `user-order-${order.id}`,
+});
+
+export const OrderCard = ({ order, isRecentlyUpdated }: OrderCardProps) => {
   const { status } = order;
 
   if (status === OrderStatus.CANCELLED) {
-    return <CancelledOrderCard order={order} />;
+    return (
+      <CancelledOrderCard order={order} isRecentlyUpdated={isRecentlyUpdated} />
+    );
   }
 
   if (status === OrderStatus.COMPLETED) {
-    return <CompletedOrderCard order={order} />;
+    return (
+      <CompletedOrderCard order={order} isRecentlyUpdated={isRecentlyUpdated} />
+    );
   }
 
-  return <ActiveOrderCard order={order} />;
+  return <ActiveOrderCard order={order} isRecentlyUpdated={isRecentlyUpdated} />;
 };
 
-const CancelledOrderCard = ({ order }: OrderCardProps) => {
+const CancelledOrderCard = ({ order, isRecentlyUpdated }: OrderCardProps) => {
   return (
-    <div className="order-card order-card--cancelled">
+    <div
+      className={cardClassName("order-card--cancelled", isRecentlyUpdated)}
+      style={viewTransitionStyle(order)}
+    >
       <Header
         orderNumber={order.orderNumber}
         createdAt={order.createdAt}
@@ -53,9 +72,12 @@ const CancelledOrderCard = ({ order }: OrderCardProps) => {
   );
 };
 
-const CompletedOrderCard = ({ order }: OrderCardProps) => {
+const CompletedOrderCard = ({ order, isRecentlyUpdated }: OrderCardProps) => {
   return (
-    <div className="order-card order-card--completed">
+    <div
+      className={cardClassName("order-card--completed", isRecentlyUpdated)}
+      style={viewTransitionStyle(order)}
+    >
       <Header
         orderNumber={order.orderNumber}
         createdAt={order.createdAt}
@@ -77,9 +99,15 @@ const CompletedOrderCard = ({ order }: OrderCardProps) => {
   );
 };
 
-const ActiveOrderCard = ({ order }: OrderCardProps) => {
+const ActiveOrderCard = ({ order, isRecentlyUpdated }: OrderCardProps) => {
   return (
-    <div className="order-card">
+    <div
+      className={cardClassName(
+        order.status === OrderStatus.READY ? "order-card--ready" : null,
+        isRecentlyUpdated,
+      )}
+      style={viewTransitionStyle(order)}
+    >
       <Header
         orderNumber={order.orderNumber}
         createdAt={order.createdAt}

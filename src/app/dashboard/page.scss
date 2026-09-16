@@ -1,54 +1,5 @@
 @use '/src/styles/breakpoints';
 
-// Without this the UA name on :root cross-fades the entire page — header and
-// recipe panel included — on every status change.
-:root {
-  view-transition-name: none;
-}
-
-// The snapshot layer covers the viewport and swallows taps while animating;
-// orders arrive at arbitrary moments, so a bartender must not lose a tap to
-// someone else's order.
-::view-transition {
-  pointer-events: none;
-}
-
-::view-transition-group(.order-card) {
-  animation-duration: 250ms;
-}
-
-// :only-child = no counterpart in the other snapshot, i.e. the card left or
-// arrived. Dropping it would make every reflowing card pulse too.
-::view-transition-old(.order-card):only-child {
-  animation: order-card-out 200ms ease-in both;
-}
-
-::view-transition-new(.order-card):only-child {
-  animation: order-card-in 250ms ease-out both;
-}
-
-@keyframes order-card-out {
-  to {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-}
-
-@keyframes order-card-in {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  ::view-transition-group(*),
-  ::view-transition-old(*),
-  ::view-transition-new(*) {
-    animation: none !important;
-  }
-}
-
 .dashboard {
   &__content {
     flex: 1;

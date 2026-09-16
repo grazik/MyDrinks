@@ -2,6 +2,7 @@
 @use "typography";
 @use "reset";
 @use "utils";
+@use "view-transitions";
 
 body {
   background-color: var(--color-background);

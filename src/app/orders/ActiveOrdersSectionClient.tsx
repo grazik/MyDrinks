@@ -10,6 +10,12 @@ import { SseHandlers, useSse } from "@/src/hooks/useSse";
 import { BarEvent } from "@/lib/sse/types";
 import { H2SectionHeading } from "@/src/components/atoms/SectionHeading/SectionHeading";
 import { OrdersGrid } from "@/src/components/organisms/OrdersGrid/OrdersGrid";
+import { useRecentlyUpdated } from "@/src/hooks/useRecentlyUpdated";
+import { withViewTransition } from "@/src/utils/viewTransition";
+
+// Outlasts the glow's own delay + duration so the card keeps the class until
+// the animation has finished.
+const HIGHLIGHT_DURATION_MS = 2000;
 
 interface ActiveOrdersSectionClientProps {
   initialOrders: OrderWithDrink[] | null;
@@ -25,6 +31,9 @@ export const ActiveOrdersSectionClient = ({
   const [activeEvent, setActiveEvent] = useState(initialEvent);
   const [userOrders, setUserOrders] = useState(initialOrders || []);
 
+  const { markUpdated, isRecentlyUpdated } =
+    useRecentlyUpdated(HIGHLIGHT_DURATION_MS);
+
   const sortedOrders = useMemo(
     () =>
       userOrders.toSorted(
@@ -36,17 +45,24 @@ export const ActiveOrdersSectionClient = ({
   const sseHandlers = useMemo<SseHandlers>(
     () => ({
       [BarEvent.USER_ALL_ORDERS]: (payload) => setUserOrders(payload),
-      [BarEvent.USER_ORDER_UPDATED]: (payload) =>
-        setUserOrders((prevOrders) =>
-          prevOrders.filter((o) => o.id !== payload.id).concat(payload),
-        ),
+      [BarEvent.USER_ORDER_UPDATED]: (payload) => {
+        markUpdated(payload.id);
+
+        // Deliberately not on USER_ALL_ORDERS: a resync reorders the whole
+        // list, and animating every card at once reads as noise.
+        withViewTransition(() =>
+          setUserOrders((prevOrders) =>
+            prevOrders.filter((o) => o.id !== payload.id).concat(payload),
+          ),
+        );
+      },
       [BarEvent.BAR_CLOSED]: () => {
         setActiveEvent(null);
         setUserOrders([]);
       },
       [BarEvent.BAR_OPENED]: (payload) => setActiveEvent(payload),
     }),
-    [],
+    [markUpdated],
   );
 
   useSse("/api/sse/my-orders/", sseHandlers);
@@ -60,7 +76,11 @@ export const ActiveOrdersSectionClient = ({
       <H2SectionHeading>Bar is opened - {activeEvent.title}</H2SectionHeading>
       <OrdersGrid>
         {sortedOrders.map((order) => (
-          <OrderCard order={order} key={order.id} />
+          <OrderCard
+            order={order}
+            key={order.id}
+            isRecentlyUpdated={isRecentlyUpdated(order.id)}
+          />
         ))}
       </OrdersGrid>
     </section>
