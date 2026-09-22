@@ -1,0 +1,25 @@
+// Snapshot pseudo-elements are document-scoped, so these base rules belong to
+// the app rather than to whichever page starts a transition.
+
+:root {
+  --view-transition-duration: 250ms;
+
+  // Without this the UA name on :root cross-fades the entire page — header
+  // included — on every single-element update.
+  view-transition-name: none;
+}
+
+// The snapshot layer covers the viewport and swallows taps while animating;
+// transitions here are triggered by other people's updates, so a tap in
+// progress must not be lost to one.
+::view-transition {
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}

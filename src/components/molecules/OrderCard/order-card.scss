@@ -1,5 +1,6 @@
 .order-card {
   --border-color: color-mix(in srgb, var(--color-amber-gold) 60%, transparent);
+  --glow-color: var(--border-color);
 
   background-color: var(--color-surface-base);
   border-radius: 12px;
@@ -8,6 +9,7 @@
   flex-direction: column;
   gap: 16px;
   border: 1px solid var(--border-color);
+  view-transition-class: user-order-card;
 
   &--completed {
     --border-color: color-mix(in srgb, var(--color-lime-green) 30%, transparent);
@@ -15,5 +17,75 @@
 
   &--cancelled {
     --border-color: color-mix(in srgb, var(--color-cherry-red) 50%, transparent);
+  }
+
+  &--ready {
+    --glow-color: var(--color-lime-green);
+  }
+
+  // Delayed until the card has finished moving: a box-shadow spreads outside
+  // the snapshot's border box, so it is clipped while the transition runs.
+  &--just-updated {
+    animation-name: order-card-glow;
+    animation-duration: 1.6s;
+    animation-timing-function: ease-out;
+    animation-delay: var(--view-transition-duration, 250ms);
+    animation-fill-mode: both;
+  }
+}
+
+@keyframes order-card-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+
+  25%,
+  75% {
+    box-shadow: 0 0 16px 2px var(--glow-color);
+  }
+}
+
+::view-transition-group(.user-order-card) {
+  animation-duration: var(--view-transition-duration);
+}
+
+// A card that stays only changes place; cross-fading its two snapshots would
+// smear the StatusBar fill, which is the actual status feedback.
+::view-transition-old(.user-order-card):not(:only-child) {
+  animation: none;
+  opacity: 0;
+}
+
+::view-transition-new(.user-order-card):not(:only-child) {
+  animation: none;
+  opacity: 1;
+}
+
+::view-transition-old(.user-order-card):only-child {
+  animation: user-order-card-out 200ms ease-in both;
+}
+
+::view-transition-new(.user-order-card):only-child {
+  animation: user-order-card-in 250ms ease-out both;
+}
+
+@keyframes user-order-card-out {
+  to {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+}
+
+@keyframes user-order-card-in {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .order-card--just-updated {
+    animation: none;
   }
 }

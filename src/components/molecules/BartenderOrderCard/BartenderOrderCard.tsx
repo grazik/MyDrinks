@@ -15,6 +15,12 @@ type BartenderOrderCardProps = {
   isSelected?: boolean;
 };
 
+// MUST be unique across rendered cards — a duplicate name aborts the whole
+// view transition.
+const viewTransitionStyle = (order: Order) => ({
+  viewTransitionName: `order-${order.id}`,
+});
+
 const isHistoryCard = (order: Order) => {
   return (
     order.status === OrderStatus.COMPLETED ||
@@ -45,6 +51,7 @@ const ActiveCard = ({
     <div
       className={`bartender-order-card ${isSelected ? "bartender-order-card--selected" : ""}`}
       onClick={onClick}
+      style={viewTransitionStyle(order)}
     >
       <div className="bartender-order-card__header">
         <TimeFromNow date={order.updatedAt} />
@@ -104,6 +111,7 @@ const HistoryCard = ({
     <div
       className={`bartender-order-card bartender-order-card--history ${isSelected ? "bartender-order-card--selected" : ""}`}
       onClick={onClick}
+      style={viewTransitionStyle(order)}
     >
       <p className={`bartender-order-card__status ${config.className}`}>
         <Icon className="bartender-order-card__status-icon" />
