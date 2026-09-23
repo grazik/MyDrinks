@@ -3,6 +3,12 @@ name: build
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - '.github/**'
+      - '**/*.md'
+      - '.storybook/**'
+      - '**/*.stories.ts'
+      - '**/*.stories.tsx'
   workflow_dispatch:
 
 concurrency:
