@@ -1,8 +1,25 @@
+@use '/src/styles/breakpoints';
+
 .header {
   padding-block: 1rem;
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 4px;
+
+  @include breakpoints.from-tablet {
+    gap: 20px;
+  }
+
+  .logo {
+    white-space: nowrap;
+    font-size: clamp(1rem, 4.5vw, 1.125rem);
+    letter-spacing: 1.5px;
+
+    @include breakpoints.from-tablet {
+      font-size: 1.5rem;
+      letter-spacing: 2px;
+    }
+  }
 
   .header__spacer {
     margin-left: auto;
@@ -11,15 +28,62 @@
   .header__orders-link {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 6px;
+    min-width: 44px;
+    min-height: 44px;
+    white-space: nowrap;
     text-decoration: none;
     color: var(--color-text-light);
     font-size: 1rem;
     opacity: 0.7;
     transition: opacity 0.15s ease;
 
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+
     &:hover {
       opacity: 1;
+    }
+
+    @include breakpoints.from-tablet {
+      min-width: 0;
+
+      svg {
+        width: 16px;
+        height: 16px;
+      }
+    }
+  }
+
+  // Labels stay in the accessibility tree so icon-only links keep their names.
+  .header__link-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+
+    @include breakpoints.from-tablet {
+      position: static;
+      width: auto;
+      height: auto;
+      overflow: visible;
+      clip-path: none;
+    }
+  }
+
+  .header__sign-out {
+    white-space: nowrap;
+    margin-left: 8px;
+    padding: 8px 12px;
+
+    @include breakpoints.from-tablet {
+      margin-left: 0;
+      padding-inline: 16px;
     }
   }
 }
