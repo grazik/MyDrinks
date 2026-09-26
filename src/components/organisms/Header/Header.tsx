@@ -25,15 +25,20 @@ export const Header = async () => {
             {isBarman && (
               <Link href="/dashboard" className="header__orders-link">
                 <DashboardIcon />
-                Dashboard
+                <span className="header__link-label">Dashboard</span>
               </Link>
             )}
             <Link href="/orders" className="header__orders-link">
               <ReceiptIcon />
-              My Orders
+              <span className="header__link-label">My Orders</span>
             </Link>
             <form action={signOut}>
-              <Cta type="submit" fill="outline" tone="danger">
+              <Cta
+                type="submit"
+                fill="outline"
+                tone="danger"
+                className="header__sign-out"
+              >
                 Sign out
               </Cta>
             </form>
