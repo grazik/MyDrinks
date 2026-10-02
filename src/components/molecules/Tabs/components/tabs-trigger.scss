@@ -1,12 +1,33 @@
+@use '/src/styles/breakpoints';
+
 .tabs-trigger {
-  padding: 16px 24px;
-  flex-basis: 100px;
-  flex-grow: 1;
+  flex: 1 0 auto;
+  padding: 10px 16px;
+  white-space: nowrap;
   text-align: center;
   border-radius: 8px;
   position: relative;
   opacity: 0.6;
   transition: opacity 0.3s ease-in-out;
+
+  @include breakpoints.from-tablet {
+    flex-basis: 100px;
+    padding: 16px 24px;
+  }
+
+  // Compound selector so this wins over .body-text regardless of CSS load order.
+  &.body-text {
+    font-size: 1rem;
+
+    @include breakpoints.from-tablet {
+      font-size: 1.25rem;
+    }
+  }
+
+  // The tab list scrolls, which clips anything drawn outside a trigger.
+  &:focus-visible {
+    outline-offset: -2px;
+  }
 
   &:focus-visible,
   &:hover {
