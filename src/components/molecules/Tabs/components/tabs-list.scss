@@ -6,5 +6,12 @@
     display: flex;
     gap: 8px;
     background-color: var(--color-surface-dark);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 }
