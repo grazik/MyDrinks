@@ -94,13 +94,22 @@ const DrawerContent = ({
 
   const visibleSpirits = spirits.filter(matchesQuery).sort(byName);
 
-  const additionalGroups = ADDITIONAL_INGREDIENT_TYPES_ORDER.map((type) => ({
-    type,
-    label: INGREDIENT_TYPE_LABELS[type],
-    options: additional
-      .filter((option) => option.type === type && matchesQuery(option))
-      .sort(byName),
-  })).filter((group) => group.options.length > 0);
+  const additionalByType = Object.groupBy(
+    additional.filter(matchesQuery),
+    ({ type }) => type,
+  );
+
+  const additionalGroups = ADDITIONAL_INGREDIENT_TYPES_ORDER.flatMap((type) => {
+    const options = additionalByType[type];
+    if (!options) return [];
+    return [
+      {
+        type,
+        label: INGREDIENT_TYPE_LABELS[type],
+        options: options.sort(byName),
+      },
+    ];
+  });
 
   const nothingMatches =
     visibleSpirits.length === 0 && additionalGroups.length === 0;
