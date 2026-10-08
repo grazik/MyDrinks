@@ -73,6 +73,10 @@ export const Drawer = ({
     <>
       <Overlay isVisible={isOpen} onClick={onClose} />
       <div
+        // The side is resolved on the client after a mobile-first server
+        // render; remounting on change keeps the closed panel from sliding
+        // between the two off-screen positions.
+        key={side}
         ref={drawerRef}
         className={`drawer drawer--${side}`}
         data-open={isOpen}
