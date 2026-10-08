@@ -10,23 +10,6 @@ type FilterChipBarProps = {
   onShowAll?: () => void;
 };
 
-// Chips are expected in display order (most used first). Active chips outside
-// the visible limit stay visible so a selection made elsewhere is never hidden.
-const getVisibleChips = (
-  chips: string[],
-  activeIngredients: string[] = [],
-  visibleLimit?: number,
-) => {
-  if (visibleLimit === undefined) return chips;
-
-  const shortlist = chips.slice(0, visibleLimit);
-  const activeChipsBeyondLimit = chips
-    .slice(visibleLimit)
-    .filter((chip) => activeIngredients.includes(chip));
-
-  return [...shortlist, ...activeChipsBeyondLimit];
-};
-
 export const FilterChipBar = ({
   heading,
   chips,
@@ -35,7 +18,7 @@ export const FilterChipBar = ({
   visibleLimit,
   onShowAll,
 }: FilterChipBarProps) => {
-  const visibleChips = getVisibleChips(chips, activeIngredients, visibleLimit);
+  const visibleChips = chips.slice(0, visibleLimit);
   const hiddenCount = chips.length - visibleChips.length;
 
   return (

@@ -50,13 +50,6 @@ export const Collapsed: Story = {
   },
 };
 
-export const CollapsedWithHiddenActive: Story = {
-  args: {
-    activeIngredients: ["Prosecco"],
-    visibleLimit: 4,
-  },
-};
-
 export const Interactive: Story = {
   args: {
     visibleLimit: 5,

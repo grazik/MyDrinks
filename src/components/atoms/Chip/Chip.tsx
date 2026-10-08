@@ -35,7 +35,7 @@ export const Chip = ({
       aria-pressed={removable ? undefined : isActive}
       aria-label={
         removable && typeof children === "string"
-          ? `Remove ${children} filter`
+          ? `Remove ${children}`
           : undefined
       }
       onClick={() => {
@@ -43,11 +43,6 @@ export const Chip = ({
       }}
     >
       {children}
-      {removable && (
-        <span className="chip__remove" aria-hidden="true">
-          ×
-        </span>
-      )}
     </button>
   );
 };
