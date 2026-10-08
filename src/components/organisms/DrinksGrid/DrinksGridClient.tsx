@@ -12,20 +12,16 @@ type DrinksGridClientProps = {
 export const DrinksGridClient = ({
   drinksWithIngredients,
 }: DrinksGridClientProps) => {
-  const [{ spirits = [], additional = [] }] = useDrinkFilters();
+  const { activeFilters } = useDrinkFilters();
 
-  const drinksBySpirit = filterDrinksByIngredients(
+  const filteredDrinks = filterDrinksByIngredients(
     drinksWithIngredients,
-    spirits,
-  );
-  const drinkByIngredients = filterDrinksByIngredients(
-    drinksBySpirit,
-    additional,
+    activeFilters,
   );
 
   return (
     <>
-      {drinkByIngredients.map((drink) => (
+      {filteredDrinks.map((drink) => (
         <DrinkCard drink={drink} key={drink.id} />
       ))}
     </>

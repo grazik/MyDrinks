@@ -3,7 +3,18 @@ import { useState } from "react";
 import { fn } from "storybook/test";
 import { FilterChipBar } from "./FilterChipBar";
 
-const CHIPS = ["Vodka", "Rum", "Gin", "Tequila", "Whiskey", "Lime", "Mint"];
+const CHIPS = [
+  "Vodka",
+  "Rum",
+  "Gin",
+  "Tequila",
+  "Whiskey",
+  "Mezcal",
+  "Pisco",
+  "Aperol",
+  "Campari",
+  "Prosecco",
+];
 
 const meta: Meta<typeof FilterChipBar> = {
   title: "Molecules/FilterChipBar",
@@ -12,7 +23,8 @@ const meta: Meta<typeof FilterChipBar> = {
   args: {
     heading: "Filter by ingredient",
     chips: CHIPS,
-    updateFilers: fn(),
+    onToggle: fn(),
+    onShowAll: fn(),
   },
 };
 
@@ -27,11 +39,21 @@ export const NoSelection: Story = {
 
 export const WithActive: Story = {
   args: {
-    activeIngredients: ["Vodka", "Lime"],
+    activeIngredients: ["Vodka", "Gin"],
+  },
+};
+
+export const Collapsed: Story = {
+  args: {
+    activeIngredients: [],
+    visibleLimit: 4,
   },
 };
 
 export const Interactive: Story = {
+  args: {
+    visibleLimit: 5,
+  },
   render: (args) => {
     const [active, setActive] = useState<string[]>([]);
     const toggle = (name: string) =>
@@ -39,11 +61,7 @@ export const Interactive: Story = {
         prev.includes(name) ? prev.filter((n) => n !== name) : [...prev, name]
       );
     return (
-      <FilterChipBar
-        {...args}
-        activeIngredients={active}
-        updateFilers={toggle}
-      />
+      <FilterChipBar {...args} activeIngredients={active} onToggle={toggle} />
     );
   },
 };

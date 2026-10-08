@@ -1,16 +1,14 @@
 import { DrinkWithIngredients } from "@/src/components/organisms/DrinksGrid/DrinkGrid";
+import {
+  ActiveDrinkFilters,
+  getDrinkIngredientNames,
+  matchesDrinkFilters,
+} from "@/src/utils/ingredients/ingredients";
 
 export const filterDrinksByIngredients = (
   drinks: DrinkWithIngredients[],
-  ingredientsNames: string[],
-) => {
-  if (ingredientsNames.length > 0) {
-    return drinks.filter(({ ingredients }) =>
-      ingredients.some((ingredient) =>
-        ingredientsNames.includes(ingredient.ingredient.name),
-      ),
-    );
-  }
-
-  return drinks;
-};
+  filters: ActiveDrinkFilters,
+) =>
+  drinks.filter((drink) =>
+    matchesDrinkFilters(getDrinkIngredientNames(drink), filters),
+  );
