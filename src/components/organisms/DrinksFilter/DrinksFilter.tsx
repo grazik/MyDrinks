@@ -1,23 +1,25 @@
 import { DrinksFilterClient } from "@/src/components/organisms/DrinksFilter/DrinksFilterClient";
-import { groupIngredientsByCategory } from "@/src/utils/ingredients/ingredients";
-import { getIngredients } from "@/db/getIngredients";
+import {
+  buildIngredientFilterOptions,
+  getDrinkIngredientNames,
+  groupIngredientsByCategory,
+} from "@/src/utils/ingredients/ingredients";
+import { getDrinksWithIngredients } from "@/db/getDrinks";
 import { Suspense } from "react";
 
 export const DrinksFilter = async () => {
-  const allIngredients = await getIngredients();
+  const drinks = await getDrinksWithIngredients();
 
-  const { spirits = [], additional = [] } =
-    groupIngredientsByCategory(allIngredients);
-
-  const spiritNames = spirits.map((ingredient) => ingredient.name);
-
-  const ingredientNames = additional.map((ingredient) => ingredient.name);
+  const { spirits = [], additional = [] } = groupIngredientsByCategory(
+    buildIngredientFilterOptions(drinks),
+  );
 
   return (
     <Suspense>
       <DrinksFilterClient
-        spiritNames={spiritNames}
-        ingredientsNames={ingredientNames}
+        spirits={spirits}
+        additional={additional}
+        drinkIngredientNames={drinks.map(getDrinkIngredientNames)}
       />
     </Suspense>
   );

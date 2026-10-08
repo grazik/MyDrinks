@@ -1,11 +1,12 @@
 import { usePathname, useSearchParams } from "next/navigation";
 import { IngredientCategory } from "@/src/constants/IngredientCategory";
+import { ActiveDrinkFilters } from "@/src/utils/ingredients/ingredients";
 
 export const useDrinkFilters = () => {
   const params = useSearchParams();
   const pathname = usePathname();
 
-  const activeFilers = {
+  const activeFilters: ActiveDrinkFilters = {
     [IngredientCategory.SPIRITS]: params
       .get(IngredientCategory.SPIRITS)
       ?.split(","),
@@ -14,10 +15,15 @@ export const useDrinkFilters = () => {
       ?.split(","),
   };
 
-  const updateQueryParam =
+  const commit = (searchParams: URLSearchParams) => {
+    const query = searchParams.toString();
+    window.history.pushState({}, "", query ? `${pathname}?${query}` : pathname);
+  };
+
+  const toggleFilter =
     (type: IngredientCategory) => (ingredientName: string) => {
       const searchParams = new URLSearchParams(params);
-      const currentFilterState = activeFilers[type];
+      const currentFilterState = activeFilters[type];
 
       if (!currentFilterState) {
         searchParams.set(type, ingredientName);
@@ -35,12 +41,16 @@ export const useDrinkFilters = () => {
         }
       }
 
-      window.history.pushState(
-        {},
-        "",
-        `${pathname}?${searchParams.toString()}`,
-      );
+      commit(searchParams);
     };
 
-  return [activeFilers, updateQueryParam] as const;
+  const clearFilters = () => {
+    const searchParams = new URLSearchParams(params);
+    Object.values(IngredientCategory).forEach((type) =>
+      searchParams.delete(type),
+    );
+    commit(searchParams);
+  };
+
+  return [activeFilters, toggleFilter, clearFilters] as const;
 };

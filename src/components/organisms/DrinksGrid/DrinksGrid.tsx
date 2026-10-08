@@ -1,4 +1,4 @@
-import { prisma } from "../../../../db/db";
+import { getDrinksWithIngredients } from "@/db/getDrinks";
 import { DrinksGridClient } from "@/src/components/organisms/DrinksGrid/DrinksGridClient";
 import { Grid } from "@/src/components/molecules/Grid/Grid";
 import { Suspense } from "react";
@@ -6,15 +6,7 @@ import { Suspense } from "react";
 import "./drinks-grid.scss";
 
 export const DrinksGrid = async () => {
-  const drinksWithIngredients = await prisma.drink.findMany({
-    include: {
-      ingredients: {
-        include: {
-          ingredient: true,
-        },
-      },
-    },
-  });
+  const drinksWithIngredients = await getDrinksWithIngredients();
 
   return (
     <div className="drinks-grid">
