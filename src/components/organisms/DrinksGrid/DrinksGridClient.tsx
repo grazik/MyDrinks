@@ -12,7 +12,7 @@ type DrinksGridClientProps = {
 export const DrinksGridClient = ({
   drinksWithIngredients,
 }: DrinksGridClientProps) => {
-  const [activeFilters] = useDrinkFilters();
+  const { activeFilters } = useDrinkFilters();
 
   const filteredDrinks = filterDrinksByIngredients(
     drinksWithIngredients,

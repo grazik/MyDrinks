@@ -2,6 +2,8 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { IngredientCategory } from "@/src/constants/IngredientCategory";
 import { ActiveDrinkFilters } from "@/src/utils/ingredients/ingredients";
 
+const CATEGORIES = Object.values(IngredientCategory);
+
 export const useDrinkFilters = () => {
   const params = useSearchParams();
   const pathname = usePathname();
@@ -15,18 +17,22 @@ export const useDrinkFilters = () => {
       ?.split(","),
   };
 
+  const activeFilterNames = CATEGORIES.flatMap(
+    (category) => activeFilters[category] ?? [],
+  );
+
   const commit = (searchParams: URLSearchParams) => {
     const query = searchParams.toString();
     window.history.pushState({}, "", query ? `${pathname}?${query}` : pathname);
   };
 
   const toggleFilter =
-    (type: IngredientCategory) => (ingredientName: string) => {
+    (category: IngredientCategory) => (ingredientName: string) => {
       const searchParams = new URLSearchParams(params);
-      const currentFilterState = activeFilters[type];
+      const currentFilterState = activeFilters[category];
 
       if (!currentFilterState) {
-        searchParams.set(type, ingredientName);
+        searchParams.set(category, ingredientName);
       } else {
         const shouldDelete = currentFilterState.includes(ingredientName);
 
@@ -35,22 +41,35 @@ export const useDrinkFilters = () => {
           : [...currentFilterState, ingredientName];
 
         if (newFilters.length > 0) {
-          searchParams.set(type, newFilters.join(","));
+          searchParams.set(category, newFilters.join(","));
         } else {
-          searchParams.delete(type);
+          searchParams.delete(category);
         }
       }
 
       commit(searchParams);
     };
 
+  // Ingredient names are unique across categories, so the name alone
+  // identifies which category the filter lives in.
+  const removeFilter = (ingredientName: string) => {
+    const category = CATEGORIES.find((category) =>
+      activeFilters[category]?.includes(ingredientName),
+    );
+    if (category) toggleFilter(category)(ingredientName);
+  };
+
   const clearFilters = () => {
     const searchParams = new URLSearchParams(params);
-    Object.values(IngredientCategory).forEach((type) =>
-      searchParams.delete(type),
-    );
+    CATEGORIES.forEach((category) => searchParams.delete(category));
     commit(searchParams);
   };
 
-  return [activeFilters, toggleFilter, clearFilters] as const;
+  return {
+    activeFilters,
+    activeFilterNames,
+    toggleFilter,
+    removeFilter,
+    clearFilters,
+  };
 };

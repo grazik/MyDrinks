@@ -17,6 +17,19 @@
     background-color: var(--color-accent-primary);
   }
 
+  &.chip--fill-outline {
+    background-color: transparent;
+    border: 1px dashed var(--color-text-muted);
+    color: var(--color-text-muted);
+    transition: color .3s ease-in-out, border-color .3s ease-in-out;
+
+    &:hover,
+    &:focus-visible {
+      color: var(--color-text-light);
+      border-color: var(--color-accent-primary);
+    }
+  }
+
   &.chip--removable {
     display: inline-flex;
     align-items: center;

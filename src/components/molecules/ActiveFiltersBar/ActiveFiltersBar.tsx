@@ -2,24 +2,21 @@
 
 import { Chip } from "@/src/components/atoms/Chip/Chip";
 import { Cta } from "@/src/components/atoms/Cta/Cta";
-import { IngredientCategory } from "@/src/constants/IngredientCategory";
 import "./active-filters-bar.scss";
-
-export type AppliedFilter = {
-  category: IngredientCategory;
-  name: string;
-};
 
 type ActiveFiltersBarProps = {
   resultCount: number;
-  appliedFilters: AppliedFilter[];
-  onRemove: (filter: AppliedFilter) => void;
+  appliedFilters: string[];
+  onRemove: (ingredientName: string) => void;
   onClearAll: () => void;
   onOpenAllFilters: () => void;
 };
 
-export const formatDrinkCount = (count: number) =>
-  count === 0 ? "No drinks match" : `${count} ${count === 1 ? "drink" : "drinks"}`;
+export const formatDrinkCount = (count: number) => {
+  if (count === 0) return "No drinks match";
+  if (count === 1) return "1 drink";
+  return `${count} drinks`;
+};
 
 export const ActiveFiltersBar = ({
   resultCount,
@@ -38,14 +35,9 @@ export const ActiveFiltersBar = ({
 
       {hasFilters && (
         <div className="active-filters-bar__chips">
-          {appliedFilters.map((filter) => (
-            <Chip
-              key={`${filter.category}:${filter.name}`}
-              isActive
-              removable
-              onChange={() => onRemove(filter)}
-            >
-              {filter.name}
+          {appliedFilters.map((name) => (
+            <Chip key={name} isActive removable onChange={() => onRemove(name)}>
+              {name}
             </Chip>
           ))}
           <button

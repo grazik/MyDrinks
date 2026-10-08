@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { Drawer } from "@/src/components/molecules/Drawer/Drawer";
 import { Chip } from "@/src/components/atoms/Chip/Chip";
 import { Cta } from "@/src/components/atoms/Cta/Cta";
+import { H2SubsectionHeading } from "@/src/components/atoms/SectionHeading/SectionHeading";
 import { useBreakpoint } from "@/src/hooks/useBreakpoint";
 import {
   IngredientCategory,
@@ -20,6 +21,8 @@ import {
 import { formatDrinkCount } from "@/src/components/molecules/ActiveFiltersBar/ActiveFiltersBar";
 import "./drinks-filter-drawer.scss";
 
+const MIN_SEARCH_LENGTH = 3;
+
 type DrinksFilterDrawerProps = {
   isOpen: boolean;
   onClose: () => void;
@@ -34,8 +37,34 @@ type DrinksFilterDrawerProps = {
 
 type DrawerContentProps = Omit<DrinksFilterDrawerProps, "isOpen">;
 
+type IngredientChipsProps = {
+  category: IngredientCategory;
+  options: IngredientFilterOption[];
+  activeFilters: ActiveDrinkFilters;
+  onToggle: DrinksFilterDrawerProps["onToggle"];
+};
+
 const byName = (a: IngredientFilterOption, b: IngredientFilterOption) =>
   a.name.localeCompare(b.name);
+
+const IngredientChips = ({
+  category,
+  options,
+  activeFilters,
+  onToggle,
+}: IngredientChipsProps) => (
+  <div className="drinks-filter-drawer__chips">
+    {options.map(({ name }) => (
+      <Chip
+        key={name}
+        isActive={activeFilters[category]?.includes(name)}
+        onChange={() => onToggle(category)(name)}
+      >
+        {name}
+      </Chip>
+    ))}
+  </div>
+);
 
 const DrawerContent = ({
   onClose,
@@ -59,8 +88,9 @@ const DrawerContent = ({
   }, [initialSection]);
 
   const normalizedQuery = query.trim().toLowerCase();
+  const isSearching = normalizedQuery.length >= MIN_SEARCH_LENGTH;
   const matchesQuery = (option: IngredientFilterOption) =>
-    option.name.toLowerCase().includes(normalizedQuery);
+    !isSearching || option.name.toLowerCase().includes(normalizedQuery);
 
   const visibleSpirits = spirits.filter(matchesQuery).sort(byName);
 
@@ -79,28 +109,11 @@ const DrawerContent = ({
     (activeFilters[IngredientCategory.SPIRITS]?.length ?? 0) +
     (activeFilters[IngredientCategory.ADDITIONAL]?.length ?? 0);
 
-  const renderChips = (
-    category: IngredientCategory,
-    options: IngredientFilterOption[],
-  ) => (
-    <div className="drinks-filter-drawer__chips">
-      {options.map(({ name }) => (
-        <Chip
-          key={name}
-          isActive={activeFilters[category]?.includes(name)}
-          onChange={() => onToggle(category)(name)}
-        >
-          {name}
-        </Chip>
-      ))}
-    </div>
-  );
-
   return (
     <div className="drinks-filter-drawer">
       <div className="drinks-filter-drawer__top">
         <div className="drinks-filter-drawer__header">
-          <h2 className="subsection-heading">Filters</h2>
+          <H2SubsectionHeading>Filters</H2SubsectionHeading>
           <button
             type="button"
             className="drinks-filter-drawer__close"
@@ -123,7 +136,7 @@ const DrawerContent = ({
       <div className="drinks-filter-drawer__body">
         {nothingMatches && (
           <p className="body-text drinks-filter-drawer__empty">
-            No ingredients match “{query.trim()}”
+            No ingredients match your search
           </p>
         )}
 
@@ -138,7 +151,12 @@ const DrawerContent = ({
             <h3 className="drinks-filter-drawer__section-heading">
               {INGREDIENT_CATEGORY_LABELS[IngredientCategory.SPIRITS]}
             </h3>
-            {renderChips(IngredientCategory.SPIRITS, visibleSpirits)}
+            <IngredientChips
+              category={IngredientCategory.SPIRITS}
+              options={visibleSpirits}
+              activeFilters={activeFilters}
+              onToggle={onToggle}
+            />
           </section>
         )}
 
@@ -156,7 +174,12 @@ const DrawerContent = ({
             {additionalGroups.map(({ type, label, options }) => (
               <div key={type} className="drinks-filter-drawer__group">
                 <h4 className="drinks-filter-drawer__group-heading">{label}</h4>
-                {renderChips(IngredientCategory.ADDITIONAL, options)}
+                <IngredientChips
+                  category={IngredientCategory.ADDITIONAL}
+                  options={options}
+                  activeFilters={activeFilters}
+                  onToggle={onToggle}
+                />
               </div>
             ))}
           </section>

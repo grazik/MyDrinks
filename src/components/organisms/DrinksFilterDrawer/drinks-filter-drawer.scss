@@ -76,6 +76,8 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
+    // MUST cover the sticky header + search block, or a section scrolled
+    // into view lands underneath it.
     scroll-margin-top: 140px;
   }
 

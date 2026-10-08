@@ -8,6 +8,7 @@ type ChipProps = {
   onChange?: (isChecked: boolean) => void;
   isActive?: boolean;
   removable?: boolean;
+  fill?: "solid" | "outline";
 };
 
 export const Chip = ({
@@ -15,10 +16,12 @@ export const Chip = ({
   onChange,
   isActive = false,
   removable = false,
+  fill = "solid",
 }: ChipProps) => {
   const classNames = [
     "button",
     "chip",
+    `chip--fill-${fill}`,
     isActive && "chip--active",
     removable && "chip--removable",
   ]

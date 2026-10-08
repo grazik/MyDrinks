@@ -3,10 +3,7 @@
 import { useState } from "react";
 import { useDrinkFilters } from "@/src/hooks/useDrinkFilters";
 import { FilterChipBar } from "@/src/components/molecules/FilterChipBar/FilterChipBar";
-import {
-  ActiveFiltersBar,
-  AppliedFilter,
-} from "@/src/components/molecules/ActiveFiltersBar/ActiveFiltersBar";
+import { ActiveFiltersBar } from "@/src/components/molecules/ActiveFiltersBar/ActiveFiltersBar";
 import { DrinksFilterDrawer } from "@/src/components/organisms/DrinksFilterDrawer/DrinksFilterDrawer";
 import { IngredientCategory } from "@/src/constants/IngredientCategory";
 import {
@@ -23,14 +20,23 @@ type DrinksFilterClientProps = {
   drinkIngredientNames: string[][];
 };
 
-type DrawerState = { isOpen: false } | { isOpen: true; section?: IngredientCategory };
+type DrawerState = {
+  isOpen: boolean;
+  section?: IngredientCategory;
+};
 
 export const DrinksFilterClient = ({
   spirits,
   additional,
   drinkIngredientNames,
 }: DrinksFilterClientProps) => {
-  const [activeFilters, toggleFilter, clearFilters] = useDrinkFilters();
+  const {
+    activeFilters,
+    activeFilterNames,
+    toggleFilter,
+    removeFilter,
+    clearFilters,
+  } = useDrinkFilters();
   const [drawer, setDrawer] = useState<DrawerState>({ isOpen: false });
 
   const openDrawer = (section?: IngredientCategory) =>
@@ -40,11 +46,6 @@ export const DrinksFilterClient = ({
   const resultCount = drinkIngredientNames.filter((names) =>
     matchesDrinkFilters(names, activeFilters),
   ).length;
-
-  const appliedFilters: AppliedFilter[] = Object.values(IngredientCategory).flatMap(
-    (category) =>
-      (activeFilters[category] ?? []).map((name) => ({ category, name })),
-  );
 
   return (
     <>
@@ -66,14 +67,14 @@ export const DrinksFilterClient = ({
       />
       <ActiveFiltersBar
         resultCount={resultCount}
-        appliedFilters={appliedFilters}
-        onRemove={({ category, name }) => toggleFilter(category)(name)}
+        appliedFilters={activeFilterNames}
+        onRemove={removeFilter}
         onClearAll={clearFilters}
         onOpenAllFilters={() => openDrawer()}
       />
       <DrinksFilterDrawer
         isOpen={drawer.isOpen}
-        initialSection={drawer.isOpen ? drawer.section : undefined}
+        initialSection={drawer.section}
         onClose={closeDrawer}
         spirits={spirits}
         additional={additional}

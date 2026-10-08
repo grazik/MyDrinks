@@ -20,11 +20,11 @@ const getVisibleChips = (
   if (visibleLimit === undefined) return chips;
 
   const shortlist = chips.slice(0, visibleLimit);
-  const activeOutsideShortlist = chips
+  const activeChipsBeyondLimit = chips
     .slice(visibleLimit)
     .filter((chip) => activeIngredients.includes(chip));
 
-  return [...shortlist, ...activeOutsideShortlist];
+  return [...shortlist, ...activeChipsBeyondLimit];
 };
 
 export const FilterChipBar = ({
@@ -52,14 +52,9 @@ export const FilterChipBar = ({
           </Chip>
         ))}
         {hiddenCount > 0 && onShowAll && (
-          <button
-            type="button"
-            className="button filter-chip-bar__more"
-            onClick={onShowAll}
-            aria-label={`Show ${hiddenCount} more ${heading.toLowerCase()} options`}
-          >
+          <Chip fill="outline" onChange={onShowAll}>
             + {hiddenCount} more
-          </button>
+          </Chip>
         )}
       </div>
     </div>
