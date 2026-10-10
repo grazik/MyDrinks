@@ -182,7 +182,7 @@ const createEvent = async (tx: Prisma.TransactionClient) => {
   return tx.event.create({
     data: {
       slug: EVENT_SLUG,
-      title: "Apricot Lovers",
+      title: "Morelowe-Love",
       description:
         "A sun-kissed evening dedicated to the velvety, sweet-tart apricot. From a silky Apricot Whiskey Sour to a chili-rimmed Apricot Margarita, every drink celebrates the fruit at its ripest — with three refreshing alcohol-free creations, so everyone can raise a glass.",
       eventDate: EVENT_DATE,
