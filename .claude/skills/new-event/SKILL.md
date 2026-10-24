@@ -24,7 +24,7 @@ Ask in one message for anything the user hasn't already given. Don't ask about t
 
 ## 2. Preflight (read-only)
 
-Find out which database `.env` points to, then run:
+Run the following. Don't read `.env` / `.env.production` yourself: they hold credentials, and the script prints only the host and database name.
 
 ```bash
 npx tsx .claude/skills/new-event/scripts/preflight.ts --slug <slug> "<Drink 1>" "<Drink 2>" ...
@@ -67,7 +67,7 @@ The seed only writes paths; the files must exist or the cards show broken images
 - one per drink: `public/images/drinks/<sanitizeFilename(drink.name)>.png`, portrait 2:3 (the existing ones are 683×1024);
 - the event image: `public/images/events/<slug>.png`, landscape (the existing one is 1376×768).
 
-Compute each filename with the same rules as `sanitizeFilename` (lowercase; anything that isn't a-z or 0-9 becomes `-`; collapse repeated dashes; trim dashes from both ends). For example, "Witch's Brew" becomes `witch-s-brew.png`. If the user wants prompts, offer one short image prompt per drink in the style of `LLM/src/prompts/generateImagePromp.ts`: glassware, liquid colour, garnish, and warm bar lighting, plus the event's mood. Check which files are already there with `ls`, and report what's missing.
+Compute each filename with the same rules as `sanitizeFilename` (lowercase; anything that isn't a-z or 0-9 becomes `-`; collapse repeated dashes; trim dashes from both ends). For example, "Witch's Brew" becomes `witch-s-brew.png`. If the user wants prompts, or wants help picking between generated images, use the `image-prompts` skill. Check which files are already there with `ls`, and report what's missing.
 
 ## 5. Run (only when the user says so)
 
