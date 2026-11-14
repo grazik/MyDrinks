@@ -23,6 +23,53 @@ export const groupIngredientsByCategory = <T extends { type: IngredientType }>(
   );
 };
 
+type DrinkIngredientRow = {
+  id: string;
+  amount: number;
+  unit: string;
+  ingredient: { name: string; type: IngredientType };
+};
+
+type RecipeLine = {
+  id: string;
+  name: string;
+  type: IngredientType;
+  amount: number;
+  unit: string;
+};
+
+const MILLILITRES = "ml";
+
+const recipeGroupRank = ({ type, unit }: RecipeLine) =>
+  (type === IngredientType.spirit ? 0 : 2) + (unit === MILLILITRES ? 0 : 1);
+
+// Amounts are only comparable within ml; other units fall back to name order.
+const compareRecipeLines = (a: RecipeLine, b: RecipeLine) => {
+  const groupDiff = recipeGroupRank(a) - recipeGroupRank(b);
+  if (groupDiff !== 0) return groupDiff;
+
+  const bothMillilitres = a.unit === MILLILITRES && b.unit === MILLILITRES;
+  if (bothMillilitres && a.amount !== b.amount) return b.amount - a.amount;
+
+  return a.name.localeCompare(b.name);
+};
+
+const toRecipeLine = ({
+  id,
+  amount,
+  unit,
+  ingredient,
+}: DrinkIngredientRow): RecipeLine => ({
+  id,
+  amount,
+  unit,
+  name: ingredient.name,
+  type: ingredient.type,
+});
+
+export const toSortedRecipeLines = (drinkIngredients: DrinkIngredientRow[]) =>
+  drinkIngredients.map(toRecipeLine).sort(compareRecipeLines);
+
 export const getDrinkIngredientNames = (drink: DrinkWithIngredientNames) =>
   drink.ingredients.map(({ ingredient }) => ingredient.name);
 
