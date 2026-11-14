@@ -23,7 +23,15 @@ export const groupIngredientsByCategory = <T extends { type: IngredientType }>(
   );
 };
 
+type DrinkIngredientRow = {
+  id: string;
+  amount: number;
+  unit: string;
+  ingredient: { name: string; type: IngredientType };
+};
+
 type RecipeLine = {
+  id: string;
   name: string;
   type: IngredientType;
   amount: number;
@@ -46,13 +54,16 @@ const compareRecipeLines = (a: RecipeLine, b: RecipeLine) => {
   return a.name.localeCompare(b.name);
 };
 
-export const sortIngredientsForRecipe = <T>(
-  ingredients: T[],
-  toRecipeLine: (item: T) => RecipeLine,
-) =>
-  ingredients.toSorted((a, b) =>
-    compareRecipeLines(toRecipeLine(a), toRecipeLine(b)),
-  );
+export const toRecipeLines = (drinkIngredients: DrinkIngredientRow[]) =>
+  drinkIngredients
+    .map(({ id, amount, unit, ingredient }): RecipeLine => ({
+      id,
+      amount,
+      unit,
+      name: ingredient.name,
+      type: ingredient.type,
+    }))
+    .sort(compareRecipeLines);
 
 export const getDrinkIngredientNames = (drink: DrinkWithIngredientNames) =>
   drink.ingredients.map(({ ingredient }) => ingredient.name);
