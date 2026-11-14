@@ -54,16 +54,21 @@ const compareRecipeLines = (a: RecipeLine, b: RecipeLine) => {
   return a.name.localeCompare(b.name);
 };
 
-export const toRecipeLines = (drinkIngredients: DrinkIngredientRow[]) =>
-  drinkIngredients
-    .map(({ id, amount, unit, ingredient }): RecipeLine => ({
-      id,
-      amount,
-      unit,
-      name: ingredient.name,
-      type: ingredient.type,
-    }))
-    .sort(compareRecipeLines);
+const toRecipeLine = ({
+  id,
+  amount,
+  unit,
+  ingredient,
+}: DrinkIngredientRow): RecipeLine => ({
+  id,
+  amount,
+  unit,
+  name: ingredient.name,
+  type: ingredient.type,
+});
+
+export const toSortedRecipeLines = (drinkIngredients: DrinkIngredientRow[]) =>
+  drinkIngredients.map(toRecipeLine).sort(compareRecipeLines);
 
 export const getDrinkIngredientNames = (drink: DrinkWithIngredientNames) =>
   drink.ingredients.map(({ ingredient }) => ingredient.name);

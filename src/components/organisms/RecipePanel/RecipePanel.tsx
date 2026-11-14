@@ -14,7 +14,7 @@ import { OrderWithDrinkWithIngredientsAndUser } from "@/src/types/order.types";
 import { H2SectionHeading } from "@/src/components/atoms/SectionHeading/SectionHeading";
 import { markdownToHtml } from "@/src/utils/markdown";
 import Image from "next/image";
-import { toRecipeLines } from "@/src/utils/ingredients/ingredients";
+import { toSortedRecipeLines } from "@/src/utils/ingredients/ingredients";
 import { NoOrderSelectedStatusScreen } from "@/src/components/organisms/DashboardStatusScreen/DashboardStatusScreens";
 
 type Drink = OrderWithDrinkWithIngredientsAndUser["drink"];
@@ -64,7 +64,7 @@ const RecipePanelContent = ({ drink }: { drink: Drink }) => {
         <section>
           <H2SectionHeading>Ingredients</H2SectionHeading>
           <ul className="recipe-panel__ingredients">
-            {toRecipeLines(drink.ingredients).map(
+            {toSortedRecipeLines(drink.ingredients).map(
               ({ id, amount, unit, name }) => (
                 <li key={id} className="body-text">
                   <strong>

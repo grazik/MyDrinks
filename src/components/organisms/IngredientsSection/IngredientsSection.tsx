@@ -4,7 +4,7 @@ import {
   H2SectionHeading,
   SectionHeadingType,
 } from "@/src/components/atoms/SectionHeading/SectionHeading";
-import { toRecipeLines } from "@/src/utils/ingredients/ingredients";
+import { toSortedRecipeLines } from "@/src/utils/ingredients/ingredients";
 
 type IngredientsSectionProps = {
   Heading?: SectionHeadingType;
@@ -15,7 +15,9 @@ export const IngredientsSection = async ({
   drinkId,
   Heading = H2SectionHeading,
 }: IngredientsSectionProps) => {
-  const ingredients = toRecipeLines(await getIngredientsByDrinkId(drinkId));
+  const ingredients = toSortedRecipeLines(
+    await getIngredientsByDrinkId(drinkId),
+  );
 
   return (
     <section className="ingredients-section">
