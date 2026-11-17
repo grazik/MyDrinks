@@ -4,11 +4,13 @@ import { signOut } from "@/src/actions/signOut";
 import { getUserDto } from "@/lib/auth/getUserDto";
 import { isStaff } from "@/lib/auth/roles";
 import Link from "next/link";
+import { Suspense } from "react";
 import DashboardIcon from "public/icons/dashboard.svg";
 import ReceiptIcon from "public/icons/receipt.svg";
 
 import "./header.scss";
 import { Cta } from "@/src/components/atoms/Cta/Cta";
+import { SignInCta } from "./components/SignInCta";
 
 export const Header = async () => {
   const userDto = await getUserDto();
@@ -44,7 +46,9 @@ export const Header = async () => {
             </form>
           </>
         ) : (
-          <Cta href="/sign-in">Sign in</Cta>
+          <Suspense fallback={<Cta href="/sign-in">Sign in</Cta>}>
+            <SignInCta />
+          </Suspense>
         )}
       </header>
     </ContentBand>

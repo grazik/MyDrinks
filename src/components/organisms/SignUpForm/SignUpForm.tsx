@@ -10,11 +10,15 @@ import { Banner } from "@/src/components/atoms/Banner/Banner";
 import { useEffect, useState } from "react";
 import { Spinner } from "@/src/components/atoms/Spinner/Spinner";
 
-export const SignUpForm = () => {
+interface SignUpFormProps {
+  returnTo: string;
+}
+
+export const SignUpForm = ({ returnTo }: SignUpFormProps) => {
   const [error, setError] = useState("");
 
   const onSubmit = async (data: unknown) => {
-    const { ok, message } = await createUser(data);
+    const { ok, message } = await createUser(data, returnTo);
     if (!ok) {
       setError(message);
     } else {

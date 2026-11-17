@@ -9,3 +9,5 @@ export const AUTH_ERRORS = {
   invalidCredentials: "Invalid email or password",
   signInFailed: "Error signing in",
 } as const;
+
+export const RETURN_TO_PARAM = "returnTo";
