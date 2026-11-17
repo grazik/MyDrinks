@@ -1,7 +1,7 @@
 // middleware.ts
 import { NextRequest, NextResponse } from "next/server";
 import { AUTH_COOKIE_NAME } from "@/src/constants/auth";
-import { withReturnTo } from "@/lib/auth/returnTo";
+import { withReturnTo } from "@/lib/validation/returnTo";
 import { parseAuthToken } from "@/lib/auth/jwt";
 import { isStaff } from "@/lib/auth/roles";
 

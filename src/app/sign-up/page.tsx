@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { SignUpForm } from "@/src/components/organisms/SignUpForm/SignUpForm";
-import { getSafeReturnTo, withReturnTo } from "@/lib/auth/returnTo";
+import { getSafeReturnTo, withReturnTo } from "@/lib/validation/returnTo";
 import { RETURN_TO_PARAM } from "@/src/constants/auth";
 
 import "./page.scss";

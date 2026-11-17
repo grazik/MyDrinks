@@ -2,7 +2,7 @@
 
 import { usePathname, useSearchParams } from "next/navigation";
 import { Cta } from "@/src/components/atoms/Cta/Cta";
-import { isAuthPath, withReturnTo } from "@/lib/auth/returnTo";
+import { isAuthPath, withReturnTo } from "@/lib/validation/returnTo";
 import { RETURN_TO_PARAM } from "@/src/constants/auth";
 
 export const SignInCta = () => {

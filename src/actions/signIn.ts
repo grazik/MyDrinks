@@ -5,7 +5,7 @@ import { SignInSchema } from "@/lib/validation/auth";
 import { comparePasswordHash } from "@/lib/auth/password";
 import { prisma } from "@/db/db";
 import { redirect } from "next/navigation";
-import { getSafeReturnTo } from "@/lib/auth/returnTo";
+import { getSafeReturnTo } from "@/lib/validation/returnTo";
 import { AUTH_TOKEN_EXPIRES_IN_SECONDS, createAuthToken } from "@/lib/auth/jwt";
 import { cookies } from "next/headers";
 import { AUTH_COOKIE_NAME, AUTH_ERRORS } from "@/src/constants/auth";

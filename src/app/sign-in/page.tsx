@@ -1,7 +1,7 @@
 import "./page.scss";
 import { SignInForm } from "@/src/components/organisms/SignInForm/SignInForm";
 import Link from "next/link";
-import { getSafeReturnTo, withReturnTo } from "@/lib/auth/returnTo";
+import { getSafeReturnTo, withReturnTo } from "@/lib/validation/returnTo";
 import { RETURN_TO_PARAM } from "@/src/constants/auth";
 
 interface SignInPageProps {

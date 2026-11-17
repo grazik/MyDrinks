@@ -9,7 +9,7 @@ import { AUTH_COOKIE_NAME, AUTH_ERRORS } from "@/src/constants/auth";
 import { Prisma } from "@prisma/client";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { getSafeReturnTo } from "@/lib/auth/returnTo";
+import { getSafeReturnTo } from "@/lib/validation/returnTo";
 
 export interface CreateUserResult {
   ok: boolean;
