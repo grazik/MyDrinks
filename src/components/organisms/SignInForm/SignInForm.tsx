@@ -10,11 +10,15 @@ import { signIn } from "@/src/actions/signIn";
 import { Banner } from "@/src/components/atoms/Banner/Banner";
 import { Spinner } from "@/src/components/atoms/Spinner/Spinner";
 
-export const SignInForm = () => {
+interface SignInFormProps {
+  returnTo: string;
+}
+
+export const SignInForm = ({ returnTo }: SignInFormProps) => {
   const [error, setError] = useState("");
 
   const onSubmit = async (data: unknown) => {
-    const { ok, message } = await signIn(data);
+    const { ok, message } = await signIn(data, returnTo);
     if (!ok) {
       setError(message);
     } else {

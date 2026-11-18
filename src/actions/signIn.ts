@@ -5,6 +5,7 @@ import { SignInSchema } from "@/lib/validation/auth";
 import { comparePasswordHash } from "@/lib/auth/password";
 import { prisma } from "@/db/db";
 import { redirect } from "next/navigation";
+import { getSafeReturnTo } from "@/lib/validation/returnTo";
 import { AUTH_TOKEN_EXPIRES_IN_SECONDS, createAuthToken } from "@/lib/auth/jwt";
 import { cookies } from "next/headers";
 import { AUTH_COOKIE_NAME, AUTH_ERRORS } from "@/src/constants/auth";
@@ -14,7 +15,10 @@ export interface SignInResult {
   message: string;
 }
 
-export const signIn = async (rawData: unknown): Promise<SignInResult> => {
+export const signIn = async (
+  rawData: unknown,
+  returnTo?: unknown,
+): Promise<SignInResult> => {
   const parsedData = SignInSchema.safeParse(rawData);
 
   if (!parsedData.success) {
@@ -56,5 +60,5 @@ export const signIn = async (rawData: unknown): Promise<SignInResult> => {
     maxAge: AUTH_TOKEN_EXPIRES_IN_SECONDS,
   });
 
-  redirect("/");
+  redirect(getSafeReturnTo(returnTo));
 };

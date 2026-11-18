@@ -9,6 +9,7 @@ import { AUTH_COOKIE_NAME, AUTH_ERRORS } from "@/src/constants/auth";
 import { Prisma } from "@prisma/client";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { getSafeReturnTo } from "@/lib/validation/returnTo";
 
 export interface CreateUserResult {
   ok: boolean;
@@ -17,6 +18,7 @@ export interface CreateUserResult {
 
 export const createUser = async (
   rawData: unknown,
+  returnTo?: unknown,
 ): Promise<CreateUserResult> => {
   const parsedData = SignUpSchema.safeParse(rawData);
 
@@ -68,5 +70,5 @@ export const createUser = async (
     maxAge: AUTH_TOKEN_EXPIRES_IN_SECONDS,
   });
 
-  redirect("/");
+  redirect(getSafeReturnTo(returnTo));
 };
