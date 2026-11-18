@@ -1,5 +1,10 @@
 export const AUTH_COOKIE_NAME = "auth_token";
 
+export const AUTH_ROUTES = {
+  signIn: "/sign-in",
+  signUp: "/sign-up",
+} as const;
+
 export const AUTH_ERRORS = {
   invalidSignUpData: "Invalid sign up data",
   emailAlreadyInUse: "Email is already in use",

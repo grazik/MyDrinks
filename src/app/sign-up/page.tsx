@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { SignUpForm } from "@/src/components/organisms/SignUpForm/SignUpForm";
 import { getSafeReturnTo, withReturnTo } from "@/lib/validation/returnTo";
-import { RETURN_TO_PARAM } from "@/src/constants/auth";
+import { AUTH_ROUTES, RETURN_TO_PARAM } from "@/src/constants/auth";
 
 import "./page.scss";
 
@@ -22,7 +22,7 @@ export default async function SignUpPage({ searchParams }: SignUpPageProps) {
       <p className="body-text">
         Already have an account?{" "}
         <Link
-          href={withReturnTo("/sign-in", returnTo)}
+          href={withReturnTo(AUTH_ROUTES.signIn, returnTo)}
           className="body-text sign-up-page__link"
         >
           Sign In

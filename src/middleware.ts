@@ -1,6 +1,6 @@
 // middleware.ts
 import { NextRequest, NextResponse } from "next/server";
-import { AUTH_COOKIE_NAME } from "@/src/constants/auth";
+import { AUTH_COOKIE_NAME, AUTH_ROUTES } from "@/src/constants/auth";
 import { withReturnTo } from "@/lib/validation/returnTo";
 import { parseAuthToken } from "@/lib/auth/jwt";
 import { isStaff } from "@/lib/auth/roles";
@@ -12,7 +12,7 @@ export async function middleware(request: NextRequest) {
   if (pathname.startsWith("/orders") || pathname.startsWith("/dashboard")) {
     const token = request.cookies.get(AUTH_COOKIE_NAME)?.value;
     const signInUrl = new URL(
-      withReturnTo("/sign-in", `${pathname}${search}`),
+      withReturnTo(AUTH_ROUTES.signIn, `${pathname}${search}`),
       request.url,
     );
 

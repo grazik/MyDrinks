@@ -4,7 +4,6 @@ import { signOut } from "@/src/actions/signOut";
 import { getUserDto } from "@/lib/auth/getUserDto";
 import { isStaff } from "@/lib/auth/roles";
 import Link from "next/link";
-import { Suspense } from "react";
 import DashboardIcon from "public/icons/dashboard.svg";
 import ReceiptIcon from "public/icons/receipt.svg";
 
@@ -46,9 +45,7 @@ export const Header = async () => {
             </form>
           </>
         ) : (
-          <Suspense fallback={<Cta href="/sign-in">Sign in</Cta>}>
-            <SignInCta />
-          </Suspense>
+          <SignInCta />
         )}
       </header>
     </ContentBand>
