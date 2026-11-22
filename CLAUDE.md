@@ -79,7 +79,8 @@ Default to no comment — a stale comment is worse than none.
 
 > These rules define the intended product behavior and must be followed
 > strictly when implementing any ordering or event-related UI.
-> They are **not yet implemented** in the codebase.
+> Most are implemented; still missing are **Past Orders** on `/orders` and
+> the "bar is closed" empty state on the Events tab.
 
 ### Ordering System
 
@@ -119,3 +120,8 @@ When no event is active, the app functions as a recipe catalog only:
 - Show an elegant empty state on the "Events" tab communicating the bar is currently closed.
 - Show the same treatment on the `/orders` page.
 - Never show Quick Order UI in this state anywhere in the app.
+
+### Mocktails & Virgin Orders (not yet implemented)
+
+Spec: `docs/specs/mocktails-virgin-orders.md`. Read it before changing
+drinks, ingredients, ordering, `/orders` or the bartender dashboard.
