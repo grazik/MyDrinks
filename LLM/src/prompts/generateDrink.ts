@@ -9,30 +9,35 @@ const mojitoExample = `{
     {
       "ingredientName": "rum",
       "ingredientType": "spirit",
+      "isAlcoholic": true,
       "amount": 60,
       "unit": "ml"
     },
     {
       "ingredientName": "lime",
       "ingredientType": "fruit", 
+      "isAlcoholic": false,
       "amount": 1,
       "unit": "pieces"
     },
     {
       "ingredientName": "sugar",
       "ingredientType": "sweetener",
+      "isAlcoholic": false,
       "amount": 2,
       "unit": "tsp"
     },
     {
       "ingredientName": "mint",
       "ingredientType": "herb",
+      "isAlcoholic": false,
       "amount": 10,
       "unit": "leaves"
     },
     {
       "ingredientName": "sparkling water",
       "ingredientType": "mixer",
+      "isAlcoholic": false,
       "amount": 200,
       "unit": "ml"
     }
@@ -62,20 +67,22 @@ INSTRUCTIONS:
 - If ingredient exists in database, use EXACT name from list above
 - If ingredient doesn't exist, create it using normalized name following the rules
 - Generate authentic classic recipe with proper proportions
-- Recipe must have at least one spirit ingredient
+- The drink may be alcohol-free (a mocktail): no spirit or other alcoholic ingredient is required
 - Use these exact ingredient types: ${ingredientTypes.join(", ")}
+- Set "isAlcoholic" on every ingredient: true if it contains any alcohol (spirits, liqueurs such as triple sec, wine, beer, cider, bitters such as angostura), false only if it contains none. If unsure, use true
 - Ingredient amount must be a positive number, can't be 0
 - Prefer "ml" over "oz" unit.
 
 REQUIRED JSON SCHEMA:
 {
-  "name": "string (cocktail name)",
+  "name": "string (drink name)",
   "recipe": "string (step-by-step instructions in markdown)",
   "source_url": just write "AI generated"
   "ingredients": [
     {
       "ingredientName": "string (normalized ingredient name)",
       "ingredientType": "${ingredientTypes.join("|")}",
+      "isAlcoholic": boolean (true if the ingredient contains any alcohol),
       "amount": number (positive number),
       "unit": "string (oz, ml, dash, etc.)"
     }
@@ -85,7 +92,7 @@ REQUIRED JSON SCHEMA:
 EXAMPLE OUTPUT (Mojito):
 ${mojitoExample}
 
-Generate a classic ${drinkName} cocktail recipe following the exact JSON format above. 
+Generate a classic ${drinkName} recipe (cocktail or mocktail) following the exact JSON format above.
 Include proper step-by-step instructions in the recipe field.
 Use traditional proportions and authentic ingredients.
 
