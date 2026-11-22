@@ -14,22 +14,26 @@ datasource db {
 }
 
 model Drink {
-  id          String            @id @default(uuid())
-  name        String            @unique
-  recipe      String
-  source_url  String?
-  ingredients DrinkIngredient[]
-  createdAt   DateTime          @default(now())
-  image       String?
-  slug        String
-  EventDrink  EventDrink[]
-  Order       Order[]
+  id            String            @id @default(uuid())
+  name          String            @unique
+  recipe        String
+  source_url    String?
+  ingredients   DrinkIngredient[]
+  createdAt     DateTime          @default(now())
+  image         String?
+  slug          String
+  virginAllowed Boolean           @default(false)
+  virginNote    String?
+  EventDrink    EventDrink[]
+  Order         Order[]
 }
 
 model Ingredient {
   id               String            @id @default(uuid())
   name             String            @unique
   type             IngredientType
+  // Defaults to true: a wrong false serves alcohol to a guest who asked for none.
+  isAlcoholic      Boolean           @default(true)
   drinkIngredients DrinkIngredient[]
 }
 
@@ -110,6 +114,7 @@ model Order {
   id          String      @id @default(uuid())
   orderNumber Int         @default(autoincrement())
   quantity    Int
+  isVirgin    Boolean     @default(false)
   status      OrderStatus @default(PENDING)
   event       Event       @relation(fields: [eventId], references: [id])
   eventId     String
