@@ -29,10 +29,12 @@ export const saveRecipe = async (recipe: CreateDrinkInput, image: string) => {
     const ingredientPromises = recipe.ingredients.map((ing) => {
       return tx.ingredient.upsert({
         where: { name: ing.ingredientName },
+        // MUST stay empty: an existing ingredient's isAlcoholic may have been hand-reviewed, and an LLM guess must never overwrite it.
         update: {},
         create: {
           name: ing.ingredientName,
           type: ing.ingredientType,
+          isAlcoholic: ing.isAlcoholic,
         },
       });
     });

@@ -16,20 +16,20 @@ https://claude.ai/artifact/F878LRDyBbLVxzDCbcquHn
   ingredients, never stored. Strict: any alcoholic ingredient, even a few
   dashes of bitters, means it is not a mocktail.
 - **Virgin order** — an order of a cocktail with its alcoholic ingredients
-  left out. Only possible when `Drink.virginAllowed = true`.
+  left out. Only possible when `Drink.isVirginAllowed = true`.
 
 ## Data model
 
 ```prisma
 model Ingredient { isAlcoholic Boolean @default(true) }
-model Drink      { virginAllowed Boolean @default(false)  virginNote String? }
+model Drink      { isVirginAllowed Boolean @default(false)  virginNote String? }
 model Order      { isVirgin Boolean @default(false) }
 ```
 
 - `virginNote` — the bartender's instruction for the virgin version
   (e.g. "Top up with 40 ml orange juice"). Shown on the dashboard and on the
   guest's PDP when the virgin toggle is on.
-- `virginAllowed` lives on the drink (does the recipe work without alcohol),
+- `isVirginAllowed` lives on the drink (does the recipe work without alcohol),
   not on the event.
 - `isAlcoholic` defaults to `true` because a false positive is safe and a
   false negative is not. An unreviewed ingredient at worst stops a drink
@@ -39,7 +39,7 @@ model Order      { isVirgin Boolean @default(false) }
   non-alcoholic ones `false` from a hand-reviewed list, never a heuristic.
 - Drink-creation inputs must set `isAlcoholic` explicitly for new
   ingredients; the database default is only the safety net.
-- `virginAllowed` does not depend on the menu: a cocktail keeps its virgin
+- `isVirginAllowed` does not depend on the menu: a cocktail keeps its virgin
   option even when its mocktail twin is on the same menu (Apricot Mule next
   to Apricot Virgin Mule).
 - Every drink-creation path must allow mocktails and set the new fields:
@@ -81,7 +81,7 @@ model Order      { isVirgin Boolean @default(false) }
   Quick Order is unchanged.
 - Event page heading "Cocktails in this event" becomes "Tonight's menu".
 - Virgin toggle — "Make it virgin", hint "Without <alcoholic ingredients> ·
-  0% alcohol" — appears in the Quick Order UI only when `virginAllowed` is
+  0% alcohol" — appears in the Quick Order UI only when `isVirginAllowed` is
   true and the drink is not a mocktail. Otherwise it is hidden, not disabled.
 - Toggle on: alcoholic ingredient lines are struck through with a "skip"
   flag, and a note shows `virginNote`.
@@ -95,7 +95,7 @@ model Order      { isVirgin Boolean @default(false) }
 ## Server
 
 - `orderDrink` rejects `isVirgin: true` when the drink has
-  `virginAllowed = false` or is a mocktail. Never trust the client.
+  `isVirginAllowed = false` or is a mocktail. Never trust the client.
 
 ## /orders
 

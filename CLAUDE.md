@@ -8,7 +8,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 npm run dev        # Start development server
 npm run build      # Build for production
 npm run lint       # Run ESLint
-npx prisma push # sync schema with database
+npx prisma db push       # Sync schema with database
 npx prisma db seed       # Seed the database (via tsx prisma/seed.ts)
 npx prisma studio        # Open Prisma Studio GUI
 ```
