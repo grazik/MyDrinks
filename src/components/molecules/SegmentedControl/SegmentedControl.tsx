@@ -10,6 +10,7 @@ type SegmentedControlProps<T extends string> = {
   options: SegmentedControlOption<T>[];
   value: T;
   onChange: (value: T) => void;
+  className?: string;
 };
 
 export const SegmentedControl = <T extends string>({
@@ -17,8 +18,13 @@ export const SegmentedControl = <T extends string>({
   options,
   value,
   onChange,
+  className,
 }: SegmentedControlProps<T>) => (
-  <div className="segmented-control" role="group" aria-label={label}>
+  <div
+    className={["segmented-control", className].filter(Boolean).join(" ")}
+    role="group"
+    aria-label={label}
+  >
     {options.map((option) => {
       const isSelected = option.value === value;
 

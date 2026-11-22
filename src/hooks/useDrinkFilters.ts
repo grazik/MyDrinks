@@ -77,7 +77,7 @@ export const useDrinkFilters = () => {
       searchParams.set(DRINK_TYPE_PARAM, nextDrinkType);
     }
 
-    if (nextDrinkType === DrinkType.MOCKTAIL) {
+    if (isMocktailView || nextDrinkType === DrinkType.MOCKTAIL) {
       searchParams.delete(IngredientCategory.SPIRITS);
     }
 

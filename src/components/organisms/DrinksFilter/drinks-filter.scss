@@ -1,0 +1,9 @@
+@use '/src/styles/breakpoints';
+
+.drinks-filter__type {
+  margin-top: 24px;
+
+  @include breakpoints.from-tablet {
+    width: fit-content;
+  }
+}

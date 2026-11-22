@@ -9,6 +9,7 @@ import { DrinksFilterDrawer } from "@/src/components/organisms/DrinksFilterDrawe
 import { IngredientCategory } from "@/src/constants/IngredientCategory";
 import { DRINK_TYPE_LABELS, DrinkType } from "@/src/constants/DrinkType";
 import { IngredientFilterOption } from "@/src/utils/ingredients/ingredients";
+import "./drinks-filter.scss";
 
 const VISIBLE_SPIRITS = 8;
 const VISIBLE_ADDITIONAL = 12;
@@ -58,6 +59,7 @@ export const DrinksFilter = ({
         options={DRINK_TYPE_OPTIONS}
         value={drinkType}
         onChange={setDrinkType}
+        className="drinks-filter__type"
       />
       {!isMocktailView && (
         <FilterChipBar
