@@ -2,6 +2,7 @@
   width: 100%;
 
   .drink-card__image-wrapper {
+    position: relative;
     width: 100%;
     border-radius: 12px;
     overflow: hidden;
@@ -17,6 +18,14 @@
     &:hover {
       transform: scale(1.1);
     }
+  }
+
+  .drink-card__badge {
+    position: absolute;
+    display: flex;
+    top: 8px;
+    left: 8px;
+    pointer-events: none;
   }
 
   .drink-card__link {

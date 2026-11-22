@@ -3,6 +3,7 @@ declare const tokens: {
   readonly colorAmberGold: string;
   readonly colorLimeGreen: string;
   readonly colorCherryRed: string;
+  readonly colorIceAqua: string;
   readonly colorTextLight: string;
   readonly colorMutedGray: string;
   readonly colorSurfaceBase: string;
