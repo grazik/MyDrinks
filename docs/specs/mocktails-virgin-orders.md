@@ -10,7 +10,8 @@ https://claude.ai/artifact/F878LRDyBbLVxzDCbcquHn
 
 - **Alcoholic ingredient** — `Ingredient.isAlcoholic = true`. This is
   independent of `IngredientType`: angostura is a `bitter` and alcoholic;
-  triple sec is currently typed `syrup` and alcoholic.
+  triple sec is currently typed `syrup` and alcoholic. An ingredient counts
+  as alcoholic until someone explicitly marks it otherwise.
 - **Mocktail** — a drink with no alcoholic ingredient. Derived from the
   ingredients, never stored. Strict: any alcoholic ingredient, even a few
   dashes of bitters, means it is not a mocktail.
@@ -20,7 +21,7 @@ https://claude.ai/artifact/F878LRDyBbLVxzDCbcquHn
 ## Data model
 
 ```prisma
-model Ingredient { isAlcoholic Boolean @default(false) }
+model Ingredient { isAlcoholic Boolean @default(true) }
 model Drink      { virginAllowed Boolean @default(false)  virginNote String? }
 model Order      { isVirgin Boolean @default(false) }
 ```
@@ -30,8 +31,17 @@ model Order      { isVirgin Boolean @default(false) }
   guest's PDP when the virgin toggle is on.
 - `virginAllowed` lives on the drink (does the recipe work without alcohol),
   not on the event.
-- Mark existing ingredients as alcoholic from a hand-reviewed list, never a
-  heuristic: a wrong `false` serves alcohol to someone who asked for none.
+- `isAlcoholic` defaults to `true` because a false positive is safe and a
+  false negative is not. An unreviewed ingredient at worst stops a drink
+  from counting as a mocktail, or is skipped in a virgin order; a wrong
+  `false` serves alcohol to someone who asked for none.
+- Existing ingredients become alcoholic when the column is added; mark the
+  non-alcoholic ones `false` from a hand-reviewed list, never a heuristic.
+- Drink-creation inputs must set `isAlcoholic` explicitly for new
+  ingredients; the database default is only the safety net.
+- `virginAllowed` does not depend on the menu: a cocktail keeps its virgin
+  option even when its mocktail twin is on the same menu (Apricot Mule next
+  to Apricot Virgin Mule).
 - Every drink-creation path must allow mocktails and set the new fields:
   - `CreateDrinkSchema` in `lib/validation/drink.ts` (currently requires a
     spirit),
@@ -79,8 +89,7 @@ model Order      { isVirgin Boolean @default(false) }
   1 virgin) places separate orders.
 - After ordering, quantity resets to 1 but the toggle keeps its state: an
   accidental alcoholic drink is worse than an accidental virgin one.
-- Success toast: "Virgin order placed!" vs "Order placed!", same success
-  style.
+- The success toast is the usual "Order placed!" for virgin orders too.
 - All existing Quick Order visibility rules in CLAUDE.md still apply.
 
 ## Server
@@ -120,9 +129,3 @@ model Order      { isVirgin Boolean @default(false) }
 4. **Dashboard** — card tags, "Leave out" line, recipe-panel banner and skip
    lines, alcoholic-first sort.
 5. **Tooling** — the `new-event` skill sets the new fields.
-
-## Open question
-
-- When a cocktail's mocktail twin is on the same menu (Apricot Mule and
-  Apricot Virgin Mule), should the cocktail still allow virgin orders, or
-  should its PDP link to the twin instead?
