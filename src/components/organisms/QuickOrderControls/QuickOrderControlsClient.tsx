@@ -1,31 +1,45 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { use, useState, useTransition } from "react";
 import { Cta } from "@/src/components/atoms/Cta/Cta";
 import { Spinner } from "@/src/components/atoms/Spinner/Spinner";
 import { QuantityStepper } from "@/src/components/atoms/QuantityStepper/QuantityStepper";
 import { Toast } from "@/src/components/atoms/Toast/Toast";
+import { ToggleSwitch } from "@/src/components/atoms/ToggleSwitch/ToggleSwitch";
 import { useToast } from "@/src/hooks/useToast";
+import { virginOrderContext } from "@/src/contexts/VirginOrderContext/virginOrderContext";
+import {
+  formatIngredientNames,
+  IngredientListStyle,
+} from "@/src/utils/drinks/drinks";
 import type { ActionResult } from "@/src/types/generic.types";
 import "./quick-order-controls.scss";
+
 interface QuickOrderControlsClientProps {
-  available: boolean;
-  onOrder?: (quantity: number) => Promise<ActionResult>;
+  isAvailable: boolean;
+  isVirginAvailable?: boolean;
+  omittedIngredientNames?: string[];
+  onOrder?: (quantity: number, isVirgin: boolean) => Promise<ActionResult>;
 }
 
 export const QuickOrderControlsClient = ({
-  available = false,
+  isAvailable,
+  isVirginAvailable = false,
+  omittedIngredientNames = [],
   onOrder,
 }: QuickOrderControlsClientProps) => {
   const [quantity, setQuantity] = useState(1);
+  const { isVirgin, setIsVirgin } = use(virginOrderContext);
   const { toastProps, showToast } = useToast();
   const [isPending, startTransition] = useTransition();
 
+  // The virgin toggle deliberately survives a successful order: an accidental
+  // alcoholic drink is worse than an accidental virgin one.
   const handleOrder = () => {
     if (!onOrder) return;
 
     startTransition(async () => {
-      const result = await onOrder(quantity);
+      const result = await onOrder(quantity, isVirgin);
 
       if (result.ok) {
         showToast("Order placed!", "success");
@@ -36,7 +50,7 @@ export const QuickOrderControlsClient = ({
     });
   };
 
-  if (!available) {
+  if (!isAvailable) {
     return (
       <div className="quick-order-controls quick-order-controls--unavailable">
         <div className="quick-order-controls__unavailable-wrapper">
@@ -59,14 +73,25 @@ export const QuickOrderControlsClient = ({
     <>
       <Toast {...toastProps} />
       <div className="quick-order-controls quick-order-controls--available">
-        <QuantityStepper value={quantity} onChange={setQuantity} />
-        <Cta
-          className="quick-order-controls__order-btn"
-          disabled={isPending}
-          onClick={handleOrder}
-        >
-          {isPending && <Spinner />} Order Now
-        </Cta>
+        {isVirginAvailable && (
+          <ToggleSwitch
+            label="Make it virgin"
+            hint={`Without ${formatIngredientNames(omittedIngredientNames, IngredientListStyle.LABEL)} · 0% alcohol`}
+            isChecked={isVirgin}
+            isDisabled={isPending}
+            onChange={setIsVirgin}
+          />
+        )}
+        <div className="quick-order-controls__row">
+          <QuantityStepper value={quantity} onChange={setQuantity} />
+          <Cta
+            className="quick-order-controls__order-btn"
+            disabled={isPending}
+            onClick={handleOrder}
+          >
+            {isPending && <Spinner />} Order Now
+          </Cta>
+        </div>
       </div>
     </>
   );

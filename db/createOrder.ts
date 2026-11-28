@@ -8,7 +8,7 @@ import { NotifyEvent } from "@/lib/sse/types";
 
 type CreateOrderInput = Pick<
   Prisma.OrderUncheckedCreateInput,
-  "quantity" | "drinkId" | "userId" | "eventId"
+  "quantity" | "isVirgin" | "drinkId" | "userId" | "eventId"
 >;
 
 export const createOrder = async (input: CreateOrderInput) => {

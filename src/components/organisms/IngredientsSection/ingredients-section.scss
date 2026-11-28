@@ -25,5 +25,34 @@
     :first-letter {
       text-transform: uppercase;
     }
+
+    &--skipped p {
+      text-decoration: line-through;
+      color: var(--color-text-muted);
+    }
+  }
+
+  // inline-block keeps the strike-through of the line from crossing the flag.
+  &__skip-flag {
+    display: inline-block;
+    margin-left: 8px;
+    font-size: .75rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--color-ice-aqua);
+  }
+
+  &__virgin-note {
+    padding: 12px 14px;
+    border-radius: 8px;
+    background-color: var(--color-muted-gray);
+    color: var(--color-text-light);
+    font-size: 1rem;
+    line-height: 1.5;
+
+    strong {
+      font-weight: 700;
+    }
   }
 }

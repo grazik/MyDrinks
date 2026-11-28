@@ -1,5 +1,5 @@
 import {
-  OrderWithDrink,
+  OrderWithDrinkWithIngredients,
   OrderWithDrinkWithIngredientsAndUser,
 } from "@/src/types/order.types";
 import { ActiveEventWithDrinkIds } from "@/src/types/event.types";
@@ -76,8 +76,8 @@ type SatisfiesAllEvents<T extends Record<BarEvent, unknown>> = T;
 export type BarEventPayloads = SatisfiesAllEvents<{
   [BarEvent.ALL_ORDERS]: OrderWithDrinkWithIngredientsAndUser[];
   [BarEvent.ORDER_UPDATED]: OrderWithDrinkWithIngredientsAndUser;
-  [BarEvent.USER_ALL_ORDERS]: OrderWithDrink[];
-  [BarEvent.USER_ORDER_UPDATED]: OrderWithDrink;
+  [BarEvent.USER_ALL_ORDERS]: OrderWithDrinkWithIngredients[];
+  [BarEvent.USER_ORDER_UPDATED]: OrderWithDrinkWithIngredients;
   [BarEvent.BAR_CLOSED]: null;
   [BarEvent.BAR_OPENED]: Event;
 }>;

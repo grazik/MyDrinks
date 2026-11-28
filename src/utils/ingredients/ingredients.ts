@@ -23,17 +23,18 @@ export const groupIngredientsByCategory = <T extends { type: IngredientType }>(
   );
 };
 
-type DrinkIngredientRow = {
+export type DrinkIngredientRow = {
   id: string;
   amount: number;
   unit: string;
-  ingredient: { name: string; type: IngredientType };
+  ingredient: { name: string; type: IngredientType; isAlcoholic: boolean };
 };
 
-type RecipeLine = {
+export type RecipeLine = {
   id: string;
   name: string;
   type: IngredientType;
+  isAlcoholic: boolean;
   amount: number;
   unit: string;
 };
@@ -65,6 +66,7 @@ const toRecipeLine = ({
   unit,
   name: ingredient.name,
   type: ingredient.type,
+  isAlcoholic: ingredient.isAlcoholic,
 });
 
 export const toSortedRecipeLines = (drinkIngredients: DrinkIngredientRow[]) =>

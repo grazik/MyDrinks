@@ -9,10 +9,11 @@ import "./order-card.scss";
 import { CardContent } from "@/src/components/molecules/OrderCard/components/CardContent";
 import { Actions } from "@/src/components/molecules/OrderCard/components/Actions";
 import { CancelOrder } from "@/src/components/molecules/OrderCard/components/CancelOrder";
-import { OrderWithDrink } from "@/src/types/order.types";
+import { OrderMarkers } from "@/src/components/molecules/OrderCard/components/OrderMarkers";
+import { OrderWithDrinkWithIngredients } from "@/src/types/order.types";
 
 type OrderCardProps = {
-  order: OrderWithDrink;
+  order: OrderWithDrinkWithIngredients;
   isRecentlyUpdated?: boolean;
 };
 
@@ -23,7 +24,7 @@ const cardClassName = (variant: string | null, isRecentlyUpdated?: boolean) =>
 
 // MUST be unique across rendered cards — a duplicate name aborts the whole
 // view transition.
-const viewTransitionStyle = (order: OrderWithDrink) => ({
+const viewTransitionStyle = (order: OrderWithDrinkWithIngredients) => ({
   viewTransitionName: `user-order-${order.id}`,
 });
 
@@ -67,7 +68,9 @@ const CancelledOrderCard = ({ order, isRecentlyUpdated }: OrderCardProps) => {
         image={order.drink.image}
         quantity={order.quantity}
         drinkName={order.drink.name}
-      />
+      >
+        <OrderMarkers order={order} />
+      </CardContent>
     </div>
   );
 };
@@ -94,7 +97,9 @@ const CompletedOrderCard = ({ order, isRecentlyUpdated }: OrderCardProps) => {
         image={order.drink.image}
         quantity={order.quantity}
         drinkName={order.drink.name}
-      />
+      >
+        <OrderMarkers order={order} />
+      </CardContent>
     </div>
   );
 };
@@ -118,7 +123,9 @@ const ActiveOrderCard = ({ order, isRecentlyUpdated }: OrderCardProps) => {
         image={order.drink.image}
         quantity={order.quantity}
         drinkName={order.drink.name}
-      />
+      >
+        <OrderMarkers order={order} />
+      </CardContent>
       {order.status === OrderStatus.PENDING && (
         <Actions>
           <CancelOrder orderId={order.id} />

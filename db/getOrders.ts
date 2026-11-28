@@ -10,9 +10,7 @@ export const getUserOrdersForEvent = async (
       userId,
       eventId,
     },
-    include: {
-      drink: true,
-    },
+    include: drinkWithIngredients,
   });
 
   return orders;
