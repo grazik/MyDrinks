@@ -19,6 +19,7 @@
   }
 
   .event-drink__image-wrapper {
+    align-self: stretch;
     overflow: hidden;
     margin-bottom: 16px;
   }
@@ -44,6 +45,10 @@
   }
 
   .event-drink__link {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
     text-decoration: none;
   }
 }

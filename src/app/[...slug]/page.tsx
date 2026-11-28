@@ -6,6 +6,11 @@ import { IngredientsSection } from "@/src/components/organisms/IngredientsSectio
 import { RecipeSection } from "@/src/components/organisms/RecipeSection/RecipeSection";
 import { ContentBand } from "@/src/components/atoms/ContentBand/ContentBand";
 import { BackButton } from "@/src/components/atoms/BackButton/BackButton";
+import { Tag } from "@/src/components/atoms/tag/Tag";
+import { VirginOrderProvider } from "@/src/contexts/VirginOrderContext/VirginOrderProvider";
+import { getIngredientsByDrinkId } from "@/db/getDrinkIngredients";
+import { isMocktail } from "@/src/utils/drinks/drinks";
+import tokens from "@/src/styles/tokens.module.scss";
 
 import "./pdp.scss";
 import { PdpQuickOrderControls } from "./PdpQuickOrderControls";
@@ -35,17 +40,30 @@ export default async function PDP({ params }: DrinkPageProps) {
     notFound();
   }
 
+  const ingredients = await getIngredientsByDrinkId(drink.id);
+
   return (
     <main className="wrapper">
       <ContentBand>
         <BackButton label={"Back"} fallbackHref={"/"} />
       </ContentBand>
       <div className="pdp">
-        <h1 className={"main-heading"}>{drink.name}</h1>
+        <div className="pdp__title">
+          <h1 className={"main-heading"}>{drink.name}</h1>
+          {isMocktail({ ingredients }) && (
+            <Tag
+              title="Mocktail · alcohol-free"
+              bgColor={tokens.colorIceAqua}
+              variant="subtle"
+            />
+          )}
+        </div>
         <div className="pdp-content">
           {drink.image && <ImagesSection drink={drink} />}
-          <IngredientsSection drinkId={drink.id} />
-          <PdpQuickOrderControls drinkId={drink.id} />
+          <VirginOrderProvider>
+            <IngredientsSection drink={drink} />
+            <PdpQuickOrderControls drink={drink} />
+          </VirginOrderProvider>
           <RecipeSection recipe={drink.recipe} />
         </div>
       </div>

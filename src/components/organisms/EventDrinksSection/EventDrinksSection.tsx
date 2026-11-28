@@ -7,7 +7,7 @@ type EventDrinksSectionProps = { drinks: Drink[] };
 export const EventDrinksSection = ({ drinks }: EventDrinksSectionProps) => {
   return (
     <section className="event-drinks-section">
-      <h2 className="section-heading mt-4">Cocktails in this event</h2>
+      <h2 className="section-heading mt-4">Tonight&apos;s menu</h2>
       <div className="event-drinks">
         {drinks.map((drink) => (
           <EventDrink drink={drink} key={drink.id} />

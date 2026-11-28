@@ -5,6 +5,8 @@ import { ORDER_ERRORS } from "@/src/constants/order";
 import { getUserDto } from "@/lib/auth/getUserDto";
 import { createOrder } from "@/db/createOrder";
 import { getActiveEventWithDrinkIds } from "@/db/getEvent";
+import { getDrinkVirginFlags } from "@/db/getDrink";
+import { isVirginAvailable } from "@/src/utils/drinks/drinks";
 import { z } from "zod";
 import type { ActionResult } from "@/src/types/generic.types";
 
@@ -38,7 +40,7 @@ export const orderDrink = async (
     };
   }
 
-  const { quantity, drinkId } = parsedData.data;
+  const { quantity, drinkId, isVirgin } = parsedData.data;
 
   if (
     !activeEvent.eventDrink.find((eventDrink) => eventDrink.drinkId === drinkId)
@@ -49,8 +51,20 @@ export const orderDrink = async (
     };
   }
 
+  if (isVirgin) {
+    const drink = await getDrinkVirginFlags(drinkId);
+
+    if (!drink || !isVirginAvailable(drink)) {
+      return {
+        ok: false,
+        message: ORDER_ERRORS.virginNotAvailable,
+      };
+    }
+  }
+
   await createOrder({
     quantity,
+    isVirgin,
     drinkId,
     userId: user.sub,
     eventId: activeEvent.id,

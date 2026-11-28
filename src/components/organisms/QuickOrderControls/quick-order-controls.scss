@@ -5,9 +5,15 @@
   padding: 16px;
   padding-bottom: calc(16px + env(safe-area-inset-bottom));
   display: flex;
+  flex-direction: column;
   gap: 12px;
-  align-items: center;
   border-radius: 12px;
+
+  &__row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
 
   &__order-btn {
     flex: 1;

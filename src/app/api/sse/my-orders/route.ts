@@ -7,7 +7,7 @@ import { getUserOrdersForEvent } from "@/db/getOrders";
 import { encodeSseEvent, safeEnqueue, startHeartbeat } from "@/src/utils/sse";
 import { BarEvent, BarUpdate, NotifyEvent, toEventView } from "@/lib/sse/types";
 import {
-  OrderWithDrink,
+  OrderWithDrinkWithIngredients,
   OrderWithDrinkWithIngredientsAndUser,
 } from "@/src/types/order.types";
 import { ActiveEventWithDrinkIds } from "@/src/types/event.types";
@@ -15,7 +15,8 @@ import { ActiveEventWithDrinkIds } from "@/src/types/event.types";
 const toCustomerOrder = ({
   user,
   ...order
-}: OrderWithDrinkWithIngredientsAndUser): OrderWithDrink => order;
+}: OrderWithDrinkWithIngredientsAndUser): OrderWithDrinkWithIngredients =>
+  order;
 
 export async function GET() {
   const user = await getUserDto();

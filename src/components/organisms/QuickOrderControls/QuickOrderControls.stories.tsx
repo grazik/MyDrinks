@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
 import { fn } from "storybook/test";
 import { QuickOrderControlsClient } from "./QuickOrderControlsClient";
+import { VirginOrderProvider } from "@/src/contexts/VirginOrderContext/VirginOrderProvider";
 
 const meta: Meta<typeof QuickOrderControlsClient> = {
   title: "Organisms/QuickOrderControls",
@@ -9,6 +10,13 @@ const meta: Meta<typeof QuickOrderControlsClient> = {
   args: {
     onOrder: fn(),
   },
+  decorators: [
+    (Story) => (
+      <VirginOrderProvider>
+        <Story />
+      </VirginOrderProvider>
+    ),
+  ],
 };
 
 export default meta;
@@ -16,7 +24,7 @@ type Story = StoryObj<typeof QuickOrderControlsClient>;
 
 export const Active: Story = {
   args: {
-    available: true,
+    isAvailable: true,
   },
   parameters: {
     docs: {
@@ -30,13 +38,21 @@ export const Active: Story = {
 
 export const ActiveWithDelay: Story = {
   args: {
-    available: true,
+    isAvailable: true,
     onOrder: () => new Promise((resolve) => setTimeout(resolve, 1500)),
+  },
+};
+
+export const VirginAvailable: Story = {
+  args: {
+    isAvailable: true,
+    isVirginAvailable: true,
+    omittedIngredientNames: ["tequila", "triple sec"],
   },
 };
 
 export const Unavailable: Story = {
   args: {
-    available: false,
+    isAvailable: false,
   },
 };

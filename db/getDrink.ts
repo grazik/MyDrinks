@@ -25,3 +25,14 @@ export const getDrinkIdByName = async (name: string) => {
     return false; // Proceed with generation on error
   }
 };
+
+export const getDrinkVirginFlags = (drinkId: string) =>
+  prisma.drink.findUnique({
+    where: { id: drinkId },
+    select: {
+      isVirginAllowed: true,
+      ingredients: {
+        select: { ingredient: { select: { isAlcoholic: true } } },
+      },
+    },
+  });

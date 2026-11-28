@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo, ReactNode } from "react";
-import { type OrderWithDrink } from "@/src/types/order.types";
+import { type OrderWithDrinkWithIngredients } from "@/src/types/order.types";
 import { type Event } from "@prisma/client";
 
 import { STATUS_ORDERING } from "@/src/constants/order";
@@ -18,7 +18,7 @@ import { withViewTransition } from "@/src/utils/viewTransition";
 const HIGHLIGHT_DURATION_MS = 2000;
 
 interface ActiveOrdersSectionClientProps {
-  initialOrders: OrderWithDrink[] | null;
+  initialOrders: OrderWithDrinkWithIngredients[] | null;
   initialEvent: Event | null;
   noEventSection: ReactNode;
 }

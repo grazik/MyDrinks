@@ -1,32 +1,42 @@
+import { Drink } from "@prisma/client";
 import { getUserDto } from "@/lib/auth/getUserDto";
 import { getActiveEventWithDrinkIds } from "@/db/getEvent";
+import { getIngredientsByDrinkId } from "@/db/getDrinkIngredients";
 import { QuickOrderControlsClient } from "./QuickOrderControlsClient";
 import { orderDrink } from "@/src/actions/orderDrink";
+import {
+  getAlcoholicIngredientNames,
+  isVirginAvailable,
+} from "@/src/utils/drinks/drinks";
 
 interface QuickOrderControlsProps {
-  drinkId: string;
+  drink: Pick<Drink, "id" | "isVirginAllowed">;
 }
 
 export const QuickOrderControls = async ({
-  drinkId,
+  drink: { id: drinkId, isVirginAllowed },
 }: QuickOrderControlsProps) => {
-  const [user, event] = await Promise.all([
+  const [user, event, ingredients] = await Promise.all([
     getUserDto(),
     getActiveEventWithDrinkIds(),
+    getIngredientsByDrinkId(drinkId),
   ]);
 
   if (!user || !event) return null;
 
-  const available = event.eventDrink.some((ed) => ed.drinkId === drinkId);
+  const isAvailable = event.eventDrink.some((ed) => ed.drinkId === drinkId);
 
   return (
     <QuickOrderControlsClient
-      available={available}
-      onOrder={async (quantity) => {
+      isAvailable={isAvailable}
+      isVirginAvailable={isVirginAvailable({ isVirginAllowed, ingredients })}
+      omittedIngredientNames={getAlcoholicIngredientNames({ ingredients })}
+      onOrder={async (quantity, isVirgin) => {
         "use server";
         return orderDrink({
           drinkId,
           quantity,
+          isVirgin,
         });
       }}
     />

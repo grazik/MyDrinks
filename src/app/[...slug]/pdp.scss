@@ -4,6 +4,13 @@
   margin-block: 40px;
 }
 
+.pdp__title {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
 .pdp-content {
   display: flex;
   flex-direction: column;

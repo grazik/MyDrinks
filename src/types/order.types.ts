@@ -16,6 +16,8 @@ export type OrderWith<T extends keyof OrderPayloads> = UnionToIntersection<
 
 export { type Order } from "@prisma/client";
 export type OrderWithDrink = OrderWith<"withDrink">;
+export type OrderWithDrinkWithIngredients =
+  OrderWith<"withDrinkWithIngredients">;
 export type OrderWithDrinkAndUser = OrderWith<"withDrink" | "withUser">;
 export type OrderWithDrinkWithIngredientsAndUser = OrderWith<
   "withDrinkWithIngredients" | "withUser"
